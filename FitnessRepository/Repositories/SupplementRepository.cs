@@ -16,4 +16,9 @@ public class SupplementRepository: ISupplementRepository
     {
         return await _context.Supplements.ToListAsync();
     }
+
+    public async Task AddUserSupplement()
+    {
+        
+    }
 }

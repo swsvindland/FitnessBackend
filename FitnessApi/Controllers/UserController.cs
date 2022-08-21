@@ -19,7 +19,7 @@ public class UserController
     
     [FunctionName("GetUser")]
     public async Task<IActionResult> GetUser(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
     {
         string email = req.Query["email"];
         

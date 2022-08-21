@@ -20,7 +20,7 @@ namespace FitnessApi
         
         [FunctionName("GetAllSupplements")]
         public async Task<IActionResult> GetAllSupplements(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
         {
             var supplements = await _supplementService.GetAllSupplements();
 

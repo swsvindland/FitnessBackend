@@ -1,8 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿namespace FitnessRepository.Models;
 
-namespace FitnessRepository.Models;
-
-[Table("supplements")]
 public class Supplements
 {
     public long Id { get; set; }
