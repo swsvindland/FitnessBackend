@@ -1,4 +1,6 @@
-namespace FitnessRepository;
+using FitnessRepository.Models;
+
+namespace FitnessRepository.Repositories;
 
 public interface ISupplementRepository
 {

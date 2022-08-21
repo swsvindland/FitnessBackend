@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FitnessRepository;
+namespace FitnessRepository.Models;
 
 [Table("supplements")]
 public class Supplements

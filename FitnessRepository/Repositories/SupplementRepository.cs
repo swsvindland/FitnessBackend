@@ -1,6 +1,7 @@
+using FitnessRepository.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace FitnessRepository;
+namespace FitnessRepository.Repositories;
 
 public class SupplementRepository: ISupplementRepository
 {
