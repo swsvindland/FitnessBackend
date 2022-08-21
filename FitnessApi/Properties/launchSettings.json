@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "fitness_backend": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7018",
+      "launchBrowser": false
+    }
+  }
+}
