@@ -23,5 +23,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FitnessRepository\FitnessRepository.csproj" />
+    <ProjectReference Include="..\FitnessServices\FitnessServices.csproj" />
   </ItemGroup>
 </Project>

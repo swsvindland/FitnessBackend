@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using FitnessRepository;
+using FitnessServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -8,20 +9,20 @@ using Microsoft.Extensions.Logging;
 
 namespace FitnessApi
 {
-    public class HelloWorld
+    public class SupplementsController
     {
-        private readonly ISupplementRepository _supplementRepository;
+        private readonly ISupplementService _supplementService;
 
-        public HelloWorld(ISupplementRepository supplementRepository)
+        public SupplementsController(ISupplementService supplementService)
         {
-            _supplementRepository = supplementRepository;
+            _supplementService = supplementService;
         }
         
-        [FunctionName("HelloWorld")]
-        public async Task<IActionResult> Run(
+        [FunctionName("GetAllSupplements")]
+        public async Task<IActionResult> GetAllSupplements(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log)
         {
-            var supplements = await _supplementRepository.GetAllSupplements();
+            var supplements = await _supplementService.GetAllSupplements();
 
             return new OkObjectResult(supplements);
         }

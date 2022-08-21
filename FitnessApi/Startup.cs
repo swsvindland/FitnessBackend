@@ -1,4 +1,5 @@
 using FitnessRepository;
+using FitnessServices.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,7 @@ namespace FitnessApi
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
             
             builder.Services.AddScoped<ISupplementRepository, SupplementRepository>();
-
+            builder.Services.AddScoped<ISupplementService, SupplementService>();
         }
     }
 }
