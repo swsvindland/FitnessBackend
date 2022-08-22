@@ -1,10 +1,11 @@
-namespace FitnessRepository.Models;
+using System;
 
-public class UserSupplement
+namespace FitnessServices.Models;
+
+public class UpdateUserSupplement
 {
     public long? Id { get; set; }
     public Guid UserId { get; set; }
     public long SupplementId { get; set; }
-    public Supplements Supplement { get; set; }
     public List<string> Times { get; set; }
 }

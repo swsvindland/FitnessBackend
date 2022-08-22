@@ -1,13 +1,16 @@
+using System;
+using System.IO;
 using System.Threading.Tasks;
-using FitnessRepository;
+using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
-namespace FitnessApi
+namespace FitnessApi.Controllers
 {
     public class SupplementsController
     {
@@ -25,6 +28,33 @@ namespace FitnessApi
             var supplements = await _supplementService.GetAllSupplements();
 
             return new OkObjectResult(supplements);
+        }
+        
+        [FunctionName("GetUserSupplements")]
+        public async Task<IActionResult> GetUserSupplements(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+        {
+            var userId = Guid.Parse(req.Query["userId"]);
+            
+            var userSupplements = await _supplementService.GetUserSupplements(userId);
+
+            return new OkObjectResult(userSupplements);
+        }
+        
+        [FunctionName("UpdateUserSupplements")]
+        public async Task<IActionResult> UpdateUserSupplements(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req, ILogger log)
+        {
+            string requestBody;
+            using (var streamReader =  new  StreamReader(req.Body))
+            {
+                requestBody = await streamReader.ReadToEndAsync();
+            }
+            var data = JsonConvert.DeserializeObject<UpdateUserSupplement>(requestBody);
+            
+            await _supplementService.UpdateUserSupplement(data);
+
+            return new OkObjectResult(true);
         }
     }
 }

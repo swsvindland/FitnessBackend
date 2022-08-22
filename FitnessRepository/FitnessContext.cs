@@ -10,6 +10,7 @@ public class FitnessContext: DbContext
         
     }
     
+    public DbSet<UserSupplement> UserSupplements { get; set; }
     public DbSet<Supplements> Supplements { get; set; }
     public DbSet<Users> Users { get; set; }
 
