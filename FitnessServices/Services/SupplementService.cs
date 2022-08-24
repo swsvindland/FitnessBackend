@@ -1,5 +1,4 @@
-﻿using FitnessRepository;
-using FitnessRepository.Models;
+﻿using FitnessRepository.Models;
 using FitnessRepository.Repositories;
 using FitnessServices.Models;
 
@@ -41,6 +40,34 @@ public class SupplementService: ISupplementService
         else
         {
             await _supplementRepository.UpdateUserSupplement(entity);
+        }
+    }
+    
+    public async Task<IEnumerable<UserSupplementActivity>> GetUserSupplementActivity(Guid userId)
+    {
+        return await _supplementRepository.GetUserSupplementActivityByUserId(userId);
+    }
+    
+    public async Task ToggleUserSupplementActivity(UpdateUserSupplementActivity updateUserSupplementActivity)
+    {
+        var entity =
+            await _supplementRepository.GetUserSupplementActivityByUserIdAndUserSupplementId(
+                updateUserSupplementActivity.UserId, updateUserSupplementActivity.UserSupplementId);
+        
+        if (entity == null)
+        {
+            var newEntity = new UserSupplementActivity()
+            {
+                Updated = DateTime.UtcNow,
+                UserId = updateUserSupplementActivity.UserId,
+                UserSupplementId = updateUserSupplementActivity.UserSupplementId
+            };
+            
+            await _supplementRepository.AddUserSupplementActivity(newEntity);
+        }
+        else
+        {
+            await _supplementRepository.RemoveUserSupplementActivity(entity);
         }
     }
 }

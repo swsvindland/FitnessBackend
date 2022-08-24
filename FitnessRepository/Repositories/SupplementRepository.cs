@@ -43,4 +43,37 @@ public class SupplementRepository : ISupplementRepository
             .Include(e => e.Supplement)
             .ToListAsync();
     }
+    
+    public async Task AddUserSupplementActivity(UserSupplementActivity userSupplementActivity)
+    {
+        _context.UserSupplementActivity.Add(userSupplementActivity);
+
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task RemoveUserSupplementActivity(UserSupplementActivity userSupplementActivity)
+    {
+        _context.UserSupplementActivity.Remove(userSupplementActivity);
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<UserSupplementActivity>> GetUserSupplementActivityByUserId(Guid userId)
+    {
+        return await _context.UserSupplementActivity
+            .Where(e => e.UserId == userId)
+            .Where(e => e.Updated.Date == DateTime.UtcNow.Date)
+            .Include(e => e.UserSupplement)
+            .ToListAsync();
+    }
+    
+    public async Task<UserSupplementActivity?> GetUserSupplementActivityByUserIdAndUserSupplementId(Guid userId, long userSupplementId)
+    {
+        return await _context.UserSupplementActivity
+            .Where(e => e.UserId == userId)
+            .Where(e => e.UserSupplementId == userSupplementId)
+            .Where(e => e.Updated.Date == DateTime.UtcNow.Date)
+            .Include(e => e.UserSupplement)
+            .FirstOrDefaultAsync();
+    }
 }

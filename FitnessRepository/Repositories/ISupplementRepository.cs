@@ -9,4 +9,10 @@ public interface ISupplementRepository
     public Task UpdateUserSupplement(UserSupplement userSupplement);
     public Task<UserSupplement?> GetUserSupplement(long id);
     public Task<IEnumerable<UserSupplement>> GetUserSupplementByUserId(Guid userId);
+    Task AddUserSupplementActivity(UserSupplementActivity userSupplementActivity);
+    Task RemoveUserSupplementActivity(UserSupplementActivity userSupplementActivity);
+    Task<IEnumerable<UserSupplementActivity>> GetUserSupplementActivityByUserId(Guid userId);
+
+    Task<UserSupplementActivity?> GetUserSupplementActivityByUserIdAndUserSupplementId(Guid userId,
+        long userSupplementId);
 }

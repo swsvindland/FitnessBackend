@@ -56,5 +56,32 @@ namespace FitnessApi.Controllers
 
             return new OkObjectResult(true);
         }
+        
+        [FunctionName("GetUserSupplementActivity")]
+        public async Task<IActionResult> GetUserSupplementActivity(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+        {
+            var userId = Guid.Parse(req.Query["userId"]);
+            
+            var userSupplements = await _supplementService.GetUserSupplements(userId);
+
+            return new OkObjectResult(userSupplements);
+        }
+        
+        [FunctionName("ToggleUserSupplementActivity")]
+        public async Task<IActionResult> ToggleUserSupplementActivity(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req, ILogger log)
+        {
+            string requestBody;
+            using (var streamReader =  new  StreamReader(req.Body))
+            {
+                requestBody = await streamReader.ReadToEndAsync();
+            }
+            var data = JsonConvert.DeserializeObject<UpdateUserSupplementActivity>(requestBody);
+            
+            await _supplementService.ToggleUserSupplementActivity(data);
+
+            return new OkObjectResult(true);
+        }
     }
 }
