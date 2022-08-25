@@ -43,9 +43,9 @@ public class SupplementService: ISupplementService
         }
     }
     
-    public async Task<IEnumerable<UserSupplementActivity>> GetUserSupplementActivity(Guid userId)
+    public async Task<UserSupplementActivity?> GetUserSupplementActivity(Guid userId, long userSupplementId)
     {
-        return await _supplementRepository.GetUserSupplementActivityByUserId(userId);
+        return await _supplementRepository.GetUserSupplementActivityByUserIdAndUserSupplementId(userId, userSupplementId);
     }
     
     public async Task ToggleUserSupplementActivity(UpdateUserSupplementActivity updateUserSupplementActivity)
@@ -58,7 +58,7 @@ public class SupplementService: ISupplementService
         {
             var newEntity = new UserSupplementActivity()
             {
-                Updated = DateTime.UtcNow,
+                Updated = DateTime.UtcNow.Date,
                 UserId = updateUserSupplementActivity.UserId,
                 UserSupplementId = updateUserSupplementActivity.UserSupplementId
             };

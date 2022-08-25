@@ -62,7 +62,7 @@ public class SupplementRepository : ISupplementRepository
     {
         return await _context.UserSupplementActivity
             .Where(e => e.UserId == userId)
-            .Where(e => e.Updated.Date == DateTime.UtcNow.Date)
+            .Where(e => e.Updated == DateTime.UtcNow.Date)
             .Include(e => e.UserSupplement)
             .ToListAsync();
     }
@@ -72,7 +72,7 @@ public class SupplementRepository : ISupplementRepository
         return await _context.UserSupplementActivity
             .Where(e => e.UserId == userId)
             .Where(e => e.UserSupplementId == userSupplementId)
-            .Where(e => e.Updated.Date == DateTime.UtcNow.Date)
+            .Where(e => e.Updated == DateTime.UtcNow.Date)
             .Include(e => e.UserSupplement)
             .FirstOrDefaultAsync();
     }

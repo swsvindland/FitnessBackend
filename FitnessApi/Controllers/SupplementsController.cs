@@ -62,8 +62,9 @@ namespace FitnessApi.Controllers
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
         {
             var userId = Guid.Parse(req.Query["userId"]);
+            var userSupplementId = long.Parse(req.Query["userSupplementId"]);
             
-            var userSupplements = await _supplementService.GetUserSupplements(userId);
+            var userSupplements = await _supplementService.GetUserSupplementActivity(userId, userSupplementId);
 
             return new OkObjectResult(userSupplements);
         }
