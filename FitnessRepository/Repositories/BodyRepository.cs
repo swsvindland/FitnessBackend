@@ -19,8 +19,9 @@ public class BodyRepository: IBodyRepository
     
     public async Task AddUserWeight(UserWeight userWeight)
     {
-        userWeight.Created = DateTime.UtcNow;
-        _context.UserWeight.Add(userWeight);
+        var updated = userWeight;
+        updated.Created = DateTime.UtcNow;
+        _context.UserWeight.Add(updated);
 
         await _context.SaveChangesAsync();
     }
@@ -39,8 +40,9 @@ public class BodyRepository: IBodyRepository
     
     public async Task AddUserBody(UserBody userBody)
     {
-        userBody.Created = DateTime.UtcNow;
-        _context.UserBody.Add(userBody);
+        var updated = userBody;
+        updated.Created = DateTime.UtcNow;
+        _context.UserBody.Add(updated);
 
         await _context.SaveChangesAsync();
     }
@@ -59,8 +61,9 @@ public class BodyRepository: IBodyRepository
     
     public async Task AddUserBloodPressure(UserBloodPressure userBloodPressure)
     {
-        userBloodPressure.Created = DateTime.UtcNow;
-        _context.UserBloodPressure.Add(userBloodPressure);
+        var updated = userBloodPressure;
+        updated.Created = DateTime.UtcNow;
+        _context.UserBloodPressure.Add(updated);
 
         await _context.SaveChangesAsync();
     }
