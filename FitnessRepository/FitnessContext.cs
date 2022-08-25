@@ -14,5 +14,7 @@ public class FitnessContext: DbContext
     public DbSet<UserSupplement> UserSupplements { get; set; }
     public DbSet<Supplements> Supplements { get; set; }
     public DbSet<Users> Users { get; set; }
-
+    public DbSet<UserBody> UserBody { get; set; }
+    public DbSet<UserBloodPressure> UserBloodPressure { get; set; }
+    public DbSet<UserWeight> UserWeight { get; set; }
 }

@@ -24,8 +24,10 @@ namespace FitnessApi
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ISupplementRepository, SupplementRepository>();
+            builder.Services.AddScoped<IBodyRepository, BodyRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ISupplementService, SupplementService>();
+            builder.Services.AddScoped<IBodyService, BodyService>();
         }
     }
 }
