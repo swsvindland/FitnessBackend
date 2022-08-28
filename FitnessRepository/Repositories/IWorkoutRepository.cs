@@ -5,5 +5,6 @@ namespace FitnessRepository.Repositories;
 public interface IWorkoutRepository
 {
     Task<IEnumerable<Workout>> GetWorkouts();
-    Task<IEnumerable<WorkoutBlock>> GetWorkout(long workoutId);
+    Task<Workout?> GetWorkout(long workoutId);
+    Task<IEnumerable<WorkoutBlock>> GetWorkoutBlocks(long workoutId);
 }

@@ -17,7 +17,13 @@ public class WorkoutRepository: IWorkoutRepository
         return await _context.Workout.ToListAsync();
     }
 
-    public async Task<IEnumerable<WorkoutBlock>> GetWorkout(long workoutId)
+    public async Task<Workout?> GetWorkout(long workoutId)
+    {
+        return await _context.Workout.FirstOrDefaultAsync(e => e.Id == workoutId);
+    }
+
+    
+    public async Task<IEnumerable<WorkoutBlock>> GetWorkoutBlocks(long workoutId)
     {
         var workoutBlocks = await _context.WorkoutBlock.Where(e => e.WorkoutId == workoutId).ToListAsync();
 

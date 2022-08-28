@@ -6,5 +6,6 @@ public class Workout
     public DateTime Created { get; set; }
     public int Version { get; set; }
     public string Name { get; set; }
+    public List<string> Description { get; set; }
     public float? Cost { get; set; }
 }

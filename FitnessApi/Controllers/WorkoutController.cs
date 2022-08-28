@@ -36,4 +36,15 @@ public class WorkoutController
 
         return new OkObjectResult(workouts);
     }
+    
+    [FunctionName("GetWorkoutDetails")]
+    public async Task<IActionResult> GetWorkoutDetails(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    {
+        var workoutId = long.Parse(req.Query["workoutId"]);
+        
+        var workouts = await _workoutService.GetWorkoutBlocks(workoutId);
+
+        return new OkObjectResult(workouts);
+    }
 }

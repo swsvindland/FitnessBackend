@@ -16,9 +16,14 @@ public class WorkoutService: IWorkoutService
     {
         return await _workoutRepository.GetWorkouts();
     }
-
-    public async Task<IEnumerable<WorkoutBlock>> GetWorkout(long workoutId)
+    
+    public async Task<Workout?> GetWorkout(long workoutId)
     {
         return await _workoutRepository.GetWorkout(workoutId);
+    }
+
+    public async Task<IEnumerable<WorkoutBlock>> GetWorkoutBlocks(long workoutId)
+    {
+        return await _workoutRepository.GetWorkoutBlocks(workoutId);
     }
 }
