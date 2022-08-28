@@ -18,17 +18,23 @@ namespace FitnessApi
             var configuration = builder.Services.BuildServiceProvider().GetService<IConfiguration>(); 
 
             builder.Services.AddHttpClient();
-            
+
+            // init db
             builder.Services.AddDbContext<FitnessContext>(options =>
                 options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
+            // add db calls
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<ISupplementRepository, SupplementRepository>();
             builder.Services.AddScoped<IBodyRepository, BodyRepository>();
+            builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+            
+            // add service functions
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ISupplementService, SupplementService>();
             builder.Services.AddScoped<IBodyService, BodyService>();
             builder.Services.AddScoped<IFoodService, FoodService>();
+            builder.Services.AddScoped<IWorkoutService, WorkoutService>();
         }
     }
 }
