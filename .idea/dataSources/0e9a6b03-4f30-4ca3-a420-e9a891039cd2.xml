@@ -11,7 +11,7 @@
 12974||-9223372036854775808|T|G
 12974||10|T|G
 12974||16779|T|G</Grants>
-      <IntrospectionStateNumber>1263</IntrospectionStateNumber>
+      <IntrospectionStateNumber>1290</IntrospectionStateNumber>
       <ServerVersion>14.1</ServerVersion>
       <StartupTime>1660835454</StartupTime>
       <TimeZones>true ACDT
@@ -862,7 +862,7 @@ false Zulu
 17276||16662|U|G
 17276||16663|U|G
 17276||16664|U|G</Grants>
-      <IntrospectionStateNumber>1263</IntrospectionStateNumber>
+      <IntrospectionStateNumber>1290</IntrospectionStateNumber>
       <ObjectId>12974</ObjectId>
       <Relations>sequence|table|16557|16558|6
 sequence|table|16684|16685|2
@@ -881,17 +881,80 @@ sequence|table|17854|17851|1
 </Relations>
       <OwnerName>postgres</OwnerName>
     </database>
-    <role id="3" parent="1" name="anon">
+    <role id="3" parent="1" name="pg_database_owner">
+      <ObjectId>6171</ObjectId>
+    </role>
+    <role id="4" parent="1" name="pg_read_all_data">
+      <ObjectId>6181</ObjectId>
+    </role>
+    <role id="5" parent="1" name="pg_write_all_data">
+      <ObjectId>6182</ObjectId>
+    </role>
+    <role id="6" parent="1" name="pg_monitor">
+      <ObjectId>3373</ObjectId>
+      <RoleGrants>3374
+3375
+3377</RoleGrants>
+    </role>
+    <role id="7" parent="1" name="pg_read_all_settings">
+      <ObjectId>3374</ObjectId>
+    </role>
+    <role id="8" parent="1" name="pg_read_all_stats">
+      <ObjectId>3375</ObjectId>
+    </role>
+    <role id="9" parent="1" name="pg_stat_scan_tables">
+      <ObjectId>3377</ObjectId>
+    </role>
+    <role id="10" parent="1" name="pg_read_server_files">
+      <ObjectId>4569</ObjectId>
+    </role>
+    <role id="11" parent="1" name="pg_write_server_files">
+      <ObjectId>4570</ObjectId>
+    </role>
+    <role id="12" parent="1" name="pg_execute_server_program">
+      <ObjectId>4571</ObjectId>
+    </role>
+    <role id="13" parent="1" name="pg_signal_backend">
+      <ObjectId>4200</ObjectId>
+    </role>
+    <role id="14" parent="1" name="pgsodium_keyiduser">
+      <ObjectId>16500</ObjectId>
+    </role>
+    <role id="15" parent="1" name="pgsodium_keyholder">
+      <ObjectId>16501</ObjectId>
+      <RoleGrants>16500</RoleGrants>
+    </role>
+    <role id="16" parent="1" name="pgsodium_keymaker">
+      <ObjectId>16502</ObjectId>
+      <RoleGrants>16500
+16501</RoleGrants>
+    </role>
+    <role id="17" parent="1" name="anon">
       <Config>statement_timeout=3s</Config>
       <Inherit>0</Inherit>
       <ObjectId>16662</ObjectId>
     </role>
-    <role id="4" parent="1" name="authenticated">
+    <role id="18" parent="1" name="authenticated">
       <Config>statement_timeout=8s</Config>
       <Inherit>0</Inherit>
       <ObjectId>16663</ObjectId>
     </role>
-    <role id="5" parent="1" name="authenticator">
+    <role id="19" parent="1" name="service_role">
+      <BypassRls>1</BypassRls>
+      <Inherit>0</Inherit>
+      <ObjectId>16664</ObjectId>
+    </role>
+    <role id="20" parent="1" name="supabase_admin">
+      <BypassRls>1</BypassRls>
+      <CanLogin>1</CanLogin>
+      <Config>search_path=&quot;$user&quot;, public, auth, extensions</Config>
+      <CreateDb>1</CreateDb>
+      <CreateRole>1</CreateRole>
+      <ObjectId>16606</ObjectId>
+      <Replication>1</Replication>
+      <SuperRole>1</SuperRole>
+    </role>
+    <role id="21" parent="1" name="authenticator">
       <CanLogin>1</CanLogin>
       <Config>session_preload_libraries=supautils, safeupdate</Config>
       <Inherit>0</Inherit>
@@ -901,65 +964,32 @@ sequence|table|17854|17851|1
 16663
 16664</RoleGrants>
     </role>
-    <role id="6" parent="1" name="dashboard_user">
+    <role id="22" parent="1" name="pgbouncer">
+      <CanLogin>1</CanLogin>
+      <ObjectId>16384</ObjectId>
+    </role>
+    <role id="23" parent="1" name="supabase_auth_admin">
+      <CanLogin>1</CanLogin>
+      <Config>search_path=auth
+idle_in_transaction_session_timeout=60000</Config>
+      <CreateRole>1</CreateRole>
+      <Inherit>0</Inherit>
+      <ObjectId>16719</ObjectId>
+    </role>
+    <role id="24" parent="1" name="supabase_storage_admin">
+      <CanLogin>1</CanLogin>
+      <Config>search_path=storage</Config>
+      <CreateRole>1</CreateRole>
+      <Inherit>0</Inherit>
+      <ObjectId>16774</ObjectId>
+    </role>
+    <role id="25" parent="1" name="dashboard_user">
       <CreateDb>1</CreateDb>
       <CreateRole>1</CreateRole>
       <ObjectId>16779</ObjectId>
       <Replication>1</Replication>
     </role>
-    <role id="7" parent="1" name="pg_database_owner">
-      <ObjectId>6171</ObjectId>
-    </role>
-    <role id="8" parent="1" name="pg_execute_server_program">
-      <ObjectId>4571</ObjectId>
-    </role>
-    <role id="9" parent="1" name="pg_monitor">
-      <ObjectId>3373</ObjectId>
-      <RoleGrants>3374
-3375
-3377</RoleGrants>
-    </role>
-    <role id="10" parent="1" name="pg_read_all_data">
-      <ObjectId>6181</ObjectId>
-    </role>
-    <role id="11" parent="1" name="pg_read_all_settings">
-      <ObjectId>3374</ObjectId>
-    </role>
-    <role id="12" parent="1" name="pg_read_all_stats">
-      <ObjectId>3375</ObjectId>
-    </role>
-    <role id="13" parent="1" name="pg_read_server_files">
-      <ObjectId>4569</ObjectId>
-    </role>
-    <role id="14" parent="1" name="pg_signal_backend">
-      <ObjectId>4200</ObjectId>
-    </role>
-    <role id="15" parent="1" name="pg_stat_scan_tables">
-      <ObjectId>3377</ObjectId>
-    </role>
-    <role id="16" parent="1" name="pg_write_all_data">
-      <ObjectId>6182</ObjectId>
-    </role>
-    <role id="17" parent="1" name="pg_write_server_files">
-      <ObjectId>4570</ObjectId>
-    </role>
-    <role id="18" parent="1" name="pgbouncer">
-      <CanLogin>1</CanLogin>
-      <ObjectId>16384</ObjectId>
-    </role>
-    <role id="19" parent="1" name="pgsodium_keyholder">
-      <ObjectId>16501</ObjectId>
-      <RoleGrants>16500</RoleGrants>
-    </role>
-    <role id="20" parent="1" name="pgsodium_keyiduser">
-      <ObjectId>16500</ObjectId>
-    </role>
-    <role id="21" parent="1" name="pgsodium_keymaker">
-      <ObjectId>16502</ObjectId>
-      <RoleGrants>16500
-16501</RoleGrants>
-    </role>
-    <role id="22" parent="1" name="postgres">
+    <role id="26" parent="1" name="postgres">
       <BypassRls>1</BypassRls>
       <CanLogin>1</CanLogin>
       <Config>search_path=&quot;\\$user&quot;, public, extensions</Config>
@@ -972,36 +1002,6 @@ sequence|table|17854|17851|1
 16502!
 16719
 16774</RoleGrants>
-    </role>
-    <role id="23" parent="1" name="service_role">
-      <BypassRls>1</BypassRls>
-      <Inherit>0</Inherit>
-      <ObjectId>16664</ObjectId>
-    </role>
-    <role id="24" parent="1" name="supabase_admin">
-      <BypassRls>1</BypassRls>
-      <CanLogin>1</CanLogin>
-      <Config>search_path=&quot;$user&quot;, public, auth, extensions</Config>
-      <CreateDb>1</CreateDb>
-      <CreateRole>1</CreateRole>
-      <ObjectId>16606</ObjectId>
-      <Replication>1</Replication>
-      <SuperRole>1</SuperRole>
-    </role>
-    <role id="25" parent="1" name="supabase_auth_admin">
-      <CanLogin>1</CanLogin>
-      <Config>search_path=auth
-idle_in_transaction_session_timeout=60000</Config>
-      <CreateRole>1</CreateRole>
-      <Inherit>0</Inherit>
-      <ObjectId>16719</ObjectId>
-    </role>
-    <role id="26" parent="1" name="supabase_storage_admin">
-      <CanLogin>1</CanLogin>
-      <Config>search_path=storage</Config>
-      <CreateRole>1</CreateRole>
-      <Inherit>0</Inherit>
-      <ObjectId>16774</ObjectId>
     </role>
     <tablespace id="27" parent="1" name="pg_default">
       <ObjectId>1663</ObjectId>
@@ -4993,7 +4993,7 @@ idle_in_transaction_session_timeout=60000</Config>
 17854||16662|U|G
 17854||16663|U|G
 17854||16664|U|G</Grants>
-      <IntrospectionStateNumber>1263</IntrospectionStateNumber>
+      <IntrospectionStateNumber>1290</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>760</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -5064,16 +5064,16 @@ idle_in_transaction_session_timeout=60000</Config>
       <Event>ddl_command_end</Event>
       <ObjectId>16604</ObjectId>
       <StateNumber>742</StateNumber>
-      <Tags>ALTER TABLE
+      <Tags>ALTER FOREIGN TABLE
+ALTER MATERIALIZED VIEW
+ALTER TABLE
+CREATE FOREIGN TABLE
+CREATE MATERIALIZED VIEW
 CREATE TABLE
 CREATE TABLE AS
-DROP TABLE
-ALTER MATERIALIZED VIEW
-CREATE MATERIALIZED VIEW
-DROP MATERIALIZED VIEW
-ALTER FOREIGN TABLE
-CREATE FOREIGN TABLE
 DROP FOREIGN TABLE
+DROP MATERIALIZED VIEW
+DROP TABLE
 SECURITY LABEL
 SELECT INTO</Tags>
       <CallRoutineId>16601</CallRoutineId>
@@ -5138,9 +5138,9 @@ SELECT INTO</Tags>
       <StateNumber>960</StateNumber>
       <OwnerName>supabase_admin</OwnerName>
     </sequence>
-    <table id="308" parent="286" name="Exercises">
+    <table id="308" parent="286" name="Exercise">
       <ObjectId>17815</ObjectId>
-      <StateNumber>1165</StateNumber>
+      <StateNumber>1264</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
@@ -5188,19 +5188,19 @@ SELECT INTO</Tags>
     </table>
     <table id="316" parent="286" name="Workout">
       <ObjectId>17827</ObjectId>
-      <StateNumber>1205</StateNumber>
+      <StateNumber>1272</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <table id="317" parent="286" name="WorkoutBlockExercises">
-      <ObjectId>17851</ObjectId>
-      <StateNumber>1227</StateNumber>
-      <AccessMethodId>2</AccessMethodId>
-      <OwnerName>supabase_admin</OwnerName>
-    </table>
-    <table id="318" parent="286" name="WorkoutBlocks">
+    <table id="317" parent="286" name="WorkoutBlock">
       <ObjectId>17841</ObjectId>
-      <StateNumber>1214</StateNumber>
+      <StateNumber>1267</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>supabase_admin</OwnerName>
+    </table>
+    <table id="318" parent="286" name="WorkoutBlockExercise">
+      <ObjectId>17851</ObjectId>
+      <StateNumber>1266</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
@@ -5244,7 +5244,6 @@ SELECT INTO</Tags>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <key id="324" parent="308" name="Exercises_pkey">
-      <NameSurrogate>1</NameSurrogate>
       <ObjectId>17826</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1166</StateNumber>
@@ -5754,7 +5753,14 @@ SELECT INTO</Tags>
       <StateNumber>1205</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <index id="394" parent="316" name="Workout_pkey">
+    <column id="394" parent="316" name="Description">
+      <DataType>text[]|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>1275</StateNumber>
+      <TypeId>1009</TypeId>
+    </column>
+    <index id="395" parent="316" name="Workout_pkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17839</ObjectId>
@@ -5763,7 +5769,7 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="395" parent="316" name="Workout_Name_key">
+    <index id="396" parent="316" name="Workout_Name_key">
       <ColNames>Name</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17835</ObjectId>
@@ -5774,93 +5780,20 @@ SELECT INTO</Tags>
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="396" parent="316" name="Workout_pkey">
+    <key id="397" parent="316" name="Workout_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17840</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1202</StateNumber>
       <UnderlyingIndexId>17839</UnderlyingIndexId>
     </key>
-    <key id="397" parent="316" name="Workout_Name_key">
+    <key id="398" parent="316" name="Workout_Name_key">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17836</ObjectId>
       <StateNumber>1201</StateNumber>
       <UnderlyingIndexId>17835</UnderlyingIndexId>
     </key>
-    <column id="398" parent="317" name="Id">
-      <DataType>bigint|0s</DataType>
-      <IdentityKind>by-default</IdentityKind>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StateNumber>1220</StateNumber>
-      <TypeId>20</TypeId>
-    </column>
-    <column id="399" parent="317" name="Created">
-      <DataType>timestamp with time zone|0s</DataType>
-      <DefaultExpression>now()</DefaultExpression>
-      <Position>2</Position>
-      <StateNumber>1221</StateNumber>
-      <TypeId>1184</TypeId>
-    </column>
-    <column id="400" parent="317" name="WorkoutBlockId">
-      <DataType>bigint|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StateNumber>1222</StateNumber>
-      <TypeId>20</TypeId>
-    </column>
-    <column id="401" parent="317" name="ExerciseId">
-      <DataType>bigint|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StateNumber>1223</StateNumber>
-      <TypeId>20</TypeId>
-    </column>
-    <column id="402" parent="317" name="Day">
-      <DataType>smallint|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>5</Position>
-      <StateNumber>1224</StateNumber>
-      <TypeId>21</TypeId>
-    </column>
-    <column id="403" parent="317" name="Sets">
-      <DataType>smallint|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>6</Position>
-      <StateNumber>1225</StateNumber>
-      <TypeId>21</TypeId>
-    </column>
-    <column id="404" parent="317" name="MinReps">
-      <DataType>smallint|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>7</Position>
-      <StateNumber>1226</StateNumber>
-      <TypeId>21</TypeId>
-    </column>
-    <column id="405" parent="317" name="MaxReps">
-      <DataType>smallint|0s</DataType>
-      <NotNull>1</NotNull>
-      <Position>8</Position>
-      <StateNumber>1227</StateNumber>
-      <TypeId>21</TypeId>
-    </column>
-    <index id="406" parent="317" name="WorkoutBlockExercises_pkey">
-      <ColNames>Id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>17859</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>1228</StateNumber>
-      <Unique>1</Unique>
-      <AccessMethodId>403</AccessMethodId>
-    </index>
-    <key id="407" parent="317" name="WorkoutBlockExercises_pkey">
-      <NameSurrogate>1</NameSurrogate>
-      <ObjectId>17860</ObjectId>
-      <Primary>1</Primary>
-      <StateNumber>1228</StateNumber>
-      <UnderlyingIndexId>17859</UnderlyingIndexId>
-    </key>
-    <column id="408" parent="318" name="Id">
+    <column id="399" parent="317" name="Id">
       <DataType>bigint|0s</DataType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
@@ -5868,35 +5801,42 @@ SELECT INTO</Tags>
       <StateNumber>1208</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="409" parent="318" name="Created">
+    <column id="400" parent="317" name="Created">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <Position>2</Position>
       <StateNumber>1209</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="410" parent="318" name="WorkoutId">
+    <column id="401" parent="317" name="WorkoutId">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>1210</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="411" parent="318" name="BlockIndex">
+    <column id="402" parent="317" name="BlockIndex">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>1211</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <column id="412" parent="318" name="Duration">
+    <column id="403" parent="317" name="Duration">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StateNumber>1216</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <index id="413" parent="318" name="WorkoutBlocks_pkey">
+    <column id="404" parent="317" name="Days">
+      <DataType>smallint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>1271</StateNumber>
+      <TypeId>21</TypeId>
+    </column>
+    <index id="405" parent="317" name="WorkoutBlocks_pkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17849</ObjectId>
@@ -5905,12 +5845,83 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="414" parent="318" name="WorkoutBlocks_pkey">
-      <NameSurrogate>1</NameSurrogate>
+    <key id="406" parent="317" name="WorkoutBlocks_pkey">
       <ObjectId>17850</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1212</StateNumber>
       <UnderlyingIndexId>17849</UnderlyingIndexId>
+    </key>
+    <column id="407" parent="318" name="Id">
+      <DataType>bigint|0s</DataType>
+      <IdentityKind>by-default</IdentityKind>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>1220</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="408" parent="318" name="Created">
+      <DataType>timestamp with time zone|0s</DataType>
+      <DefaultExpression>now()</DefaultExpression>
+      <Position>2</Position>
+      <StateNumber>1221</StateNumber>
+      <TypeId>1184</TypeId>
+    </column>
+    <column id="409" parent="318" name="WorkoutBlockId">
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>1222</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="410" parent="318" name="ExerciseId">
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>1223</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="411" parent="318" name="Day">
+      <DataType>smallint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>1224</StateNumber>
+      <TypeId>21</TypeId>
+    </column>
+    <column id="412" parent="318" name="Sets">
+      <DataType>smallint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>1225</StateNumber>
+      <TypeId>21</TypeId>
+    </column>
+    <column id="413" parent="318" name="MinReps">
+      <DataType>smallint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StateNumber>1226</StateNumber>
+      <TypeId>21</TypeId>
+    </column>
+    <column id="414" parent="318" name="MaxReps">
+      <DataType>smallint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+      <StateNumber>1227</StateNumber>
+      <TypeId>21</TypeId>
+    </column>
+    <index id="415" parent="318" name="WorkoutBlockExercises_pkey">
+      <ColNames>Id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>17859</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>1228</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="416" parent="318" name="WorkoutBlockExercises_pkey">
+      <ObjectId>17860</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>1228</StateNumber>
+      <UnderlyingIndexId>17859</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>

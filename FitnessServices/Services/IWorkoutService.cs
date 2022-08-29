@@ -7,4 +7,7 @@ public interface IWorkoutService
     Task<IEnumerable<Workout>> GetWorkouts();
     Task<Workout?> GetWorkout(long workoutId);
     Task<IEnumerable<WorkoutBlock>> GetWorkoutBlocks(long workoutId);
+    Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId);
+    Task BuyWorkout(Guid userId, long workoutId);
+    Task SetActiveWorkout(Guid userId, long workoutId);
 }

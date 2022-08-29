@@ -39,4 +39,30 @@ public class WorkoutRepository: IWorkoutRepository
 
         return workoutBlocks;
     }
+    
+    public async Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId)
+    {
+        return await _context.UserWorkout.Where(e => e.UserId == userId).ToListAsync();
+    }
+    
+    public async Task AddUserWorkout(UserWorkout workout)
+    {
+        _context.UserWorkout.Add(workout);
+
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task UpdateUserWorkout(UserWorkout workout)
+    {
+        _context.UserWorkout.Update(workout);
+
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task UpdateUserWorkouts(IEnumerable<UserWorkout> workouts)
+    {
+        _context.UserWorkout.UpdateRange(workouts);
+
+        await _context.SaveChangesAsync();
+    }
 }
