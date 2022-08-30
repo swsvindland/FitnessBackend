@@ -60,4 +60,37 @@ public class WorkoutService: IWorkoutService
 
         await _workoutRepository.UpdateUserWorkouts(enumerable);
     }
+
+    public async Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId, long workoutBlockExerciseId)
+    {
+        return await _workoutRepository.GetUserWorkoutActivities(userId, workoutBlockExerciseId);
+    }
+    
+    public async Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set)
+    {
+        return await _workoutRepository.GetUserWorkoutActivity(userId, workoutBlockExerciseId, set);
+    }
+
+    public async Task AddUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity)
+    {
+        var activity = new UserWorkoutActivity()
+        {
+            Id = userWorkoutActivity.Id,
+            Created = DateTime.UtcNow.Date,
+            UserId = userWorkoutActivity.UserId,
+            WorkoutBlockExerciseId = userWorkoutActivity.WorkoutBlockExerciseId,
+            Reps = userWorkoutActivity.Reps,
+            Set = userWorkoutActivity.Set,
+            Weight = userWorkoutActivity.Weight
+        };
+        
+        if (userWorkoutActivity.Id == null)
+        {
+            await _workoutRepository.AddUserWorkoutActivity(activity);
+        }
+        else
+        {
+            await _workoutRepository.UpdateUserWorkoutActivity(activity);
+        }
+    }
 }

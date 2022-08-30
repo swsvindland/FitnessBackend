@@ -65,4 +65,37 @@ public class WorkoutRepository: IWorkoutRepository
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId, long workoutBlockExerciseId)
+    {
+        return await _context.UserWorkoutActivity
+            .Where(e => e.UserId == userId)
+            .Where(e => e.WorkoutBlockExerciseId == workoutBlockExerciseId)
+            .Where(e => e.Created == DateTime.UtcNow.Date)
+            .ToListAsync();
+    }
+    
+    public async Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set)
+    {
+        return await _context.UserWorkoutActivity
+            .Where(e => e.UserId == userId)
+            .Where(e => e.WorkoutBlockExerciseId == workoutBlockExerciseId)
+            .Where(e => e.Created == DateTime.UtcNow.Date)
+            .Where(e => e.Set == set)
+            .FirstOrDefaultAsync();
+    }
+    
+    public async Task AddUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity)
+    {
+        _context.UserWorkoutActivity.Add(userWorkoutActivity);
+
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task UpdateUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity)
+    {
+        _context.UserWorkoutActivity.Update(userWorkoutActivity);
+
+        await _context.SaveChangesAsync();
+    }
 }

@@ -1,11 +1,15 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
+using FitnessRepository.Models;
+using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace FitnessApi.Controllers;
 
@@ -80,6 +84,47 @@ public class WorkoutController
         var workoutId = long.Parse(req.Query["workoutId"]);
         
         await _workoutService.SetActiveWorkout(userId, workoutId);
+
+        return new OkObjectResult(true);
+    }
+    
+    [FunctionName("GetUserWorkoutActivities")]
+    public async Task<IActionResult> GetUserWorkoutActivities(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    {
+        var userId = Guid.Parse(req.Query["userId"]);
+        var workoutBlockExerciseId = long.Parse(req.Query["workoutBlockExerciseId"]);
+        
+        var activity = await _workoutService.GetUserWorkoutActivities(userId, workoutBlockExerciseId);
+
+        return new OkObjectResult(activity);
+    }
+    
+    [FunctionName("GetUserWorkoutActivity")]
+    public async Task<IActionResult> GetUserWorkoutActivity(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    {
+        var userId = Guid.Parse(req.Query["userId"]);
+        var workoutBlockExerciseId = long.Parse(req.Query["workoutBlockExerciseId"]);
+        var set = int.Parse(req.Query["set"]);
+        
+        var activity = await _workoutService.GetUserWorkoutActivity(userId, workoutBlockExerciseId, set);
+
+        return new OkObjectResult(activity);
+    }
+    
+    [FunctionName("AddUserWorkoutActivity")]
+    public async Task<IActionResult> AddUserWorkoutActivity(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req, ILogger log)
+    {
+        string requestBody;
+        using (var streamReader =  new  StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+        var data = JsonConvert.DeserializeObject<UserWorkoutActivity>(requestBody);
+        
+        await _workoutService.AddUserWorkoutActivity(data);
 
         return new OkObjectResult(true);
     }

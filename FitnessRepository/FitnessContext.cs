@@ -22,4 +22,5 @@ public class FitnessContext: DbContext
     public DbSet<WorkoutBlock> WorkoutBlock { get; set; }
     public DbSet<WorkoutBlockExercise> WorkoutBlockExercise { get; set; }
     public DbSet<UserWorkout> UserWorkout { get; set; }
+    public DbSet<UserWorkoutActivity> UserWorkoutActivity { get; set; }
 }
