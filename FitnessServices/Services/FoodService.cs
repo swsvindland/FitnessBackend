@@ -21,7 +21,7 @@ public class FoodService: IFoodService
         {
             var calories = userWeight.Weight * 13;
             var protein = userWeight.Weight * 0.8;
-            var fat = userWeight.Weight * 0.3;
+            var fat = userWeight.Weight * 0.35;
             var carbs = (calories - protein * 4 - fat * 9) / 4;
             var fiber = calories * 0.015;
             var alcohol = calories * 0.10 / 7;

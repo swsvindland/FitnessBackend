@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="44c9f887-7366-470e-aa69-48cbd8c88cb7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/FitnessRepository/Models/UserWorkout.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0e9a6b03-4f30-4ca3-a420-e9a891039cd2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0e9a6b03-4f30-4ca3-a420-e9a891039cd2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0e9a6b03-4f30-4ca3-a420-e9a891039cd2/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0e9a6b03-4f30-4ca3-a420-e9a891039cd2/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessApi/Controllers/WorkoutController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessApi/Controllers/WorkoutController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessRepository/FitnessContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessRepository/FitnessContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessRepository/Repositories/IWorkoutRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessRepository/Repositories/IWorkoutRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessRepository/Repositories/WorkoutRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessRepository/Repositories/WorkoutRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessServices/Services/IWorkoutService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessServices/Services/IWorkoutService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessServices/Services/WorkoutService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessServices/Services/WorkoutService.cs" afterDir="false" />
-    </list>
+    <list default="true" id="44c9f887-7366-470e-aa69-48cbd8c88cb7" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
