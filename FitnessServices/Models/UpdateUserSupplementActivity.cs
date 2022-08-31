@@ -1,7 +1,14 @@
+using System.Collections.Specialized;
+using System.Text.Json.Serialization;
+using FitnessRepository.Models;
+
 namespace FitnessServices.Models;
 
 public class UpdateUserSupplementActivity
 {
+    public string Date { get; set; }
     public Guid UserId { get; set; }
     public long UserSupplementId { get; set; }
+    [JsonConverter(typeof(StringEnumerator))]  
+    public SupplementTimes Time { get; set; }
 }

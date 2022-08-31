@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using FitnessRepository.Models;
 using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -63,8 +64,10 @@ namespace FitnessApi.Controllers
         {
             var userId = Guid.Parse(req.Query["userId"]);
             var userSupplementId = long.Parse(req.Query["userSupplementId"]);
+            var date = req.Query["date"];
+            var time = Enum.Parse<SupplementTimes>(req.Query["time"]);
             
-            var userSupplements = await _supplementService.GetUserSupplementActivity(userId, userSupplementId);
+            var userSupplements = await _supplementService.GetUserSupplementActivity(userId, userSupplementId, date, time);
 
             return new OkObjectResult(userSupplements);
         }

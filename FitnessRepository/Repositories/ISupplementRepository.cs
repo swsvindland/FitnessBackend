@@ -12,7 +12,6 @@ public interface ISupplementRepository
     Task AddUserSupplementActivity(UserSupplementActivity userSupplementActivity);
     Task RemoveUserSupplementActivity(UserSupplementActivity userSupplementActivity);
     Task<IEnumerable<UserSupplementActivity>> GetUserSupplementActivityByUserId(Guid userId);
-
-    Task<UserSupplementActivity?> GetUserSupplementActivityByUserIdAndUserSupplementId(Guid userId,
-        long userSupplementId);
+    Task<UserSupplementActivity?> GetUserSupplementActivity(Guid userId, long userSupplementId, DateTime date,
+        SupplementTimes supplementTime);
 }

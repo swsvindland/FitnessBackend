@@ -67,12 +67,13 @@ public class SupplementRepository : ISupplementRepository
             .ToListAsync();
     }
     
-    public async Task<UserSupplementActivity?> GetUserSupplementActivityByUserIdAndUserSupplementId(Guid userId, long userSupplementId)
+    public async Task<UserSupplementActivity?> GetUserSupplementActivity(Guid userId, long userSupplementId, DateTime date, SupplementTimes supplementTime)
     {
         return await _context.UserSupplementActivity
             .Where(e => e.UserId == userId)
             .Where(e => e.UserSupplementId == userSupplementId)
-            .Where(e => e.Updated == DateTime.UtcNow.Date)
+            .Where(e => e.Updated == date)
+            .Where(e => e.Time == supplementTime)
             .Include(e => e.UserSupplement)
             .FirstOrDefaultAsync();
     }
