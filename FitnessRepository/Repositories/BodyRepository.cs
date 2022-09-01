@@ -14,7 +14,7 @@ public class BodyRepository: IBodyRepository
 
     public async Task<IEnumerable<UserWeight>> GetAllUserWeights(Guid userId)
     {
-        return await _context.UserWeight.Where(e => e.UserId == userId).ToListAsync();
+        return await _context.UserWeight.Where(e => e.UserId == userId).OrderBy(e => e.Created).ToListAsync();
     }
     
     public async Task AddUserWeight(UserWeight userWeight)
@@ -35,7 +35,7 @@ public class BodyRepository: IBodyRepository
     
     public async Task<IEnumerable<UserBody>> GetAllUserBodies(Guid userId)
     {
-        return await _context.UserBody.Where(e => e.UserId == userId).ToListAsync();
+        return await _context.UserBody.Where(e => e.UserId == userId).OrderBy(e => e.Created).ToListAsync();
     }
     
     public async Task AddUserBody(UserBody userBody)
@@ -56,7 +56,7 @@ public class BodyRepository: IBodyRepository
     
     public async Task<IEnumerable<UserBloodPressure>> GetAllUserBloodPressures(Guid userId)
     {
-        return await _context.UserBloodPressure.Where(e => e.UserId == userId).ToListAsync();
+        return await _context.UserBloodPressure.Where(e => e.UserId == userId).OrderBy(e => e.Created).ToListAsync();
     }
     
     public async Task AddUserBloodPressure(UserBloodPressure userBloodPressure)
