@@ -30,6 +30,13 @@ public class SupplementRepository : ISupplementRepository
 
         await _context.SaveChangesAsync();
     }
+    
+    public async Task RemoveUserSupplement(UserSupplement userSupplement)
+    {
+        _context.UserSupplements.Remove(userSupplement);
+
+        await _context.SaveChangesAsync();
+    }
 
     public async Task<UserSupplement?> GetUserSupplement(long id)
     {

@@ -37,6 +37,10 @@ public class SupplementService: ISupplementService
         {
             await _supplementRepository.AddUserSupplement(entity);
         }
+        else if (entity.Times.Any() == false)
+        {
+            await _supplementRepository.RemoveUserSupplement(entity);
+        }
         else
         {
             await _supplementRepository.UpdateUserSupplement(entity);
