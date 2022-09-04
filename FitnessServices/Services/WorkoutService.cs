@@ -7,6 +7,14 @@ namespace FitnessServices.Services;
 public class WorkoutService: IWorkoutService
 {
     private readonly IWorkoutRepository _workoutRepository;
+
+    private List<double> REPS_TO_PERCENT = new List<double>
+    {
+        1.0, 0.94, .91, .88, .86, .83, .81, .79, .77, .75, .73, .71, .69, .67, .65, .63, .61, .59, .57, .55, .53, .51,
+        .49, .47, .45, .43, .41, .39, .37, .35, .33, .31, .29, .27, .25, .23, .21, .19, .17, .15, .13, .11, .09, .07,
+        .05, .03, .01
+
+    };
     
     public WorkoutService(IWorkoutRepository workoutRepository)
     {
@@ -86,7 +94,7 @@ public class WorkoutService: IWorkoutService
         {
             var userExerciseOneRepMax = await GetUserOneRepMaxesByExerciseId(userId, workout.ExerciseId);
 
-            var recommendedWeight = (int) Math.Floor(userExerciseOneRepMax?.Estimate * ( 1 + ( workout.MaxReps / 30)) * 0.8 ?? 0);
+            var recommendedWeight = (int) Math.Floor(userExerciseOneRepMax?.Estimate * REPS_TO_PERCENT[workout.MaxReps + 1] ?? 0);
             var recommendedWeightByFive = (int) Math.Round(recommendedWeight / 5.0) * 5;
             
             return new UserWorkoutActivityModel()
@@ -95,7 +103,7 @@ public class WorkoutService: IWorkoutService
                 WorkoutBlockExerciseId = workoutBlockExerciseId,
                 Set = set,
                 Reps = workout.MaxReps,
-                Weight = recommendedWeightByFive,
+                Weight = recommendedWeightByFive + 10, // increase the estimate by 10 for progressive overload
                 Created = DateTime.UtcNow,
                 Saved = false
             };
@@ -117,6 +125,22 @@ public class WorkoutService: IWorkoutService
 
     public async Task AddUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity)
     {
+        var exerciseBlockActivity = await _workoutRepository.GetWorkoutBlock(userWorkoutActivity.WorkoutBlockExerciseId);
+        var estimatedOneRepMax = (int)Math.Floor(userWorkoutActivity.Weight * (1.0 + (userWorkoutActivity.Reps / 30.0)));
+
+        if (exerciseBlockActivity == null)
+        {
+            return;
+        }
+        
+        var estimatedOneRepMaxModel = new UserOneRepMaxEstimates()
+        {
+            UserId = userWorkoutActivity.UserId,
+            ExerciseId = exerciseBlockActivity.ExerciseId,
+            Estimate = estimatedOneRepMax,
+            Created = DateTime.UtcNow
+        };
+        
         var activity = new UserWorkoutActivity()
         {
             Id = userWorkoutActivity.Id,
@@ -136,6 +160,8 @@ public class WorkoutService: IWorkoutService
         {
             await _workoutRepository.UpdateUserWorkoutActivity(activity);
         }
+
+        await _workoutRepository.AddUserOneRepMax(estimatedOneRepMaxModel);
     }
     
     public async Task<IEnumerable<UserOneRepMaxEstimates>> GetUserOneRepMaxes(Guid userId)
