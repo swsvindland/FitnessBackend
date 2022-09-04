@@ -23,4 +23,5 @@ public class FitnessContext: DbContext
     public DbSet<WorkoutBlockExercise> WorkoutBlockExercise { get; set; }
     public DbSet<UserWorkout> UserWorkout { get; set; }
     public DbSet<UserWorkoutActivity> UserWorkoutActivity { get; set; }
+    public DbSet<UserOneRepMaxEstimates> UserOneRepMaxEstimates { get; set; }
 }

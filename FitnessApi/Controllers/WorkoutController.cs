@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using FitnessRepository.Models;
-using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +19,15 @@ public class WorkoutController
     public WorkoutController(IWorkoutService workoutService)
     {
         _workoutService = workoutService;
+    }
+    
+    [FunctionName("GetExercises")]
+    public async Task<IActionResult> GetExercises(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    {
+        var exercises = await _workoutService.GetExercises();
+
+        return new OkObjectResult(exercises);
     }
     
     [FunctionName("GetWorkouts")]

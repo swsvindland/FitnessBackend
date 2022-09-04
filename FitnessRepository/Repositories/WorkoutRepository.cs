@@ -11,6 +11,11 @@ public class WorkoutRepository: IWorkoutRepository
     {
         _context = context;
     }
+    
+    public async Task<IEnumerable<Exercise>> GetExercises()
+    {
+        return await _context.Exercise.ToListAsync();
+    }
 
     public async Task<IEnumerable<Workout>> GetWorkouts()
     {
@@ -38,6 +43,16 @@ public class WorkoutRepository: IWorkoutRepository
         }
 
         return workoutBlocks;
+    }
+    
+    public async Task<WorkoutBlockExercise?> GetWorkoutBlock(long workoutBlockId)
+    {
+        var workoutBlockExercise = await _context.WorkoutBlockExercise
+            .Where(e => e.Id == workoutBlockId)
+            .Include(e => e.Exercise)
+            .FirstOrDefaultAsync();
+        
+        return workoutBlockExercise;
     }
     
     public async Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId)
@@ -95,6 +110,24 @@ public class WorkoutRepository: IWorkoutRepository
     public async Task UpdateUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity)
     {
         _context.UserWorkoutActivity.Update(userWorkoutActivity);
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<UserOneRepMaxEstimates>> GetUserOneRepMaxes(Guid userId)
+    {
+        return await _context.UserOneRepMaxEstimates.Where(e => e.UserId == userId).ToListAsync();
+    }
+    
+    public async Task<UserOneRepMaxEstimates?> GetUserOneRepMaxesByExerciseId(Guid userId, long exerciseId)
+    {
+        return await _context.UserOneRepMaxEstimates.Where(e => e.UserId == userId)
+            .Where(e => e.ExerciseId == exerciseId).FirstOrDefaultAsync();
+    }
+
+    public async Task AddUserOneRepMax(UserOneRepMaxEstimates userOneRepMaxEstimates)
+    {
+        _context.UserOneRepMaxEstimates.Add(userOneRepMaxEstimates);
 
         await _context.SaveChangesAsync();
     }

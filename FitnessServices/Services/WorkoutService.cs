@@ -1,5 +1,6 @@
 using FitnessRepository.Models;
 using FitnessRepository.Repositories;
+using FitnessServices.Models;
 
 namespace FitnessServices.Services;
 
@@ -12,6 +13,11 @@ public class WorkoutService: IWorkoutService
         _workoutRepository = workoutRepository;
     }
 
+    public async Task<IEnumerable<Exercise>> GetExercises()
+    {
+        return await _workoutRepository.GetExercises();
+    }
+    
     public async Task<IEnumerable<Workout>> GetWorkouts()
     {
         return await _workoutRepository.GetWorkouts();
@@ -66,9 +72,47 @@ public class WorkoutService: IWorkoutService
         return await _workoutRepository.GetUserWorkoutActivities(userId, workoutBlockExerciseId);
     }
     
-    public async Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set)
+    public async Task<UserWorkoutActivityModel?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set)
     {
-        return await _workoutRepository.GetUserWorkoutActivity(userId, workoutBlockExerciseId, set);
+        var workoutActivity = await _workoutRepository.GetUserWorkoutActivity(userId, workoutBlockExerciseId, set);
+        var workout = await _workoutRepository.GetWorkoutBlock(workoutBlockExerciseId);
+
+        if (workout == null)
+        {
+            return null;
+        }
+        
+        if (workoutActivity == null)
+        {
+            var userExerciseOneRepMax = await GetUserOneRepMaxesByExerciseId(userId, workout.ExerciseId);
+
+            var recommendedWeight = (int) Math.Floor(userExerciseOneRepMax?.Estimate * ( 1 + ( workout.MaxReps / 30)) * 0.8 ?? 0);
+            var recommendedWeightByFive = (int) Math.Round(recommendedWeight / 5.0) * 5;
+            
+            return new UserWorkoutActivityModel()
+            {
+                UserId = userId,
+                WorkoutBlockExerciseId = workoutBlockExerciseId,
+                Set = set,
+                Reps = workout.MaxReps,
+                Weight = recommendedWeightByFive,
+                Created = DateTime.UtcNow,
+                Saved = false
+            };
+        }
+        
+        var newWorkoutActivity = new UserWorkoutActivityModel()
+        {
+            UserId = workoutActivity.UserId,
+            WorkoutBlockExerciseId = workoutActivity.WorkoutBlockExerciseId,
+            Set = workoutActivity.Set,
+            Reps = workoutActivity.Reps,
+            Weight = workoutActivity.Weight,
+            Created = DateTime.UtcNow,
+            Saved = true
+        };
+        
+        return newWorkoutActivity;
     }
 
     public async Task AddUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity)
@@ -92,5 +136,15 @@ public class WorkoutService: IWorkoutService
         {
             await _workoutRepository.UpdateUserWorkoutActivity(activity);
         }
+    }
+    
+    public async Task<IEnumerable<UserOneRepMaxEstimates>> GetUserOneRepMaxes(Guid userId)
+    {
+        return await _workoutRepository.GetUserOneRepMaxes(userId);
+    }
+
+    public async Task<UserOneRepMaxEstimates?> GetUserOneRepMaxesByExerciseId(Guid userId, long id)
+    {
+        return await _workoutRepository.GetUserOneRepMaxesByExerciseId(userId, id);
     }
 }

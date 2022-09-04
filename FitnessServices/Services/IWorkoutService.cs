@@ -1,9 +1,11 @@
 using FitnessRepository.Models;
+using FitnessServices.Models;
 
 namespace FitnessServices.Services;
 
 public interface IWorkoutService
 {
+    Task<IEnumerable<Exercise>> GetExercises();
     Task<IEnumerable<Workout>> GetWorkouts();
     Task<Workout?> GetWorkout(long workoutId);
     Task<IEnumerable<WorkoutBlock>> GetWorkoutBlocks(long workoutId);
@@ -11,6 +13,7 @@ public interface IWorkoutService
     Task BuyWorkout(Guid userId, long workoutId);
     Task SetActiveWorkout(Guid userId, long workoutId);
     Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId, long workoutBlockExerciseId);
-    Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set);
+    Task<UserWorkoutActivityModel?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set);
     Task AddUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity);
+    Task<IEnumerable<UserOneRepMaxEstimates>> GetUserOneRepMaxes(Guid userId);
 }
