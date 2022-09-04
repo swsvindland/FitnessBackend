@@ -6,6 +6,8 @@
   - Bench Press
   - DB Incline Bench
   - Dips
+  - Incline Machine Press
+  - Decline Machine Press
   - Pec Deck
 
 
@@ -16,6 +18,8 @@
    - Lat Pulldown
    - CG Pulldown
    - T-bar Row
+   - Seated Cable Row
+   - Pullups
 
 ## Wednesday
 ### legs
@@ -24,6 +28,7 @@
    - RDL
    - Leg Extention
    - Leg Curl
+   - Calf Raise
 
 ## Thursday
 ### shoulders
@@ -32,11 +37,15 @@
   - Upright Row
   - Face pull
   - Lateral raises
+  - Rear Delt fly
+  - Shrugs
 
 ## Friday
 ### arms
   
   - CG Bench
   - Reverse Grip Row
-  - Tricep Pushdown
+  - French Press
   - DB Curl
+  - Tricep Pushdown
+  - Hammer Curl
