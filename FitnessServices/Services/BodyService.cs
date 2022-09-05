@@ -56,4 +56,14 @@ public class BodyService: IBodyService
     {
         await _bodyRepository.DeleteUserBloodPressure(userBloodPressure);
     }
+
+    public async Task AddUserHeight(UserHeight userHeight)
+    {
+        await _bodyRepository.AddUserHeight(userHeight);
+    }
+    
+    public async Task<IEnumerable<UserHeight>> GetAllUserHeights(Guid userId)
+    {
+        return await _bodyRepository.GetUserHeights(userId);
+    }
 }

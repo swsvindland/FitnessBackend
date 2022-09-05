@@ -5,7 +5,7 @@
 
 - Squat
 - RDL
-- Leg Press
+- Hack Squat
 - Leg Curl
 - Hip Abduction
 - Hip Adduction
@@ -24,12 +24,12 @@
 ## Wednesday
 ### legs
 
-- Smith Machine Squat
+- Narrow Stance Smith Machine Squat
 - Deadlift
 - Leg Extention
 - Leg Curl
-- Hip Abduction
-- Hip Adduction
+- Calf Raise Out
+- Calf Raise In
 
 ## Thursday
 ### upper
@@ -45,7 +45,7 @@
 ### legs
 
 - Hip Thrust
-- Leg Press
+- DB RDL
 - Goblet Squat
 - Leg Curl
 - Hip Abduction

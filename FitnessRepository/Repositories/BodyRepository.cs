@@ -74,4 +74,17 @@ public class BodyRepository: IBodyRepository
 
         await _context.SaveChangesAsync();
     }
+
+    public async Task AddUserHeight(UserHeight userHeight)
+    {
+        _context.UserHeight.Add(userHeight);
+
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task<IEnumerable<UserHeight>> GetUserHeights(Guid userId)
+    {
+        return await _context.UserHeight.Where(e => e.UserId == userId).OrderBy(e => e.Created).ToListAsync();
+    }
+        
 }

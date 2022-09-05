@@ -11,7 +11,7 @@
 12974||-9223372036854775808|T|G
 12974||10|T|G
 12974||16779|T|G</Grants>
-      <IntrospectionStateNumber>1290</IntrospectionStateNumber>
+      <IntrospectionStateNumber>1492</IntrospectionStateNumber>
       <ServerVersion>14.1</ServerVersion>
       <StartupTime>1660835454</StartupTime>
       <TimeZones>true ACDT
@@ -237,7 +237,7 @@ false America/Rio_Branco
 false America/Rosario
 true America/Santa_Isabel
 false America/Santarem
-false America/Santiago
+true America/Santiago
 false America/Santo_Domingo
 false America/Sao_Paulo
 true America/Scoresbysund
@@ -435,7 +435,7 @@ false CHAST
 false CHUT
 false CKT
 true CLST
-false CLT
+true CLT
 false COT
 false CST
 true CST6CDT
@@ -448,13 +448,13 @@ true Canada/Newfoundland
 true Canada/Pacific
 false Canada/Saskatchewan
 false Canada/Yukon
-false Chile/Continental
-false Chile/EasterIsland
+true Chile/Continental
+true Chile/EasterIsland
 true Cuba
 false DAVT
 false DDUT
-false EASST
-false EAST
+true EASST
+true EAST
 false EAT
 true EDT
 true EEST
@@ -690,7 +690,7 @@ false Pacific/Auckland
 false Pacific/Bougainville
 false Pacific/Chatham
 false Pacific/Chuuk
-false Pacific/Easter
+true Pacific/Easter
 false Pacific/Efate
 false Pacific/Enderbury
 false Pacific/Fakaofo
@@ -862,7 +862,7 @@ false Zulu
 17276||16662|U|G
 17276||16663|U|G
 17276||16664|U|G</Grants>
-      <IntrospectionStateNumber>1290</IntrospectionStateNumber>
+      <IntrospectionStateNumber>1492</IntrospectionStateNumber>
       <ObjectId>12974</ObjectId>
       <Relations>sequence|table|16557|16558|6
 sequence|table|16684|16685|2
@@ -878,83 +878,23 @@ sequence|table|17818|17815|1
 sequence|table|17830|17827|1
 sequence|table|17844|17841|1
 sequence|table|17854|17851|1
+sequence|table|17864|17861|1
+sequence|table|17874|17871|1
+sequence|table|17895|17892|1
 </Relations>
       <OwnerName>postgres</OwnerName>
     </database>
-    <role id="3" parent="1" name="pg_database_owner">
-      <ObjectId>6171</ObjectId>
-    </role>
-    <role id="4" parent="1" name="pg_read_all_data">
-      <ObjectId>6181</ObjectId>
-    </role>
-    <role id="5" parent="1" name="pg_write_all_data">
-      <ObjectId>6182</ObjectId>
-    </role>
-    <role id="6" parent="1" name="pg_monitor">
-      <ObjectId>3373</ObjectId>
-      <RoleGrants>3374
-3375
-3377</RoleGrants>
-    </role>
-    <role id="7" parent="1" name="pg_read_all_settings">
-      <ObjectId>3374</ObjectId>
-    </role>
-    <role id="8" parent="1" name="pg_read_all_stats">
-      <ObjectId>3375</ObjectId>
-    </role>
-    <role id="9" parent="1" name="pg_stat_scan_tables">
-      <ObjectId>3377</ObjectId>
-    </role>
-    <role id="10" parent="1" name="pg_read_server_files">
-      <ObjectId>4569</ObjectId>
-    </role>
-    <role id="11" parent="1" name="pg_write_server_files">
-      <ObjectId>4570</ObjectId>
-    </role>
-    <role id="12" parent="1" name="pg_execute_server_program">
-      <ObjectId>4571</ObjectId>
-    </role>
-    <role id="13" parent="1" name="pg_signal_backend">
-      <ObjectId>4200</ObjectId>
-    </role>
-    <role id="14" parent="1" name="pgsodium_keyiduser">
-      <ObjectId>16500</ObjectId>
-    </role>
-    <role id="15" parent="1" name="pgsodium_keyholder">
-      <ObjectId>16501</ObjectId>
-      <RoleGrants>16500</RoleGrants>
-    </role>
-    <role id="16" parent="1" name="pgsodium_keymaker">
-      <ObjectId>16502</ObjectId>
-      <RoleGrants>16500
-16501</RoleGrants>
-    </role>
-    <role id="17" parent="1" name="anon">
+    <role id="3" parent="1" name="anon">
       <Config>statement_timeout=3s</Config>
       <Inherit>0</Inherit>
       <ObjectId>16662</ObjectId>
     </role>
-    <role id="18" parent="1" name="authenticated">
+    <role id="4" parent="1" name="authenticated">
       <Config>statement_timeout=8s</Config>
       <Inherit>0</Inherit>
       <ObjectId>16663</ObjectId>
     </role>
-    <role id="19" parent="1" name="service_role">
-      <BypassRls>1</BypassRls>
-      <Inherit>0</Inherit>
-      <ObjectId>16664</ObjectId>
-    </role>
-    <role id="20" parent="1" name="supabase_admin">
-      <BypassRls>1</BypassRls>
-      <CanLogin>1</CanLogin>
-      <Config>search_path=&quot;$user&quot;, public, auth, extensions</Config>
-      <CreateDb>1</CreateDb>
-      <CreateRole>1</CreateRole>
-      <ObjectId>16606</ObjectId>
-      <Replication>1</Replication>
-      <SuperRole>1</SuperRole>
-    </role>
-    <role id="21" parent="1" name="authenticator">
+    <role id="5" parent="1" name="authenticator">
       <CanLogin>1</CanLogin>
       <Config>session_preload_libraries=supautils, safeupdate</Config>
       <Inherit>0</Inherit>
@@ -964,32 +904,65 @@ sequence|table|17854|17851|1
 16663
 16664</RoleGrants>
     </role>
-    <role id="22" parent="1" name="pgbouncer">
-      <CanLogin>1</CanLogin>
-      <ObjectId>16384</ObjectId>
-    </role>
-    <role id="23" parent="1" name="supabase_auth_admin">
-      <CanLogin>1</CanLogin>
-      <Config>search_path=auth
-idle_in_transaction_session_timeout=60000</Config>
-      <CreateRole>1</CreateRole>
-      <Inherit>0</Inherit>
-      <ObjectId>16719</ObjectId>
-    </role>
-    <role id="24" parent="1" name="supabase_storage_admin">
-      <CanLogin>1</CanLogin>
-      <Config>search_path=storage</Config>
-      <CreateRole>1</CreateRole>
-      <Inherit>0</Inherit>
-      <ObjectId>16774</ObjectId>
-    </role>
-    <role id="25" parent="1" name="dashboard_user">
+    <role id="6" parent="1" name="dashboard_user">
       <CreateDb>1</CreateDb>
       <CreateRole>1</CreateRole>
       <ObjectId>16779</ObjectId>
       <Replication>1</Replication>
     </role>
-    <role id="26" parent="1" name="postgres">
+    <role id="7" parent="1" name="pg_database_owner">
+      <ObjectId>6171</ObjectId>
+    </role>
+    <role id="8" parent="1" name="pg_execute_server_program">
+      <ObjectId>4571</ObjectId>
+    </role>
+    <role id="9" parent="1" name="pg_monitor">
+      <ObjectId>3373</ObjectId>
+      <RoleGrants>3374
+3375
+3377</RoleGrants>
+    </role>
+    <role id="10" parent="1" name="pg_read_all_data">
+      <ObjectId>6181</ObjectId>
+    </role>
+    <role id="11" parent="1" name="pg_read_all_settings">
+      <ObjectId>3374</ObjectId>
+    </role>
+    <role id="12" parent="1" name="pg_read_all_stats">
+      <ObjectId>3375</ObjectId>
+    </role>
+    <role id="13" parent="1" name="pg_read_server_files">
+      <ObjectId>4569</ObjectId>
+    </role>
+    <role id="14" parent="1" name="pg_signal_backend">
+      <ObjectId>4200</ObjectId>
+    </role>
+    <role id="15" parent="1" name="pg_stat_scan_tables">
+      <ObjectId>3377</ObjectId>
+    </role>
+    <role id="16" parent="1" name="pg_write_all_data">
+      <ObjectId>6182</ObjectId>
+    </role>
+    <role id="17" parent="1" name="pg_write_server_files">
+      <ObjectId>4570</ObjectId>
+    </role>
+    <role id="18" parent="1" name="pgbouncer">
+      <CanLogin>1</CanLogin>
+      <ObjectId>16384</ObjectId>
+    </role>
+    <role id="19" parent="1" name="pgsodium_keyholder">
+      <ObjectId>16501</ObjectId>
+      <RoleGrants>16500</RoleGrants>
+    </role>
+    <role id="20" parent="1" name="pgsodium_keyiduser">
+      <ObjectId>16500</ObjectId>
+    </role>
+    <role id="21" parent="1" name="pgsodium_keymaker">
+      <ObjectId>16502</ObjectId>
+      <RoleGrants>16500
+16501</RoleGrants>
+    </role>
+    <role id="22" parent="1" name="postgres">
       <BypassRls>1</BypassRls>
       <CanLogin>1</CanLogin>
       <Config>search_path=&quot;\\$user&quot;, public, extensions</Config>
@@ -1002,6 +975,36 @@ idle_in_transaction_session_timeout=60000</Config>
 16502!
 16719
 16774</RoleGrants>
+    </role>
+    <role id="23" parent="1" name="service_role">
+      <BypassRls>1</BypassRls>
+      <Inherit>0</Inherit>
+      <ObjectId>16664</ObjectId>
+    </role>
+    <role id="24" parent="1" name="supabase_admin">
+      <BypassRls>1</BypassRls>
+      <CanLogin>1</CanLogin>
+      <Config>search_path=&quot;$user&quot;, public, auth, extensions</Config>
+      <CreateDb>1</CreateDb>
+      <CreateRole>1</CreateRole>
+      <ObjectId>16606</ObjectId>
+      <Replication>1</Replication>
+      <SuperRole>1</SuperRole>
+    </role>
+    <role id="25" parent="1" name="supabase_auth_admin">
+      <CanLogin>1</CanLogin>
+      <Config>search_path=auth
+idle_in_transaction_session_timeout=60000</Config>
+      <CreateRole>1</CreateRole>
+      <Inherit>0</Inherit>
+      <ObjectId>16719</ObjectId>
+    </role>
+    <role id="26" parent="1" name="supabase_storage_admin">
+      <CanLogin>1</CanLogin>
+      <Config>search_path=storage</Config>
+      <CreateRole>1</CreateRole>
+      <Inherit>0</Inherit>
+      <ObjectId>16774</ObjectId>
     </role>
     <tablespace id="27" parent="1" name="pg_default">
       <ObjectId>1663</ObjectId>
@@ -4992,8 +4995,158 @@ idle_in_transaction_session_timeout=60000</Config>
 17854||16606|U|G
 17854||16662|U|G
 17854||16663|U|G
-17854||16664|U|G</Grants>
-      <IntrospectionStateNumber>1290</IntrospectionStateNumber>
+17854||16664|U|G
+17861||10|d|G
+17861||16606|d|G
+17861||16662|d|G
+17861||16663|d|G
+17861||16664|d|G
+17861||10|a|G
+17861||16606|a|G
+17861||16662|a|G
+17861||16663|a|G
+17861||16664|a|G
+17861||10|x|G
+17861||16606|x|G
+17861||16662|x|G
+17861||16663|x|G
+17861||16664|x|G
+17861||10|r|G
+17861||16606|r|G
+17861||16662|r|G
+17861||16663|r|G
+17861||16664|r|G
+17861||10|t|G
+17861||16606|t|G
+17861||16662|t|G
+17861||16663|t|G
+17861||16664|t|G
+17861||10|D|G
+17861||16606|D|G
+17861||16662|D|G
+17861||16663|D|G
+17861||16664|D|G
+17861||10|w|G
+17861||16606|w|G
+17861||16662|w|G
+17861||16663|w|G
+17861||16664|w|G
+17864||10|r|G
+17864||16606|r|G
+17864||16662|r|G
+17864||16663|r|G
+17864||16664|r|G
+17864||10|w|G
+17864||16606|w|G
+17864||16662|w|G
+17864||16663|w|G
+17864||16664|w|G
+17864||10|U|G
+17864||16606|U|G
+17864||16662|U|G
+17864||16663|U|G
+17864||16664|U|G
+17871||10|d|G
+17871||16606|d|G
+17871||16662|d|G
+17871||16663|d|G
+17871||16664|d|G
+17871||10|a|G
+17871||16606|a|G
+17871||16662|a|G
+17871||16663|a|G
+17871||16664|a|G
+17871||10|x|G
+17871||16606|x|G
+17871||16662|x|G
+17871||16663|x|G
+17871||16664|x|G
+17871||10|r|G
+17871||16606|r|G
+17871||16662|r|G
+17871||16663|r|G
+17871||16664|r|G
+17871||10|t|G
+17871||16606|t|G
+17871||16662|t|G
+17871||16663|t|G
+17871||16664|t|G
+17871||10|D|G
+17871||16606|D|G
+17871||16662|D|G
+17871||16663|D|G
+17871||16664|D|G
+17871||10|w|G
+17871||16606|w|G
+17871||16662|w|G
+17871||16663|w|G
+17871||16664|w|G
+17874||10|r|G
+17874||16606|r|G
+17874||16662|r|G
+17874||16663|r|G
+17874||16664|r|G
+17874||10|w|G
+17874||16606|w|G
+17874||16662|w|G
+17874||16663|w|G
+17874||16664|w|G
+17874||10|U|G
+17874||16606|U|G
+17874||16662|U|G
+17874||16663|U|G
+17874||16664|U|G
+17892||10|d|G
+17892||16606|d|G
+17892||16662|d|G
+17892||16663|d|G
+17892||16664|d|G
+17892||10|a|G
+17892||16606|a|G
+17892||16662|a|G
+17892||16663|a|G
+17892||16664|a|G
+17892||10|x|G
+17892||16606|x|G
+17892||16662|x|G
+17892||16663|x|G
+17892||16664|x|G
+17892||10|r|G
+17892||16606|r|G
+17892||16662|r|G
+17892||16663|r|G
+17892||16664|r|G
+17892||10|t|G
+17892||16606|t|G
+17892||16662|t|G
+17892||16663|t|G
+17892||16664|t|G
+17892||10|D|G
+17892||16606|D|G
+17892||16662|D|G
+17892||16663|D|G
+17892||16664|D|G
+17892||10|w|G
+17892||16606|w|G
+17892||16662|w|G
+17892||16663|w|G
+17892||16664|w|G
+17895||10|r|G
+17895||16606|r|G
+17895||16662|r|G
+17895||16663|r|G
+17895||16664|r|G
+17895||10|w|G
+17895||16606|w|G
+17895||16662|w|G
+17895||16663|w|G
+17895||16664|w|G
+17895||10|U|G
+17895||16606|U|G
+17895||16662|U|G
+17895||16663|U|G
+17895||16664|U|G</Grants>
+      <IntrospectionStateNumber>1492</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>760</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -5096,115 +5249,151 @@ SELECT INTO</Tags>
       <StateNumber>1124</StateNumber>
       <OwnerName>supabase_admin</OwnerName>
     </sequence>
-    <sequence id="301" parent="286" name="UserSupplementActivity_Id_seq">
+    <sequence id="301" parent="286" name="UserOneRepMaxEstimates_Id_seq">
+      <DataType>bigint|0s</DataType>
+      <ObjectId>17895</ObjectId>
+      <StateNumber>1454</StateNumber>
+      <OwnerName>supabase_admin</OwnerName>
+    </sequence>
+    <sequence id="302" parent="286" name="UserSupplementActivity_Id_seq">
       <DataType>bigint|0s</DataType>
       <ObjectId>17762</ObjectId>
       <StateNumber>1020</StateNumber>
       <OwnerName>supabase_admin</OwnerName>
     </sequence>
-    <sequence id="302" parent="286" name="UserSupplements_id_seq">
+    <sequence id="303" parent="286" name="UserSupplements_id_seq">
       <DataType>bigint|0s</DataType>
       <ObjectId>17749</ObjectId>
       <StateNumber>1001</StateNumber>
       <OwnerName>supabase_admin</OwnerName>
     </sequence>
-    <sequence id="303" parent="286" name="UserWeight_Id_seq">
+    <sequence id="304" parent="286" name="UserWeight_Id_seq">
       <DataType>bigint|0s</DataType>
       <ObjectId>17787</ObjectId>
       <StateNumber>1108</StateNumber>
       <OwnerName>supabase_admin</OwnerName>
     </sequence>
-    <sequence id="304" parent="286" name="WorkoutBlockExercises_Id_seq">
+    <sequence id="305" parent="286" name="UserWorkoutActivity_Id_seq">
+      <DataType>bigint|0s</DataType>
+      <ObjectId>17874</ObjectId>
+      <StateNumber>1319</StateNumber>
+      <OwnerName>supabase_admin</OwnerName>
+    </sequence>
+    <sequence id="306" parent="286" name="UserWorkout_Id_seq">
+      <DataType>bigint|0s</DataType>
+      <ObjectId>17864</ObjectId>
+      <StateNumber>1296</StateNumber>
+      <OwnerName>supabase_admin</OwnerName>
+    </sequence>
+    <sequence id="307" parent="286" name="WorkoutBlockExercises_Id_seq">
       <DataType>bigint|0s</DataType>
       <ObjectId>17854</ObjectId>
       <StateNumber>1220</StateNumber>
       <OwnerName>supabase_admin</OwnerName>
     </sequence>
-    <sequence id="305" parent="286" name="WorkoutBlocks_Id_seq">
+    <sequence id="308" parent="286" name="WorkoutBlocks_Id_seq">
       <DataType>bigint|0s</DataType>
       <ObjectId>17844</ObjectId>
       <StateNumber>1208</StateNumber>
       <OwnerName>supabase_admin</OwnerName>
     </sequence>
-    <sequence id="306" parent="286" name="Workout_Id_seq">
+    <sequence id="309" parent="286" name="Workout_Id_seq">
       <DataType>bigint|0s</DataType>
       <ObjectId>17830</ObjectId>
       <StateNumber>1198</StateNumber>
       <OwnerName>supabase_admin</OwnerName>
     </sequence>
-    <sequence id="307" parent="286" name="supplements_id_seq">
+    <sequence id="310" parent="286" name="supplements_id_seq">
       <DataType>bigint|0s</DataType>
       <ObjectId>17714</ObjectId>
       <StateNumber>960</StateNumber>
       <OwnerName>supabase_admin</OwnerName>
     </sequence>
-    <table id="308" parent="286" name="Exercise">
+    <table id="311" parent="286" name="Exercise">
       <ObjectId>17815</ObjectId>
       <StateNumber>1264</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <table id="309" parent="286" name="Supplements">
+    <table id="312" parent="286" name="Supplements">
       <ObjectId>17711</ObjectId>
       <StateNumber>999</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <table id="310" parent="286" name="UserBloodPressure">
+    <table id="313" parent="286" name="UserBloodPressure">
       <ObjectId>17794</ObjectId>
       <StateNumber>1120</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <table id="311" parent="286" name="UserBody">
+    <table id="314" parent="286" name="UserBody">
       <ObjectId>17805</ObjectId>
       <StateNumber>1148</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <table id="312" parent="286" name="UserSupplementActivity">
-      <ObjectId>17759</ObjectId>
-      <StateNumber>1052</StateNumber>
+    <table id="315" parent="286" name="UserOneRepMaxEstimates">
+      <ObjectId>17892</ObjectId>
+      <StateNumber>1460</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <table id="313" parent="286" name="UserSupplements">
+    <table id="316" parent="286" name="UserSupplementActivity">
+      <ObjectId>17759</ObjectId>
+      <StateNumber>1376</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>supabase_admin</OwnerName>
+    </table>
+    <table id="317" parent="286" name="UserSupplements">
       <ObjectId>17746</ObjectId>
       <StateNumber>1011</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <table id="314" parent="286" name="UserWeight">
+    <table id="318" parent="286" name="UserWeight">
       <ObjectId>17784</ObjectId>
       <StateNumber>1111</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <table id="315" parent="286" name="Users">
+    <table id="319" parent="286" name="UserWorkout">
+      <ObjectId>17861</ObjectId>
+      <StateNumber>1302</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>supabase_admin</OwnerName>
+    </table>
+    <table id="320" parent="286" name="UserWorkoutActivity">
+      <ObjectId>17871</ObjectId>
+      <StateNumber>1330</StateNumber>
+      <AccessMethodId>2</AccessMethodId>
+      <OwnerName>supabase_admin</OwnerName>
+    </table>
+    <table id="321" parent="286" name="Users">
       <ObjectId>17688</ObjectId>
       <StateNumber>997</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <table id="316" parent="286" name="Workout">
+    <table id="322" parent="286" name="Workout">
       <ObjectId>17827</ObjectId>
       <StateNumber>1272</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <table id="317" parent="286" name="WorkoutBlock">
+    <table id="323" parent="286" name="WorkoutBlock">
       <ObjectId>17841</ObjectId>
       <StateNumber>1267</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <table id="318" parent="286" name="WorkoutBlockExercise">
+    <table id="324" parent="286" name="WorkoutBlockExercise">
       <ObjectId>17851</ObjectId>
       <StateNumber>1266</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>supabase_admin</OwnerName>
     </table>
-    <column id="319" parent="308" name="Id">
+    <column id="325" parent="311" name="Id">
       <DataType>bigint|0s</DataType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
@@ -5212,7 +5401,7 @@ SELECT INTO</Tags>
       <StateNumber>1162</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="320" parent="308" name="Created">
+    <column id="326" parent="311" name="Created">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
@@ -5220,21 +5409,21 @@ SELECT INTO</Tags>
       <StateNumber>1163</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="321" parent="308" name="Name">
+    <column id="327" parent="311" name="Name">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>1164</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="322" parent="308" name="Fatigue">
+    <column id="328" parent="311" name="Fatigue">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>1165</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <index id="323" parent="308" name="Exercises_pkey">
+    <index id="329" parent="311" name="Exercises_pkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17825</ObjectId>
@@ -5243,13 +5432,13 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="324" parent="308" name="Exercises_pkey">
+    <key id="330" parent="311" name="Exercises_pkey">
       <ObjectId>17826</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1166</StateNumber>
       <UnderlyingIndexId>17825</UnderlyingIndexId>
     </key>
-    <column id="325" parent="309" name="Id">
+    <column id="331" parent="312" name="Id">
       <DataType>bigint|0s</DataType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
@@ -5257,14 +5446,14 @@ SELECT INTO</Tags>
       <StateNumber>976</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="326" parent="309" name="Created">
+    <column id="332" parent="312" name="Created">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <Position>2</Position>
       <StateNumber>975</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="327" parent="309" name="Name">
+    <column id="333" parent="312" name="Name">
       <DataType>varchar|0s</DataType>
       <DefaultExpression>&apos;&apos;::character varying</DefaultExpression>
       <NotNull>1</NotNull>
@@ -5272,27 +5461,27 @@ SELECT INTO</Tags>
       <StateNumber>981</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="328" parent="309" name="Brand">
+    <column id="334" parent="312" name="Brand">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>978</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="329" parent="309" name="Url">
+    <column id="335" parent="312" name="Url">
       <DataType>varchar|0s</DataType>
       <Position>5</Position>
       <StateNumber>979</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="330" parent="309" name="Commission">
+    <column id="336" parent="312" name="Commission">
       <DataType>smallint|0s</DataType>
       <DefaultExpression>&apos;0&apos;::smallint</DefaultExpression>
       <Position>6</Position>
       <StateNumber>980</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <index id="331" parent="309" name="supplements_pkey">
+    <index id="337" parent="312" name="supplements_pkey">
       <ColNames>Id</ColNames>
       <ObjectId>17722</ObjectId>
       <Primary>1</Primary>
@@ -5300,13 +5489,13 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="332" parent="309" name="supplements_pkey">
+    <key id="338" parent="312" name="supplements_pkey">
       <ObjectId>17723</ObjectId>
       <Primary>1</Primary>
       <StateNumber>965</StateNumber>
       <UnderlyingIndexId>17722</UnderlyingIndexId>
     </key>
-    <column id="333" parent="310" name="Id">
+    <column id="339" parent="313" name="Id">
       <DataType>bigint|0s</DataType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
@@ -5314,7 +5503,7 @@ SELECT INTO</Tags>
       <StateNumber>1116</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="334" parent="310" name="Created">
+    <column id="340" parent="313" name="Created">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
@@ -5322,28 +5511,28 @@ SELECT INTO</Tags>
       <StateNumber>1117</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="335" parent="310" name="UserId">
+    <column id="341" parent="313" name="UserId">
       <DataType>uuid|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>1118</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="336" parent="310" name="Systolic">
+    <column id="342" parent="313" name="Systolic">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>1119</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="337" parent="310" name="Diastolic">
+    <column id="343" parent="313" name="Diastolic">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StateNumber>1120</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <index id="338" parent="310" name="UserBloodPressure_pkey">
+    <index id="344" parent="313" name="UserBloodPressure_pkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17802</ObjectId>
@@ -5352,14 +5541,14 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="339" parent="310" name="UserBloodPressure_pkey">
+    <key id="345" parent="313" name="UserBloodPressure_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17803</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1121</StateNumber>
       <UnderlyingIndexId>17802</UnderlyingIndexId>
     </key>
-    <column id="340" parent="311" name="Id">
+    <column id="346" parent="314" name="Id">
       <DataType>bigint|0s</DataType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
@@ -5367,7 +5556,7 @@ SELECT INTO</Tags>
       <StateNumber>1124</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="341" parent="311" name="Created">
+    <column id="347" parent="314" name="Created">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
@@ -5375,98 +5564,98 @@ SELECT INTO</Tags>
       <StateNumber>1125</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="342" parent="311" name="Neck">
+    <column id="348" parent="314" name="Neck">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>1126</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="343" parent="311" name="Shoulders">
+    <column id="349" parent="314" name="Shoulders">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>1127</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="344" parent="311" name="Chest">
+    <column id="350" parent="314" name="Chest">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StateNumber>1128</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="345" parent="311" name="LeftBicep">
+    <column id="351" parent="314" name="LeftBicep">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StateNumber>1129</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="346" parent="311" name="RightBicep">
+    <column id="352" parent="314" name="RightBicep">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StateNumber>1130</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="347" parent="311" name="Navel">
+    <column id="353" parent="314" name="Navel">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
       <StateNumber>1131</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="348" parent="311" name="Waist">
+    <column id="354" parent="314" name="Waist">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>9</Position>
       <StateNumber>1132</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="349" parent="311" name="Hip">
+    <column id="355" parent="314" name="Hip">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>10</Position>
       <StateNumber>1133</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="350" parent="311" name="LeftThigh">
+    <column id="356" parent="314" name="LeftThigh">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>11</Position>
       <StateNumber>1134</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="351" parent="311" name="RightThigh">
+    <column id="357" parent="314" name="RightThigh">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>12</Position>
       <StateNumber>1135</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="352" parent="311" name="LeftCalf">
+    <column id="358" parent="314" name="LeftCalf">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>13</Position>
       <StateNumber>1136</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="353" parent="311" name="RightCalf">
+    <column id="359" parent="314" name="RightCalf">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>14</Position>
       <StateNumber>1137</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="354" parent="311" name="UserId">
+    <column id="360" parent="314" name="UserId">
       <DataType>uuid|0s</DataType>
       <NotNull>1</NotNull>
       <Position>15</Position>
       <StateNumber>1148</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <index id="355" parent="311" name="UserBody_pkey">
+    <index id="361" parent="314" name="UserBody_pkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17813</ObjectId>
@@ -5475,14 +5664,67 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="356" parent="311" name="UserBody_pkey">
+    <key id="362" parent="314" name="UserBody_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17814</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1138</StateNumber>
       <UnderlyingIndexId>17813</UnderlyingIndexId>
     </key>
-    <column id="357" parent="312" name="Id">
+    <column id="363" parent="315" name="Id">
+      <DataType>bigint|0s</DataType>
+      <IdentityKind>by-default</IdentityKind>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>1454</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="364" parent="315" name="Created">
+      <DataType>timestamp with time zone|0s</DataType>
+      <DefaultExpression>now()</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>1455</StateNumber>
+      <TypeId>1184</TypeId>
+    </column>
+    <column id="365" parent="315" name="ExerciseId">
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>1456</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="366" parent="315" name="Estimate">
+      <DataType>smallint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>1457</StateNumber>
+      <TypeId>21</TypeId>
+    </column>
+    <column id="367" parent="315" name="UserId">
+      <DataType>uuid|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>1460</StateNumber>
+      <TypeId>2950</TypeId>
+    </column>
+    <index id="368" parent="315" name="UserOneRepMaxEstimates_pkey">
+      <ColNames>Id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>17900</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>1458</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="369" parent="315" name="UserOneRepMaxEstimates_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>17901</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>1458</StateNumber>
+      <UnderlyingIndexId>17900</UnderlyingIndexId>
+    </key>
+    <column id="370" parent="316" name="Id">
       <DataType>bigint|0s</DataType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
@@ -5490,44 +5732,51 @@ SELECT INTO</Tags>
       <StateNumber>1020</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="358" parent="312" name="Updated">
+    <column id="371" parent="316" name="Updated">
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StateNumber>1052</StateNumber>
       <TypeId>1082</TypeId>
     </column>
-    <column id="359" parent="312" name="UserSupplementId">
+    <column id="372" parent="316" name="UserSupplementId">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>1022</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="360" parent="312" name="UserId">
+    <column id="373" parent="316" name="UserId">
       <DataType>uuid|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>1024</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <index id="361" parent="312" name="UserSupplementActivity_pkey">
+    <column id="374" parent="316" name="Time">
+      <DataType>smallint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>1376</StateNumber>
+      <TypeId>21</TypeId>
+    </column>
+    <index id="375" parent="316" name="UserSupplementActivity_pkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17767</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>1052</StateNumber>
+      <StateNumber>1376</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="362" parent="312" name="UserSupplementActivity_pkey">
+    <key id="376" parent="316" name="UserSupplementActivity_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17768</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1023</StateNumber>
       <UnderlyingIndexId>17767</UnderlyingIndexId>
     </key>
-    <column id="363" parent="313" name="Id">
+    <column id="377" parent="317" name="Id">
       <DataType>bigint|0s</DataType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
@@ -5535,28 +5784,28 @@ SELECT INTO</Tags>
       <StateNumber>1006</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="364" parent="313" name="Create">
+    <column id="378" parent="317" name="Create">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <Position>2</Position>
       <StateNumber>1002</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="365" parent="313" name="UserId">
+    <column id="379" parent="317" name="UserId">
       <DataType>uuid|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>1003</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="366" parent="313" name="SupplementId">
+    <column id="380" parent="317" name="SupplementId">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>1004</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="367" parent="313" name="Times">
+    <column id="381" parent="317" name="Times">
       <DataType>character varying[]|0s</DataType>
       <DefaultExpression>&apos;{}&apos;::character varying[]</DefaultExpression>
       <NotNull>1</NotNull>
@@ -5564,7 +5813,7 @@ SELECT INTO</Tags>
       <StateNumber>1011</StateNumber>
       <TypeId>1015</TypeId>
     </column>
-    <index id="368" parent="313" name="UserSupplements_pkey">
+    <index id="382" parent="317" name="UserSupplements_pkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17754</ObjectId>
@@ -5573,14 +5822,14 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="369" parent="313" name="UserSupplements_pkey">
+    <key id="383" parent="317" name="UserSupplements_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17755</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1005</StateNumber>
       <UnderlyingIndexId>17754</UnderlyingIndexId>
     </key>
-    <column id="370" parent="314" name="Id">
+    <column id="384" parent="318" name="Id">
       <DataType>bigint|0s</DataType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
@@ -5588,7 +5837,7 @@ SELECT INTO</Tags>
       <StateNumber>1108</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="371" parent="314" name="Created">
+    <column id="385" parent="318" name="Created">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
@@ -5596,21 +5845,21 @@ SELECT INTO</Tags>
       <StateNumber>1109</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="372" parent="314" name="UserId">
+    <column id="386" parent="318" name="UserId">
       <DataType>uuid|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>1110</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="373" parent="314" name="Weight">
+    <column id="387" parent="318" name="Weight">
       <DataType>real|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>1111</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <index id="374" parent="314" name="UserWeight_pkey">
+    <index id="388" parent="318" name="UserWeight_pkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17792</ObjectId>
@@ -5619,40 +5868,159 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="375" parent="314" name="UserWeight_pkey">
+    <key id="389" parent="318" name="UserWeight_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17793</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1112</StateNumber>
       <UnderlyingIndexId>17792</UnderlyingIndexId>
     </key>
-    <check id="376" parent="315" name="username_length">
+    <column id="390" parent="319" name="Id">
+      <DataType>bigint|0s</DataType>
+      <IdentityKind>by-default</IdentityKind>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>1296</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="391" parent="319" name="Created">
+      <DataType>timestamp with time zone|0s</DataType>
+      <DefaultExpression>now()</DefaultExpression>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>1297</StateNumber>
+      <TypeId>1184</TypeId>
+    </column>
+    <column id="392" parent="319" name="WorkoutId">
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StateNumber>1298</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="393" parent="319" name="Active">
+      <DataType>boolean|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>1299</StateNumber>
+      <TypeId>16</TypeId>
+    </column>
+    <column id="394" parent="319" name="UserId">
+      <DataType>uuid|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>1302</StateNumber>
+      <TypeId>2950</TypeId>
+    </column>
+    <index id="395" parent="319" name="UserWorkout_pkey">
+      <ColNames>Id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>17869</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>1300</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="396" parent="319" name="UserWorkout_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>17870</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>1300</StateNumber>
+      <UnderlyingIndexId>17869</UnderlyingIndexId>
+    </key>
+    <column id="397" parent="320" name="Id">
+      <DataType>bigint|0s</DataType>
+      <IdentityKind>by-default</IdentityKind>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StateNumber>1319</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="398" parent="320" name="Created">
+      <DataType>date|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StateNumber>1330</StateNumber>
+      <TypeId>1082</TypeId>
+    </column>
+    <column id="399" parent="320" name="WorkoutBlockExerciseId">
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StateNumber>1324</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="400" parent="320" name="Set">
+      <DataType>smallint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StateNumber>1326</StateNumber>
+      <TypeId>21</TypeId>
+    </column>
+    <column id="401" parent="320" name="Reps">
+      <DataType>smallint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>6</Position>
+      <StateNumber>1327</StateNumber>
+      <TypeId>21</TypeId>
+    </column>
+    <column id="402" parent="320" name="Weight">
+      <DataType>smallint|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+      <StateNumber>1328</StateNumber>
+      <TypeId>21</TypeId>
+    </column>
+    <column id="403" parent="320" name="UserId">
+      <DataType>uuid|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>8</Position>
+      <StateNumber>1329</StateNumber>
+      <TypeId>2950</TypeId>
+    </column>
+    <index id="404" parent="320" name="UserWorkoutActivity_pkey">
+      <ColNames>Id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>17879</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>1330</StateNumber>
+      <Unique>1</Unique>
+      <AccessMethodId>403</AccessMethodId>
+    </index>
+    <key id="405" parent="320" name="UserWorkoutActivity_pkey">
+      <NameSurrogate>1</NameSurrogate>
+      <ObjectId>17880</ObjectId>
+      <Primary>1</Primary>
+      <StateNumber>1322</StateNumber>
+      <UnderlyingIndexId>17879</UnderlyingIndexId>
+    </key>
+    <check id="406" parent="321" name="username_length">
       <ColNames>Email</ColNames>
       <ObjectId>17737</ObjectId>
       <Predicate>char_length((&quot;Email&quot;)::text) &gt;= 3</Predicate>
       <StateNumber>991</StateNumber>
     </check>
-    <column id="377" parent="315" name="Id">
+    <column id="407" parent="321" name="Id">
       <DataType>uuid|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <StateNumber>985</StateNumber>
       <TypeId>2950</TypeId>
     </column>
-    <column id="378" parent="315" name="LastLogin">
+    <column id="408" parent="321" name="LastLogin">
       <DataType>timestamp with time zone|0s</DataType>
       <Position>2</Position>
       <StateNumber>988</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="379" parent="315" name="Email">
+    <column id="409" parent="321" name="Email">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>998</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="380" parent="315" name="Created">
+    <column id="410" parent="321" name="Created">
       <DataType>timestamp|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <NotNull>1</NotNull>
@@ -5660,7 +6028,7 @@ SELECT INTO</Tags>
       <StateNumber>997</StateNumber>
       <TypeId>1114</TypeId>
     </column>
-    <foreign-key id="381" parent="315" name="Users_Id_fkey">
+    <foreign-key id="411" parent="321" name="Users_Id_fkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17730</ObjectId>
@@ -5668,7 +6036,7 @@ SELECT INTO</Tags>
       <StateNumber>987</StateNumber>
       <RefTableId>16673</RefTableId>
     </foreign-key>
-    <index id="382" parent="315" name="profiles_pkey">
+    <index id="412" parent="321" name="profiles_pkey">
       <ColNames>Id</ColNames>
       <ObjectId>17694</ObjectId>
       <Primary>1</Primary>
@@ -5676,7 +6044,7 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="383" parent="315" name="profiles_username_key">
+    <index id="413" parent="321" name="profiles_username_key">
       <ColNames>Email</ColNames>
       <ObjectId>17735</ObjectId>
       <StateNumber>997</StateNumber>
@@ -5686,39 +6054,39 @@ SELECT INTO</Tags>
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="384" parent="315" name="profiles_pkey">
+    <key id="414" parent="321" name="profiles_pkey">
       <ObjectId>17695</ObjectId>
       <Primary>1</Primary>
       <StateNumber>951</StateNumber>
       <UnderlyingIndexId>17694</UnderlyingIndexId>
     </key>
-    <key id="385" parent="315" name="profiles_username_key">
+    <key id="415" parent="321" name="profiles_username_key">
       <ObjectId>17736</ObjectId>
       <StateNumber>991</StateNumber>
       <UnderlyingIndexId>17735</UnderlyingIndexId>
     </key>
-    <security-policy id="386" parent="315" name="Public profiles are viewable by everyone.">
+    <security-policy id="416" parent="321" name="Public profiles are viewable by everyone.">
       <ObjectId>17703</ObjectId>
       <OperationType>select</OperationType>
       <Permissive>1</Permissive>
       <StateNumber>951</StateNumber>
       <UsingExpression>true</UsingExpression>
     </security-policy>
-    <security-policy id="387" parent="315" name="Users can insert their own profile.">
+    <security-policy id="417" parent="321" name="Users can insert their own profile.">
       <CheckExpression>(auth.uid() = &quot;Id&quot;)</CheckExpression>
       <ObjectId>17704</ObjectId>
       <OperationType>insert</OperationType>
       <Permissive>1</Permissive>
       <StateNumber>951</StateNumber>
     </security-policy>
-    <security-policy id="388" parent="315" name="Users can update own profile.">
+    <security-policy id="418" parent="321" name="Users can update own profile.">
       <ObjectId>17705</ObjectId>
       <OperationType>update</OperationType>
       <Permissive>1</Permissive>
       <StateNumber>951</StateNumber>
       <UsingExpression>(auth.uid() = &quot;Id&quot;)</UsingExpression>
     </security-policy>
-    <column id="389" parent="316" name="Id">
+    <column id="419" parent="322" name="Id">
       <DataType>bigint|0s</DataType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
@@ -5726,41 +6094,41 @@ SELECT INTO</Tags>
       <StateNumber>1198</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="390" parent="316" name="Created">
+    <column id="420" parent="322" name="Created">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <Position>2</Position>
       <StateNumber>1199</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="391" parent="316" name="Version">
+    <column id="421" parent="322" name="Version">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>1200</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <column id="392" parent="316" name="Name">
+    <column id="422" parent="322" name="Name">
       <DataType>varchar|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>1201</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="393" parent="316" name="Cost">
+    <column id="423" parent="322" name="Cost">
       <DataType>real|0s</DataType>
       <Position>5</Position>
       <StateNumber>1205</StateNumber>
       <TypeId>700</TypeId>
     </column>
-    <column id="394" parent="316" name="Description">
+    <column id="424" parent="322" name="Description">
       <DataType>text[]|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StateNumber>1275</StateNumber>
       <TypeId>1009</TypeId>
     </column>
-    <index id="395" parent="316" name="Workout_pkey">
+    <index id="425" parent="322" name="Workout_pkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17839</ObjectId>
@@ -5769,7 +6137,7 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <index id="396" parent="316" name="Workout_Name_key">
+    <index id="426" parent="322" name="Workout_Name_key">
       <ColNames>Name</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17835</ObjectId>
@@ -5780,20 +6148,20 @@ SELECT INTO</Tags>
       <CollationIds>100</CollationIds>
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
-    <key id="397" parent="316" name="Workout_pkey">
+    <key id="427" parent="322" name="Workout_pkey">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17840</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1202</StateNumber>
       <UnderlyingIndexId>17839</UnderlyingIndexId>
     </key>
-    <key id="398" parent="316" name="Workout_Name_key">
+    <key id="428" parent="322" name="Workout_Name_key">
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17836</ObjectId>
       <StateNumber>1201</StateNumber>
       <UnderlyingIndexId>17835</UnderlyingIndexId>
     </key>
-    <column id="399" parent="317" name="Id">
+    <column id="429" parent="323" name="Id">
       <DataType>bigint|0s</DataType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
@@ -5801,42 +6169,42 @@ SELECT INTO</Tags>
       <StateNumber>1208</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="400" parent="317" name="Created">
+    <column id="430" parent="323" name="Created">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <Position>2</Position>
       <StateNumber>1209</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="401" parent="317" name="WorkoutId">
+    <column id="431" parent="323" name="WorkoutId">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>1210</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="402" parent="317" name="BlockIndex">
+    <column id="432" parent="323" name="BlockIndex">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>1211</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <column id="403" parent="317" name="Duration">
+    <column id="433" parent="323" name="Duration">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StateNumber>1216</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <column id="404" parent="317" name="Days">
+    <column id="434" parent="323" name="Days">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StateNumber>1271</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <index id="405" parent="317" name="WorkoutBlocks_pkey">
+    <index id="435" parent="323" name="WorkoutBlocks_pkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17849</ObjectId>
@@ -5845,13 +6213,13 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="406" parent="317" name="WorkoutBlocks_pkey">
+    <key id="436" parent="323" name="WorkoutBlocks_pkey">
       <ObjectId>17850</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1212</StateNumber>
       <UnderlyingIndexId>17849</UnderlyingIndexId>
     </key>
-    <column id="407" parent="318" name="Id">
+    <column id="437" parent="324" name="Id">
       <DataType>bigint|0s</DataType>
       <IdentityKind>by-default</IdentityKind>
       <NotNull>1</NotNull>
@@ -5859,56 +6227,56 @@ SELECT INTO</Tags>
       <StateNumber>1220</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="408" parent="318" name="Created">
+    <column id="438" parent="324" name="Created">
       <DataType>timestamp with time zone|0s</DataType>
       <DefaultExpression>now()</DefaultExpression>
       <Position>2</Position>
       <StateNumber>1221</StateNumber>
       <TypeId>1184</TypeId>
     </column>
-    <column id="409" parent="318" name="WorkoutBlockId">
+    <column id="439" parent="324" name="WorkoutBlockId">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StateNumber>1222</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="410" parent="318" name="ExerciseId">
+    <column id="440" parent="324" name="ExerciseId">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StateNumber>1223</StateNumber>
       <TypeId>20</TypeId>
     </column>
-    <column id="411" parent="318" name="Day">
+    <column id="441" parent="324" name="Day">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
       <StateNumber>1224</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <column id="412" parent="318" name="Sets">
+    <column id="442" parent="324" name="Sets">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StateNumber>1225</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <column id="413" parent="318" name="MinReps">
+    <column id="443" parent="324" name="MinReps">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
       <StateNumber>1226</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <column id="414" parent="318" name="MaxReps">
+    <column id="444" parent="324" name="MaxReps">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
       <StateNumber>1227</StateNumber>
       <TypeId>21</TypeId>
     </column>
-    <index id="415" parent="318" name="WorkoutBlockExercises_pkey">
+    <index id="445" parent="324" name="WorkoutBlockExercises_pkey">
       <ColNames>Id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <ObjectId>17859</ObjectId>
@@ -5917,7 +6285,7 @@ SELECT INTO</Tags>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="416" parent="318" name="WorkoutBlockExercises_pkey">
+    <key id="446" parent="324" name="WorkoutBlockExercises_pkey">
       <ObjectId>17860</ObjectId>
       <Primary>1</Primary>
       <StateNumber>1228</StateNumber>

@@ -13,4 +13,6 @@ public interface IBodyService
     Task<IEnumerable<UserBloodPressure>> GetAllUserBloodPressures(Guid userId);
     Task AddUserBloodPressure(UserBloodPressure userBloodPressure);
     Task DeleteUserBloodPressure(UserBloodPressure userBloodPressure);
+    Task AddUserHeight(UserHeight userHeight);
+    Task<IEnumerable<UserHeight>> GetAllUserHeights(Guid userId);
 }

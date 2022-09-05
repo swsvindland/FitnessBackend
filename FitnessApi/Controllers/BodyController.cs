@@ -20,10 +20,11 @@ public class BodyController
     {
         _bodyService = bodyService;
     }
-    
+
     [FunctionName("GetUserWeights")]
     public async Task<IActionResult> GetUserWeights(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
 
@@ -31,26 +32,29 @@ public class BodyController
 
         return new OkObjectResult(user);
     }
-    
+
     [FunctionName("AddUserWeight")]
     public async Task<IActionResult> AddUserWeight(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req, ILogger log)
     {
         string requestBody;
-        using (var streamReader =  new  StreamReader(req.Body))
+        using (var streamReader = new StreamReader(req.Body))
         {
             requestBody = await streamReader.ReadToEndAsync();
         }
+
         var data = JsonConvert.DeserializeObject<UserWeight>(requestBody);
-        
+
         await _bodyService.AddUserWeight(data);
 
         return new OkObjectResult(true);
     }
-    
+
     [FunctionName("GetUserBodies")]
     public async Task<IActionResult> GetUserBodies(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
 
@@ -58,26 +62,29 @@ public class BodyController
 
         return new OkObjectResult(user);
     }
-    
+
     [FunctionName("AddUserBody")]
     public async Task<IActionResult> AddUserBody(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req, ILogger log)
     {
         string requestBody;
-        using (var streamReader =  new  StreamReader(req.Body))
+        using (var streamReader = new StreamReader(req.Body))
         {
             requestBody = await streamReader.ReadToEndAsync();
         }
+
         var data = JsonConvert.DeserializeObject<UserBody>(requestBody);
-        
+
         await _bodyService.AddUserBody(data);
 
         return new OkObjectResult(true);
     }
-    
+
     [FunctionName("GetUserBloodPressures")]
     public async Task<IActionResult> GetUserBloodPressures(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
 
@@ -85,19 +92,39 @@ public class BodyController
 
         return new OkObjectResult(user);
     }
-    
+
     [FunctionName("AddUserBloodPressure")]
     public async Task<IActionResult> AddUserBloodPressure(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req, ILogger log)
     {
         string requestBody;
-        using (var streamReader =  new  StreamReader(req.Body))
+        using (var streamReader = new StreamReader(req.Body))
         {
             requestBody = await streamReader.ReadToEndAsync();
         }
+
         var data = JsonConvert.DeserializeObject<UserBloodPressure>(requestBody);
-        
+
         await _bodyService.AddUserBloodPressure(data);
+
+        return new OkObjectResult(true);
+    }
+
+    [FunctionName("AddUserHeight")]
+    public async Task<IActionResult> AddUserHeight(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<UserHeight>(requestBody);
+
+        await _bodyService.AddUserHeight(data);
 
         return new OkObjectResult(true);
     }

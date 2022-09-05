@@ -12,6 +12,11 @@ public class UserService: IUserService
         _userRepository = userRepository;
     }
     
+    public async Task<Users?> GetUserById(Guid userId)
+    {
+        return await _userRepository.GetUserById(userId);
+    }
+
     public async Task<Users?> GetUserByEmail(string email)
     {
         return await _userRepository.GetUserByEmail(email);
