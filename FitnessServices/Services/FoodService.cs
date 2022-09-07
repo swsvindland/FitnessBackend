@@ -13,36 +13,7 @@ public class FoodService : IFoodService
         _userService = userService;
         _bodyService = bodyService;
     }
-
-    public double ComputeMaleBodyFat(float navel, float neck, float height)
-    {
-        return 86.010 * Math.Log10(navel - neck) - 70.041 * Math.Log10(height) + 36.76;
-    }
     
-    public double ComputeFemaleBodyFat(float navel, float hip, float neck, float height)
-    {
-        return 163.205 * Math.Log10(navel + hip - neck) - 97.684 * Math.Log10(height) - 78.387;
-    }
-
-    public async Task<double?> GenerateBodyFat(Users user)
-    {
-        var userBodies = await _bodyService.GetAllUserBodies(user.Id);
-        var userHeights = await _bodyService.GetAllUserHeights(user.Id);
-
-        var currentBody = userBodies.FirstOrDefault();
-        var currentHeight = userHeights.FirstOrDefault();
-
-        if (currentBody == null) return null;
-        if (currentHeight == null) return null;
-        
-        if (user.Sex == "Male")
-        {
-            return ComputeMaleBodyFat(currentBody.Navel, currentBody.Neck, currentHeight.Height);
-        }
-
-        return ComputeFemaleBodyFat(currentBody.Navel, currentBody.Hip, currentBody.Neck, currentHeight.Height);
-    }
-
     public async Task<IEnumerable<Macros>> GenerateMacros(Guid userId)
     {
         var user = await _userService.GetUserById(userId);
@@ -50,20 +21,22 @@ public class FoodService : IFoodService
         if (user == null) return new List<Macros>();
 
         var userWeights = await _bodyService.GetAllUserWeights(userId);
-        var bodyFat = await GenerateBodyFat(user);
+        var bodyFat = await _bodyService.GenerateBodyFats(user.Id);
         var macros = new List<Macros>();
-
+        var currentBodyFat = bodyFat?.LastOrDefault()?.BodyFat ?? 10;
+        
+        
         foreach (var userWeight in userWeights)
         {
             var calories = 0.0;
 
             if (user.Sex == "Male")
             {
-                calories = bodyFat > 15 ? userWeight.Weight * 13 : userWeight.Weight * 13 + 500;
+                calories = currentBodyFat > 15 ? userWeight.Weight * 13 : userWeight.Weight * 13 + 500;
             }
             else
             {
-                calories = bodyFat > 22 ? userWeight.Weight * 13 : userWeight.Weight * 13 + 500;
+                calories = currentBodyFat > 22 ? userWeight.Weight * 13 : userWeight.Weight * 13 + 500;
             }
             
             var protein = userWeight.Weight * 0.8;

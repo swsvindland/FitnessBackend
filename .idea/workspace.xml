@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44c9f887-7366-470e-aa69-48cbd8c88cb7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0e9a6b03-4f30-4ca3-a420-e9a891039cd2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0e9a6b03-4f30-4ca3-a420-e9a891039cd2.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0e9a6b03-4f30-4ca3-a420-e9a891039cd2/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0e9a6b03-4f30-4ca3-a420-e9a891039cd2/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docs/HoeSplit1.md" beforeDir="false" afterPath="$PROJECT_DIR$/Docs/HoeSplit1.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

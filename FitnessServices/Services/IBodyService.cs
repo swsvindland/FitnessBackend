@@ -1,4 +1,5 @@
 using FitnessRepository.Models;
+using FitnessServices.Models;
 
 namespace FitnessServices.Services;
 
@@ -15,4 +16,5 @@ public interface IBodyService
     Task DeleteUserBloodPressure(UserBloodPressure userBloodPressure);
     Task AddUserHeight(UserHeight userHeight);
     Task<IEnumerable<UserHeight>> GetAllUserHeights(Guid userId);
+    Task<IEnumerable<UserBodyFat>?> GenerateBodyFats(Guid userId);
 }

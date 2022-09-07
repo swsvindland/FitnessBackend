@@ -92,6 +92,18 @@ public class BodyController
 
         return new OkObjectResult(user);
     }
+    
+    [FunctionName("GetUserBodyFat")]
+    public async Task<IActionResult> GetUserBodyFat(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var userId = Guid.Parse(req.Query["userId"]);
+
+        var user = await _bodyService.GenerateBodyFats(userId);
+
+        return new OkObjectResult(user);
+    }
 
     [FunctionName("AddUserBloodPressure")]
     public async Task<IActionResult> AddUserBloodPressure(

@@ -1,14 +1,17 @@
 ﻿using FitnessRepository.Models;
 using FitnessRepository.Repositories;
+using FitnessServices.Models;
 
 namespace FitnessServices.Services;
 
 public class BodyService: IBodyService
 {
+    private readonly IUserService _userService;
     private readonly IBodyRepository _bodyRepository;
 
-    public BodyService(IBodyRepository bodyRepository)
+    public BodyService(IUserService userService, IBodyRepository bodyRepository)
     {
+        _userService = userService;
         _bodyRepository = bodyRepository;
     }
     
@@ -65,5 +68,54 @@ public class BodyService: IBodyService
     public async Task<IEnumerable<UserHeight>> GetAllUserHeights(Guid userId)
     {
         return await _bodyRepository.GetUserHeights(userId);
+    }
+    
+    private static double ComputeMaleBodyFat(float navel, float neck, float height)
+    {
+        return 86.010 * Math.Log10(navel - neck) - 70.041 * Math.Log10(height) + 36.76;
+    }
+    
+    private static double ComputeFemaleBodyFat(float navel, float hip, float neck, float height)
+    {
+        return 163.205 * Math.Log10(navel + hip - neck) - 97.684 * Math.Log10(height) - 78.387;
+    }
+
+    public async Task<IEnumerable<UserBodyFat>?> GenerateBodyFats(Guid userId)
+    {
+        var user = await _userService.GetUserById(userId);
+
+        var userBodies = await GetAllUserBodies(userId);
+        var userHeights = await GetAllUserHeights(userId);
+
+        var currentHeight = userHeights.FirstOrDefault();
+
+        if (user == null) return null;
+        if (currentHeight == null) return null;
+
+        var userBodyFats = new List<UserBodyFat>();
+        
+        foreach (var userBody in userBodies)
+        {
+            if (user.Sex == "Male")
+            {
+                userBodyFats.Add(new UserBodyFat()
+                {
+                    BodyFat = ComputeMaleBodyFat(userBody.Navel, userBody.Neck, currentHeight.Height),
+                    Created = userBody.Created,
+                    UserId = userId
+                });
+            }
+            else
+            {
+                userBodyFats.Add(new UserBodyFat()
+                {
+                    BodyFat = ComputeFemaleBodyFat(userBody.Navel, userBody.Hip, userBody.Neck, currentHeight.Height),
+                    Created = userBody.Created,
+                    UserId = userId
+                });
+            }
+        }
+
+        return userBodyFats;
     }
 }
