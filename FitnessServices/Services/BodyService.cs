@@ -80,7 +80,7 @@ public class BodyService: IBodyService
         return 163.205 * Math.Log10(navel + hip - neck) - 97.684 * Math.Log10(height) - 78.387;
     }
 
-    public async Task<IEnumerable<UserBodyFat>?> GenerateBodyFats(Guid userId)
+    public async Task<IEnumerable<UserBodyFat>> GenerateBodyFats(Guid userId)
     {
         var user = await _userService.GetUserById(userId);
 
@@ -89,8 +89,8 @@ public class BodyService: IBodyService
 
         var currentHeight = userHeights.FirstOrDefault();
 
-        if (user == null) return null;
-        if (currentHeight == null) return null;
+        if (user == null) return new List<UserBodyFat>();
+        if (currentHeight == null) return new List<UserBodyFat>();
 
         var userBodyFats = new List<UserBodyFat>();
         
