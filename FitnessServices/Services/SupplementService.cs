@@ -18,9 +18,18 @@ public class SupplementService: ISupplementService
         return await _supplementRepository.GetAllSupplements();
     }
 
-    public async Task<IEnumerable<UserSupplement>> GetUserSupplements(Guid userId)
+    public async Task<IEnumerable<UserSupplementModel>> GetUserSupplements(Guid userId)
     {
-        return await _supplementRepository.GetUserSupplementByUserId(userId);
+        var userSupplement =  await _supplementRepository.GetUserSupplementByUserId(userId);
+
+        return userSupplement.Select(e => new UserSupplementModel()
+        {
+            Id = e.Id,
+            SupplementId = e.SupplementId,
+            Supplement = e.Supplement,
+            UserId = e.UserId,
+            Times = e.Times.Split(","),
+        });
     }
 
     public async Task UpdateUserSupplement(UpdateUserSupplement updateUserSupplement)
@@ -28,9 +37,10 @@ public class SupplementService: ISupplementService
         var entity = new UserSupplement()
         {
             Id = updateUserSupplement.Id,
+            Created = DateTime.UtcNow,
             UserId = updateUserSupplement.UserId,
             SupplementId = updateUserSupplement.SupplementId,
-            Times = updateUserSupplement.Times
+            Times = string.Join(",",  updateUserSupplement.Times)
         };
         
         if (entity.Id == null)

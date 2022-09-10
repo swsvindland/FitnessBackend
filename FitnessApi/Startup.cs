@@ -1,5 +1,5 @@
+using System;
 using FitnessRepository;
-using FitnessRepository.Models;
 using FitnessRepository.Repositories;
 using FitnessServices.Services;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
@@ -18,10 +18,12 @@ namespace FitnessApi
             var configuration = builder.Services.BuildServiceProvider().GetService<IConfiguration>(); 
 
             builder.Services.AddHttpClient();
-
+            
+            var serverVersion = new MySqlServerVersion(new Version(8, 0, 23));
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
             // init db
             builder.Services.AddDbContext<FitnessContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+                options.UseMySql(connectionString, serverVersion));
 
             // add db calls
             builder.Services.AddScoped<IUserRepository, UserRepository>();
