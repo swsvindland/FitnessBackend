@@ -7,9 +7,11 @@ public interface IWorkoutRepository
     Task<IEnumerable<Exercise>> GetExercises();
     Task<IEnumerable<Workout>> GetWorkouts();
     Task<Workout?> GetWorkout(long workoutId);
+    Task<WorkoutBlock?> GetWorkoutBlock(long workoutId);
     Task<IEnumerable<WorkoutBlock>> GetWorkoutBlocks(long workoutId);
-    Task<WorkoutBlockExercise?> GetWorkoutBlock(long workoutBlockId);
+    Task<WorkoutBlockExercise?> GetWorkoutBlockExercise(long workoutBlockId);
     Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId);
+    Task<UserWorkout?> GetActiveUserWorkouts(Guid userId);
     Task AddUserWorkout(UserWorkout workout);
     Task UpdateUserWorkout(UserWorkout workout);
     Task UpdateUserWorkouts(IEnumerable<UserWorkout> workouts);
@@ -21,4 +23,6 @@ public interface IWorkoutRepository
     Task<IEnumerable<UserOneRepMaxEstimates>> GetUserOneRepMaxes(Guid userId);
     Task<UserOneRepMaxEstimates?> GetUserOneRepMaxesByExerciseId(Guid userId, long exerciseId);
     Task AddUserOneRepMax(UserOneRepMaxEstimates userOneRepMaxEstimates);
+    Task AddUserWorkoutCompleted(UserWorkoutsCompleted userWorkoutsCompleted);
+    Task<IEnumerable<UserWorkoutsCompleted>> GetUserWorkoutsCompleted(Guid userId);
 }

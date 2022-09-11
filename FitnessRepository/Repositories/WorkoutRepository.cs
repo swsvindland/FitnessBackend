@@ -27,6 +27,10 @@ public class WorkoutRepository : IWorkoutRepository
         return await _context.Workout.FirstOrDefaultAsync(e => e.Id == workoutId);
     }
 
+    public async Task<WorkoutBlock?> GetWorkoutBlock(long workoutId)
+    {
+        return await _context.WorkoutBlock.FirstOrDefaultAsync(e => e.WorkoutId == workoutId);
+    }
 
     public async Task<IEnumerable<WorkoutBlock>> GetWorkoutBlocks(long workoutId)
     {
@@ -45,7 +49,7 @@ public class WorkoutRepository : IWorkoutRepository
         return workoutBlocks;
     }
 
-    public async Task<WorkoutBlockExercise?> GetWorkoutBlock(long workoutBlockId)
+    public async Task<WorkoutBlockExercise?> GetWorkoutBlockExercise(long workoutBlockId)
     {
         var workoutBlockExercise = await _context.WorkoutBlockExercise
             .Where(e => e.Id == workoutBlockId)
@@ -58,6 +62,11 @@ public class WorkoutRepository : IWorkoutRepository
     public async Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId)
     {
         return await _context.UserWorkout.Where(e => e.UserId == userId).ToListAsync();
+    }
+    
+    public async Task<UserWorkout?> GetActiveUserWorkouts(Guid userId)
+    {
+        return await _context.UserWorkout.Where(e => e.UserId == userId).Where(e => e.Active).FirstOrDefaultAsync();
     }
 
     public async Task AddUserWorkout(UserWorkout workout)
@@ -135,5 +144,17 @@ public class WorkoutRepository : IWorkoutRepository
         _context.UserOneRepMaxEstimates.Add(userOneRepMaxEstimates);
 
         await _context.SaveChangesAsync();
+    }
+    
+    public async Task AddUserWorkoutCompleted(UserWorkoutsCompleted userWorkoutsCompleted)
+    {
+        _context.UserWorkoutsCompleted.Add(userWorkoutsCompleted);
+
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task<IEnumerable<UserWorkoutsCompleted>> GetUserWorkoutsCompleted(Guid userId)
+    {
+        return await _context.UserWorkoutsCompleted.Where(e => e.UserId == userId).ToListAsync();
     }
 }
