@@ -9,4 +9,6 @@ public class UserWorkoutActivity
     public int Set { get; set; }
     public int Reps { get; set; }
     public int Weight { get; set; }
+    public int Week { get; set; }
+    public int Day { get; set; }
 }

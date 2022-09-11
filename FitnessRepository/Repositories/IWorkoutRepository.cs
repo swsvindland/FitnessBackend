@@ -14,7 +14,8 @@ public interface IWorkoutRepository
     Task UpdateUserWorkout(UserWorkout workout);
     Task UpdateUserWorkouts(IEnumerable<UserWorkout> workouts);
     Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId, long workoutBlockExerciseId);
-    Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set);
+    Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set, int week,
+        int day);
     Task AddUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity);
     Task UpdateUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity);
     Task<IEnumerable<UserOneRepMaxEstimates>> GetUserOneRepMaxes(Guid userId);

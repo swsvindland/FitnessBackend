@@ -115,8 +115,10 @@ public class WorkoutController
         var userId = Guid.Parse(req.Query["userId"]);
         var workoutBlockExerciseId = long.Parse(req.Query["workoutBlockExerciseId"]);
         var set = int.Parse(req.Query["set"]);
+        var week = int.Parse(req.Query["week"]);
+        var day = int.Parse(req.Query["day"]);
         
-        var activity = await _workoutService.GetUserWorkoutActivity(userId, workoutBlockExerciseId, set);
+        var activity = await _workoutService.GetUserWorkoutActivity(userId, workoutBlockExerciseId, set, week, day);
 
         return new OkObjectResult(activity);
     }

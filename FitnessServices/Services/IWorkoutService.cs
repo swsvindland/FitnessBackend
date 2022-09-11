@@ -13,7 +13,9 @@ public interface IWorkoutService
     Task BuyWorkout(Guid userId, long workoutId);
     Task SetActiveWorkout(Guid userId, long workoutId);
     Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId, long workoutBlockExerciseId);
-    Task<UserWorkoutActivityModel?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set);
+
+    Task<UserWorkoutActivityModel?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set, int week,
+        int day);
     Task AddUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity);
     Task<IEnumerable<UserOneRepMaxEstimates>> GetUserOneRepMaxes(Guid userId);
 }

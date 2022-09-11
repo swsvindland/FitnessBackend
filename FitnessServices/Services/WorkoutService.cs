@@ -80,9 +80,9 @@ public class WorkoutService: IWorkoutService
         return await _workoutRepository.GetUserWorkoutActivities(userId, workoutBlockExerciseId);
     }
     
-    public async Task<UserWorkoutActivityModel?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set)
+    public async Task<UserWorkoutActivityModel?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set, int week, int day)
     {
-        var workoutActivity = await _workoutRepository.GetUserWorkoutActivity(userId, workoutBlockExerciseId, set);
+        var workoutActivity = await _workoutRepository.GetUserWorkoutActivity(userId, workoutBlockExerciseId, set, week, day);
         var workout = await _workoutRepository.GetWorkoutBlock(workoutBlockExerciseId);
 
         if (workout == null)
@@ -138,7 +138,7 @@ public class WorkoutService: IWorkoutService
             UserId = userWorkoutActivity.UserId,
             ExerciseId = exerciseBlockActivity.ExerciseId,
             Estimate = estimatedOneRepMax,
-            Created = DateTime.UtcNow
+            Created = DateTime.UtcNow,
         };
         
         var activity = new UserWorkoutActivity()
@@ -149,7 +149,9 @@ public class WorkoutService: IWorkoutService
             WorkoutBlockExerciseId = userWorkoutActivity.WorkoutBlockExerciseId,
             Reps = userWorkoutActivity.Reps,
             Set = userWorkoutActivity.Set,
-            Weight = userWorkoutActivity.Weight
+            Weight = userWorkoutActivity.Weight,
+            Week = userWorkoutActivity.Week,
+            Day = userWorkoutActivity.Day
         };
         
         if (userWorkoutActivity.Id == null)

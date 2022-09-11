@@ -91,13 +91,14 @@ public class WorkoutRepository : IWorkoutRepository
             .ToListAsync();
     }
 
-    public async Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set)
+    public async Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set, int week, int day)
     {
         return await _context.UserWorkoutActivity
             .Where(e => e.UserId == userId)
             .Where(e => e.WorkoutBlockExerciseId == workoutBlockExerciseId)
-            .Where(e => e.Created == DateTime.UtcNow.Date)
             .Where(e => e.Set == set)
+            .Where(e => e.Week == week)
+            .Where(e => e.Day == day)
             .FirstOrDefaultAsync();
     }
 
