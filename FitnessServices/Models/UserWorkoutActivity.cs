@@ -1,6 +1,6 @@
 namespace FitnessServices.Models;
 
-public class UserWorkoutActivityModel
+public sealed class UserWorkoutActivityModel
 {
     public long? Id { get; set; }
     public DateTime Created { get; set; }

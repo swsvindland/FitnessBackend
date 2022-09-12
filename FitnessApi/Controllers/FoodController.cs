@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FitnessApi.Controllers;
 
-public class FoodController
+public sealed class FoodController
 {
     private readonly IFoodService _foodService;
 

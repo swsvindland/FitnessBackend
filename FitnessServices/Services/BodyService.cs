@@ -4,7 +4,7 @@ using FitnessServices.Models;
 
 namespace FitnessServices.Services;
 
-public class BodyService: IBodyService
+public sealed class BodyService: IBodyService
 {
     private readonly IUserService _userService;
     private readonly IBodyRepository _bodyRepository;

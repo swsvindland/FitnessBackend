@@ -4,7 +4,7 @@ using FitnessRepository.Models;
 
 namespace FitnessServices.Models;
 
-public class UpdateUserSupplementActivity
+public sealed class UpdateUserSupplementActivity
 {
     public string Date { get; set; }
     public Guid UserId { get; set; }

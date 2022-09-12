@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessRepository.Models;
 
-public class UserSupplementActivity
+public sealed class UserSupplementActivity
 {
     public long? Id { get; set; }
     public DateTime Updated { get; set; }

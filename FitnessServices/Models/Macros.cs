@@ -1,6 +1,6 @@
 namespace FitnessServices.Models;
 
-public class Macros
+public sealed class Macros
 {
     public int Protein { get; set; }
     public int Fat { get; set; }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessRepository.Repositories;
 
-public class WorkoutRepository : IWorkoutRepository
+public sealed class WorkoutRepository : IWorkoutRepository
 {
     private readonly FitnessContext _context;
 

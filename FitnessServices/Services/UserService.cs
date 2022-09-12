@@ -3,7 +3,7 @@ using FitnessRepository.Repositories;
 
 namespace FitnessServices.Services;
 
-public class UserService: IUserService
+public sealed class UserService: IUserService
 {
     private readonly IUserRepository _userRepository;
 

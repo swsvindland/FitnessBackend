@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace FitnessApi.Controllers;
 
-public class BodyController
+public sealed class BodyController
 {
     private readonly IBodyService _bodyService;
 

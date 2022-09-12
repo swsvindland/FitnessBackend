@@ -1,9 +1,8 @@
-using FitnessRepository.Models;
 using FitnessServices.Models;
 
 namespace FitnessServices.Services;
 
-public class FoodService : IFoodService
+public sealed class FoodService : IFoodService
 {
     private readonly IUserService _userService;
     private readonly IBodyService _bodyService;

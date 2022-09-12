@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FitnessApi.Controllers;
 
-public class UserController
+public sealed class UserController
 {
     private readonly IUserService _userService;
 

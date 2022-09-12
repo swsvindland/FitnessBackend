@@ -1,6 +1,6 @@
 namespace FitnessRepository.Models;
 
-public class UserWorkoutActivity
+public sealed class UserWorkoutActivity
 {
     public long? Id { get; set; }
     public DateTime Created { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace FitnessRepository.Models;
 
-public class Users
+public sealed class Users
 {
     public Guid Id { get; set; }
     public DateTime Created { get; set; }

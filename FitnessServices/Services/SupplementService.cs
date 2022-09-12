@@ -4,7 +4,7 @@ using FitnessServices.Models;
 
 namespace FitnessServices.Services;
 
-public class SupplementService: ISupplementService
+public sealed class SupplementService: ISupplementService
 {
     private readonly ISupplementRepository _supplementRepository;
 

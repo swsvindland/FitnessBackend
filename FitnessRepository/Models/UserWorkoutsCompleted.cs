@@ -1,6 +1,6 @@
 namespace FitnessRepository.Models;
 
-public class UserWorkoutsCompleted
+public sealed class UserWorkoutsCompleted
 {
     public long Id { get; set; }
     public long WorkoutId { get; set; }

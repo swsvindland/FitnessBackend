@@ -1,8 +1,6 @@
-using System;
-
 namespace FitnessServices.Models;
 
-public class UpdateUserSupplement
+public sealed class UpdateUserSupplement
 {
     public long? Id { get; set; }
     public Guid UserId { get; set; }

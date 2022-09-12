@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitnessRepository;
 
-public class FitnessContext: DbContext
+public sealed class FitnessContext: DbContext
 {
     public FitnessContext(DbContextOptions<FitnessContext> options) : base(options)
     {

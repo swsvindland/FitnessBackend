@@ -1,6 +1,6 @@
 namespace FitnessServices.Models;
 
-public class UserBodyFat
+public sealed class UserBodyFat
 {
     public Guid UserId { get; set; }
     public DateTime Created { get; set; }

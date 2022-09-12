@@ -2,7 +2,7 @@ using FitnessRepository.Models;
 
 namespace FitnessServices.Models;
 
-public class UserSupplementModel
+public sealed class UserSupplementModel
 {
     public long? Id { get; set; }
     public Guid UserId { get; set; }

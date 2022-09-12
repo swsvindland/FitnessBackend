@@ -1,6 +1,6 @@
 namespace FitnessRepository.Models;
 
-public class UserOneRepMaxEstimates
+public sealed class UserOneRepMaxEstimates
 {
     public long Id { get; set; }
     public DateTime Created { get; set; }

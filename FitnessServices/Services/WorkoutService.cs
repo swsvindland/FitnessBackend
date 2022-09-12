@@ -4,7 +4,7 @@ using FitnessServices.Models;
 
 namespace FitnessServices.Services;
 
-public class WorkoutService: IWorkoutService
+public sealed class WorkoutService: IWorkoutService
 {
     private readonly IWorkoutRepository _workoutRepository;
 
