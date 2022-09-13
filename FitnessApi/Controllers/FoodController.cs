@@ -28,4 +28,15 @@ public sealed class FoodController
 
         return new OkObjectResult(user);
     }
+    
+    [FunctionName("AutocompleteFood")]
+    public async Task<IActionResult> AutocompleteFood(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    {
+        var query = req.Query["query"];
+        
+        var user = await _foodService.AutocompleteFood(query);
+
+        return new OkObjectResult(user);
+    }
 }

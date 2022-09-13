@@ -1,4 +1,6 @@
+using System.Collections;
 using FitnessServices.Models;
+using FoodApi;
 
 namespace FitnessServices.Services;
 
@@ -6,11 +8,13 @@ public sealed class FoodService : IFoodService
 {
     private readonly IUserService _userService;
     private readonly IBodyService _bodyService;
+    private readonly IFoodApi _foodApi;
 
-    public FoodService(IUserService userService, IBodyService bodyService)
+    public FoodService(IUserService userService, IBodyService bodyService, IFoodApi foodApi)
     {
         _userService = userService;
         _bodyService = bodyService;
+        _foodApi = foodApi;
     }
     
     public async Task<IEnumerable<Macros>> GenerateMacros(Guid userId)
@@ -57,5 +61,10 @@ public sealed class FoodService : IFoodService
         }
 
         return macros;
+    }
+    
+    public async Task<IEnumerable<string>?> AutocompleteFood(string query)
+    {
+        return await _foodApi.AutocompleteFood(query);
     }
 }

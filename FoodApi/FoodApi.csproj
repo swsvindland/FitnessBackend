@@ -6,9 +6,4 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\FitnessRepository\FitnessRepository.csproj" />
-      <ProjectReference Include="..\FoodApi\FoodApi.csproj" />
-    </ItemGroup>
-
 </Project>

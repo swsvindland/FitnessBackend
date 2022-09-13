@@ -2,6 +2,7 @@ using System;
 using FitnessRepository;
 using FitnessRepository.Repositories;
 using FitnessServices.Services;
+using FoodApi;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,9 @@ namespace FitnessApi
             builder.Services.AddScoped<ISupplementRepository, SupplementRepository>();
             builder.Services.AddScoped<IBodyRepository, BodyRepository>();
             builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+            
+            // add external api calls
+            builder.Services.AddScoped<IFoodApi, FoodApi.FoodApi>();
             
             // add service functions
             builder.Services.AddScoped<IUserService, UserService>();
