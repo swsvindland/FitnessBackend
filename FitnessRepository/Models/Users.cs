@@ -7,4 +7,5 @@ public sealed class Users
     public DateTime? LastLogin { get; set; }
     public string Email { get; set; }
     public string Sex { get; set; }
+    public string Challenge { get; set; }
 }
