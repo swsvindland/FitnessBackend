@@ -1735,146 +1735,152 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="411" parent="304" name="Challenge">
-      <DataType>char(16)|0s</DataType>
+    <column id="411" parent="304" name="Salt">
+      <DataType>varchar(64)|0s</DataType>
+      <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <index id="412" parent="304" name="PRIMARY">
+    <column id="412" parent="304" name="Password">
+      <DataType>varchar(64)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+    </column>
+    <index id="413" parent="304" name="PRIMARY">
       <ColNames>Id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="413" parent="304" name="PRIMARY">
+    <key id="414" parent="304" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="414" parent="305" name="Id">
+    <column id="415" parent="305" name="Id">
       <AutoIncrement>5</AutoIncrement>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="415" parent="305" name="Created">
+    <column id="416" parent="305" name="Created">
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="416" parent="305" name="Version">
+    <column id="417" parent="305" name="Version">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="417" parent="305" name="Name">
+    <column id="418" parent="305" name="Name">
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="418" parent="305" name="Cost">
+    <column id="419" parent="305" name="Cost">
       <DataType>float|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="419" parent="305" name="Description">
+    <column id="420" parent="305" name="Description">
       <DataType>varchar(1024)|0s</DataType>
       <Position>6</Position>
     </column>
-    <index id="420" parent="305" name="PRIMARY">
+    <index id="421" parent="305" name="PRIMARY">
       <ColNames>Id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="421" parent="305" name="PRIMARY">
+    <key id="422" parent="305" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="422" parent="306" name="Id">
+    <column id="423" parent="306" name="Id">
       <AutoIncrement>6</AutoIncrement>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="423" parent="306" name="Created">
+    <column id="424" parent="306" name="Created">
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="424" parent="306" name="WorkoutId">
+    <column id="425" parent="306" name="WorkoutId">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="425" parent="306" name="BlockIndex">
+    <column id="426" parent="306" name="BlockIndex">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="426" parent="306" name="Duration">
+    <column id="427" parent="306" name="Duration">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="427" parent="306" name="Days">
+    <column id="428" parent="306" name="Days">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <index id="428" parent="306" name="PRIMARY">
+    <index id="429" parent="306" name="PRIMARY">
       <ColNames>Id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="429" parent="306" name="PRIMARY">
+    <key id="430" parent="306" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="430" parent="307" name="Id">
+    <column id="431" parent="307" name="Id">
       <AutoIncrement>81</AutoIncrement>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="431" parent="307" name="Created">
+    <column id="432" parent="307" name="Created">
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="432" parent="307" name="WorkoutBlockId">
+    <column id="433" parent="307" name="WorkoutBlockId">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="433" parent="307" name="ExerciseId">
+    <column id="434" parent="307" name="ExerciseId">
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="434" parent="307" name="Day">
+    <column id="435" parent="307" name="Day">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <column id="435" parent="307" name="Sets">
+    <column id="436" parent="307" name="Sets">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
     </column>
-    <column id="436" parent="307" name="MinReps">
+    <column id="437" parent="307" name="MinReps">
       <DataType>smallint|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
     </column>
-    <column id="437" parent="307" name="MaxReps">
+    <column id="438" parent="307" name="MaxReps">
       <DataType>smallint|0s</DataType>
       <Position>8</Position>
     </column>
-    <index id="438" parent="307" name="PRIMARY">
+    <index id="439" parent="307" name="PRIMARY">
       <ColNames>Id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="439" parent="307" name="PRIMARY">
+    <key id="440" parent="307" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>

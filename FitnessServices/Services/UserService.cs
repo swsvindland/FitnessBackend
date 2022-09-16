@@ -11,6 +11,22 @@ public sealed class UserService: IUserService
     {
         _userRepository = userRepository;
     }
+
+    public async Task<string> AuthByEmailPassword(string email, string password)
+    {
+        var user = await GetUserByEmail(email);
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        if (user.Password != password)
+        {
+            throw new Exception("Password is incorrect");
+        }
+
+        return "Allowed";
+    }
     
     public async Task<Users?> GetUserById(Guid userId)
     {
