@@ -39,4 +39,26 @@ public sealed class FoodController
 
         return new OkObjectResult(user);
     }
+    
+    [FunctionName("ParseFood")]
+    public async Task<IActionResult> ParseFood(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    {
+        var query = req.Query["query"];
+        
+        var user = await _foodService.ParseFood(query);
+
+        return new OkObjectResult(user);
+    }
+    
+    [FunctionName("GetFoodDetails")]
+    public async Task<IActionResult> GetFoodDetails(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+    {
+        var foodId = req.Query["foodId"];
+        
+        var user = await _foodService.GetFoodDetails(foodId);
+
+        return new OkObjectResult(user);
+    }
 }

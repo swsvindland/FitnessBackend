@@ -1,6 +1,7 @@
 using System.Collections;
 using FitnessServices.Models;
 using FoodApi;
+using FoodApi.Models;
 
 namespace FitnessServices.Services;
 
@@ -66,5 +67,15 @@ public sealed class FoodService : IFoodService
     public async Task<IEnumerable<string>?> AutocompleteFood(string query)
     {
         return await _foodApi.AutocompleteFood(query);
+    }
+    
+    public async Task<IEnumerable<EdamamFood>?> ParseFood(string foodQuery)
+    {
+        return await _foodApi.ParseFood(foodQuery);
+    }
+    
+    public async Task<EdamamNutrients?> GetFoodDetails(string foodId)
+    {
+        return await _foodApi.Nutrients(foodId);
     }
 }

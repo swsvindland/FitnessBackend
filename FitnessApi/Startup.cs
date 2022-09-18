@@ -18,7 +18,7 @@ namespace FitnessApi
         {
             var configuration = builder.Services.BuildServiceProvider().GetService<IConfiguration>(); 
 
-            builder.Services.AddHttpClient();
+            builder.Services.AddHttpClient<IFoodApi, FoodApi.FoodApi>();
             
             var serverVersion = new MySqlServerVersion(new Version(8, 0, 23));
             var connectionString = configuration.GetConnectionString("DefaultConnection");
