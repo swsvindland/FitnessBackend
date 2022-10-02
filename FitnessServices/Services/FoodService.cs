@@ -1,4 +1,4 @@
-using System.Collections;
+using FitnessRepository.Models;
 using FitnessServices.Models;
 using FoodApi;
 using FoodApi.Models;
@@ -77,5 +77,15 @@ public sealed class FoodService : IFoodService
     public async Task<EdamamNutrients?> GetFoodDetails(string foodId)
     {
         return await _foodApi.Nutrients(foodId);
+    }
+
+    public async Task<Macros> GetUserCurrentMacos(Guid userId)
+    {
+        return new Macros();
+    }
+    
+    public async Task<IEnumerable<UserFood>> GetUserFoods(Guid userId)
+    {
+        return new List<UserFood>();
     }
 }

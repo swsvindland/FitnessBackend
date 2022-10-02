@@ -1,3 +1,4 @@
+using FitnessRepository.Models;
 using FitnessServices.Models;
 using FoodApi.Models;
 
@@ -9,4 +10,6 @@ public interface IFoodService
     Task<IEnumerable<string>?> AutocompleteFood(string query);
     Task<IEnumerable<EdamamFood>?> ParseFood(string foodQuery);
     Task<EdamamNutrients?> GetFoodDetails(string foodId);
+    Task<Macros> GetUserCurrentMacos(Guid userId);
+    Task<IEnumerable<UserFood>> GetUserFoods(Guid userId);
 }

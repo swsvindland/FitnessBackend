@@ -45,7 +45,7 @@ public sealed class FoodApi: IFoodApi
                 {
                     new Ingredient()
                     {
-                        Quantity = 1,
+                        Quantity = 100,
                         MeasureURI = "Gram",
                         FoodId = foodId
                     }
