@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using FitnessRepository.Models;
-using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -52,8 +51,9 @@ public sealed class FoodController
         HttpRequest req, ILogger log)
     {
         var query = req.Query["query"];
+        var barcode = req.Query["barcode"];
 
-        var user = await _foodService.ParseFood(query);
+        var user = await _foodService.ParseFood(query, barcode);
 
         return new OkObjectResult(user);
     }

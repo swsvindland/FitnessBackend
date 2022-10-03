@@ -72,12 +72,12 @@ public sealed class FoodService : IFoodService
         return await _foodApi.AutocompleteFood(query);
     }
     
-    public async Task<IEnumerable<EdamamFood>?> ParseFood(string foodQuery)
+    public async Task<IEnumerable<EdamamFood>?> ParseFood(string foodQuery, string? barcode)
     {
-        return await _foodApi.ParseFood(foodQuery);
+        return await _foodApi.ParseFood(foodQuery, barcode);
     }
     
-    public async Task<EdamamNutrients?> GetFoodDetails(string foodId)
+    public async Task<EdamamNutrients?> GetFoodDetails(string foodId )
     {
         return await _foodApi.Nutrients(foodId);
     }
@@ -113,7 +113,7 @@ public sealed class FoodService : IFoodService
 
             if (food == null)
             {
-                var edamamFoods = await _foodApi.ParseFood(userFood.EdamamFoodId);
+                var edamamFoods = await _foodApi.ParseFood(userFood.EdamamFoodId, null);
                 var edamamFood = await _foodApi.Nutrients(userFood.EdamamFoodId);
                 var enumerable = edamamFoods as EdamamFood[] ?? edamamFoods?.ToArray();
                 newFood = new Food()

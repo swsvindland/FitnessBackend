@@ -8,7 +8,7 @@ public interface IFoodService
 {
     Task<IEnumerable<Macros>> GenerateMacros(Guid userId);
     Task<IEnumerable<string>?> AutocompleteFood(string query);
-    Task<IEnumerable<EdamamFood>?> ParseFood(string foodQuery);
+    Task<IEnumerable<EdamamFood>?> ParseFood(string foodQuery, string? barcode);
     Task<EdamamNutrients?> GetFoodDetails(string foodId);
     Task<Macros> GetUserCurrentMacos(Guid userId);
     Task<IEnumerable<UserFood>> GetUserFoods(Guid userId);
