@@ -1,4 +1,5 @@
 using FitnessRepository.Models;
+using FitnessRepository.Repositories;
 using FitnessServices.Models;
 using FoodApi;
 using FoodApi.Models;
@@ -10,12 +11,14 @@ public sealed class FoodService : IFoodService
     private readonly IUserService _userService;
     private readonly IBodyService _bodyService;
     private readonly IFoodApi _foodApi;
+    private readonly IFoodRepository _foodRepository;
 
-    public FoodService(IUserService userService, IBodyService bodyService, IFoodApi foodApi)
+    public FoodService(IUserService userService, IBodyService bodyService, IFoodApi foodApi, IFoodRepository foodRepository)
     {
         _userService = userService;
         _bodyService = bodyService;
         _foodApi = foodApi;
+        _foodRepository = foodRepository;
     }
     
     public async Task<IEnumerable<Macros>> GenerateMacros(Guid userId)
@@ -86,6 +89,31 @@ public sealed class FoodService : IFoodService
     
     public async Task<IEnumerable<UserFood>> GetUserFoods(Guid userId)
     {
-        return new List<UserFood>();
+        return await _foodRepository.GetUserFoods(userId);
+    }
+    
+    public async Task AddUserFood(UserFood userFood)
+    {
+        var newFood = new Food();
+        var newUserFood = new UserFood();
+        
+        if (userFood.FoodId == null && userFood.EdamamFoodId != null)
+        {
+            var edamamFood = await _foodApi.Nutrients(userFood.EdamamFoodId);
+            newFood = new Food()
+            {
+
+            };
+        }
+        else if (userFood.FoodId != null && userFood.EdamamFoodId == null)
+        {
+            var food = await _foodRepository.GetFood(userFood.FoodId.Value);
+        }
+        else
+        {
+            throw new Exception("Invalid food");
+        }
+        
+        await _foodRepository.AddUserFood(userFood);
     }
 }

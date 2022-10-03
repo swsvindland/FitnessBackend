@@ -205,7 +205,7 @@ public sealed class WorkoutService: IWorkoutService
         var weeks = workoutDetails?.Duration ?? 1;
         
         var nextDay = lastCompletedWorkout?.Day + 1 > days ? 1 : lastCompletedWorkout?.Day + 1 ?? 1;
-        var nextWeek = lastCompletedWorkout?.Day > days ? lastCompletedWorkout.Week + 1 : lastCompletedWorkout?.Week ?? 1;
+        var nextWeek = lastCompletedWorkout?.Day >= days ? lastCompletedWorkout.Week + 1 : lastCompletedWorkout?.Week ?? 1;
 
         // workout would be complete
         if (nextWeek > weeks)

@@ -177,7 +177,7 @@ public sealed class WorkoutController
 
         return new OkObjectResult(true);
     }
-    
+
     [FunctionName("GetNextWorkout")]
     public async Task<IActionResult> GetNextWorkout(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]

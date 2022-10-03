@@ -92,7 +92,7 @@ public sealed class BodyController
 
         return new OkObjectResult(user);
     }
-    
+
     [FunctionName("GetUserBodyFat")]
     public async Task<IActionResult> GetUserBodyFat(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]

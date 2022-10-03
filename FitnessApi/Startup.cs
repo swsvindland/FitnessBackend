@@ -31,6 +31,7 @@ namespace FitnessApi
             builder.Services.AddScoped<ISupplementRepository, SupplementRepository>();
             builder.Services.AddScoped<IBodyRepository, BodyRepository>();
             builder.Services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+            builder.Services.AddScoped<IFoodRepository, FoodRepository>();
             
             // add external api calls
             builder.Services.AddScoped<IFoodApi, FoodApi.FoodApi>();

@@ -19,10 +19,11 @@ public sealed class UserController
     {
         _userService = userService;
     }
-    
+
     [FunctionName("Auth")]
     public async Task<IActionResult> Auth(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth")] HttpRequest req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth")]
+        HttpRequest req,
         ILogger log)
     {
         string requestBody;
@@ -30,24 +31,25 @@ public sealed class UserController
         {
             requestBody = await streamReader.ReadToEndAsync();
         }
-        
+
         var data = JsonConvert.DeserializeObject<Auth>(requestBody);
 
         if (data == null)
         {
             return new BadRequestResult();
         }
-        
+
         var token = await _userService.AuthByEmailPassword(data.Email, data.Password);
         return new OkObjectResult(token);
     }
-    
+
     [FunctionName("GetUser")]
     public async Task<IActionResult> GetUser(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
     {
         string email = req.Query["email"];
-        
+
         var user = await _userService.GetUserByEmail(email);
 
         return new OkObjectResult(user);

@@ -2,18 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44c9f887-7366-470e-aa69-48cbd8c88cb7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/FitnessRepository/Models/Food.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FitnessRepository/Models/Units.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/FitnessRepository/Models/UserFood.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/0e9a6b03-4f30-4ca3-a420-e9a891039cd2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/0e9a6b03-4f30-4ca3-a420-e9a891039cd2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FitnessRepository/Repositories/FoodRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FitnessRepository/Repositories/IFoodRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/3e8d4dd5-1f7e-4b0d-abc4-1f0c12a34fc0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3e8d4dd5-1f7e-4b0d-abc4-1f0c12a34fc0.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4a30983a-eefe-4ece-aba8-1f28377b25f9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/4a30983a-eefe-4ece-aba8-1f28377b25f9.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessApi/Controllers/BodyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessApi/Controllers/BodyController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FitnessApi/Controllers/FoodController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessApi/Controllers/FoodController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessRepository/FitnessContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessRepository/FitnessContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessApi/Controllers/SupplementsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessApi/Controllers/SupplementsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessApi/Controllers/UserController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessApi/Controllers/UserController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessApi/Controllers/WorkoutController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessApi/Controllers/WorkoutController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessApi/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessApi/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessRepository/Models/UserFood.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessRepository/Models/UserFood.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FitnessServices/Services/FoodService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessServices/Services/FoodService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FitnessServices/Services/IFoodService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessServices/Services/IFoodService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodApi/FoodApi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodApi/FoodApi.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
