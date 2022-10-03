@@ -1,10 +1,13 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace FitnessRepository.Models;
 
 public class Food
 {
     public long Id { get; set; }
+    public string? EdamamFoodId { get; set; }
     public string Name { get; set; }
     public string Brand { get; set; }
     public int ServingSize { get; set; }

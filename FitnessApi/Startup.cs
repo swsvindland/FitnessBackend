@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using FitnessRepository;
 using FitnessRepository.Repositories;
 using FitnessServices.Services;
@@ -19,6 +20,11 @@ namespace FitnessApi
             var configuration = builder.Services.BuildServiceProvider().GetService<IConfiguration>(); 
 
             builder.Services.AddHttpClient<IFoodApi, FoodApi.FoodApi>();
+
+            builder.Services.AddMvcCore().AddJsonOptions(opt =>
+            {
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
             
             var serverVersion = new MySqlServerVersion(new Version(8, 0, 23));
             var connectionString = configuration.GetConnectionString("DefaultConnection");

@@ -4,7 +4,8 @@ namespace FitnessRepository.Repositories;
 
 public interface IFoodRepository
 {
-    Task AddFood(Food food);
+    Task<long> AddFood(Food food);
+    Task<Food?> GetFoodByEdamamId(string edamamFoodId);
     Task<Food?> GetFood(long foodId);
     Task<IEnumerable<Food>> GetAllFoods();
     Task AddUserFood(UserFood userFood);

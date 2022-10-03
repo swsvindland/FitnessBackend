@@ -12,15 +12,21 @@ public sealed class FoodRepository: IFoodRepository
         _context = context;
     }
 
-    public async Task AddFood(Food food)
+    public async Task<long> AddFood(Food food)
     {
         _context.Food.Add(food);
         await _context.SaveChangesAsync();
+        return food.Id;
     }
 
     public async Task<Food?> GetFood(long foodId)
     {
         return await _context.Food.FirstOrDefaultAsync(e => e.Id == foodId);
+    }
+    
+    public async Task<Food?> GetFoodByEdamamId(string edamamFoodId)
+    {
+        return await _context.Food.FirstOrDefaultAsync(e => e.EdamamFoodId == edamamFoodId);
     }
 
     public async Task<IEnumerable<Food>> GetAllFoods()
