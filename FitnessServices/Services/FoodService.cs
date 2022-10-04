@@ -39,11 +39,11 @@ public sealed class FoodService : IFoodService
 
             if (user.Sex == "Male")
             {
-                calories = currentBodyFat > 15 ? userWeight.Weight * 13 : userWeight.Weight * 13 + 500;
+                calories = currentBodyFat > 15 ? userWeight.Weight * 11 : userWeight.Weight * 13 + 500;
             }
             else
             {
-                calories = currentBodyFat > 22 ? userWeight.Weight * 13 : userWeight.Weight * 13 + 500;
+                calories = currentBodyFat > 22 ? userWeight.Weight * 11 : userWeight.Weight * 13 + 500;
             }
             
             var protein = userWeight.Weight * 0.8;
@@ -55,6 +55,7 @@ public sealed class FoodService : IFoodService
 
             macros.Add(new Macros()
             {
+                Calories = (int) Math.Floor(calories),
                 Protein = (int) Math.Floor(protein),
                 Fat = (int) Math.Floor(fat),
                 Carbs = (int) Math.Floor(carbs),
