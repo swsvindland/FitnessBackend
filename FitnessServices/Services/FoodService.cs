@@ -85,7 +85,32 @@ public sealed class FoodService : IFoodService
 
     public async Task<Macros> GetUserCurrentMacos(Guid userId)
     {
-        return new Macros();
+        var userFoods = await _foodRepository.GetUserFoods(userId);
+        var macros = new Macros()
+        {
+            Alcohol = 0,
+            Calories = 0,
+            Carbs = 0,
+            Fiber = 0,
+            Fat = 0,
+            Protein = 0,
+            Water = 0
+        };
+
+        foreach (var userFood in userFoods)
+        {
+            var servings = userFood.Amount / userFood.Food?.ServingSize ?? 1;
+            
+            macros.Calories += userFood.Food?.Calories ?? 0 * servings;
+            macros.Protein += userFood.Food?.Protein ?? 0 * servings;
+            macros.Fat += userFood.Food?.TotalFat ?? 0 * servings;
+            macros.Carbs += userFood.Food?.Carbohydrates ?? 0 * servings;
+            macros.Fiber += userFood.Food?.Fiber ?? 0 * servings;
+            macros.Alcohol += userFood.Food?.Alcohol ?? 0 * servings;
+            macros.Water += userFood.Food?.Water ?? 0 * servings;
+        }
+        
+        return macros;
     }
     
     public async Task<IEnumerable<UserFood>> GetUserFoods(Guid userId)
@@ -93,7 +118,7 @@ public sealed class FoodService : IFoodService
         return await _foodRepository.GetUserFoods(userId);
     }
     
-    private EdamamNutrient? GetValueFromDictionary(Dictionary<string, EdamamNutrient>? dictionary, string key)
+    private static EdamamNutrient? GetValueFromDictionary(Dictionary<string, EdamamNutrient>? dictionary, string key)
     {
         if (dictionary == null) return null;
 
@@ -105,7 +130,6 @@ public sealed class FoodService : IFoodService
     {
         var newFood = new Food();
         var newUserFood = new UserFood();
-        
         
         if (userFood.FoodId == null && userFood.EdamamFoodId != null)
         {
@@ -174,6 +198,7 @@ public sealed class FoodService : IFoodService
             throw new Exception("Invalid food");
         }
         
+        newUserFood.Created = DateTime.UtcNow.Date;
         await _foodRepository.AddUserFood(newUserFood);
     }
 }

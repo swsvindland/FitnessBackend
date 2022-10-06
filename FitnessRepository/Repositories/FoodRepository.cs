@@ -50,6 +50,7 @@ public sealed class FoodRepository: IFoodRepository
     {
         return await _context.UserFood
             .Where(f => f.UserId == userId)
+            .Where(e => e.Created.Date == DateTime.UtcNow.Date)
             .Include(f => f.Food)
             .ToListAsync();
     }
