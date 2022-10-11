@@ -81,6 +81,18 @@ public sealed class FoodController
 
         return new OkObjectResult(user);
     }
+    
+    [FunctionName("GetUserFoodsForGrid")]
+    public async Task<IActionResult> GetUserFoodsForGrid(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var userId = Guid.Parse(req.Query["userId"]);
+
+        var user = await _foodService.GetUserFoodsForGrid(userId);
+
+        return new OkObjectResult(user);
+    }
 
     [FunctionName("GetCurrentUserMacros")]
     public async Task<IActionResult> GetCurrentUserMacros(

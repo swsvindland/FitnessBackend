@@ -12,5 +12,6 @@ public interface IFoodService
     Task<EdamamNutrients?> GetFoodDetails(string foodId);
     Task<Macros> GetUserCurrentMacos(Guid userId);
     Task<IEnumerable<UserFood>> GetUserFoods(Guid userId);
+    Task<IEnumerable<UserFoodGridItem>> GetUserFoodsForGrid(Guid userId);
     Task AddUserFood(UserFood userFood);
 }

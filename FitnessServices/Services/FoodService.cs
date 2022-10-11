@@ -13,26 +13,27 @@ public sealed class FoodService : IFoodService
     private readonly IFoodApi _foodApi;
     private readonly IFoodRepository _foodRepository;
 
-    public FoodService(IUserService userService, IBodyService bodyService, IFoodApi foodApi, IFoodRepository foodRepository)
+    public FoodService(IUserService userService, IBodyService bodyService, IFoodApi foodApi,
+        IFoodRepository foodRepository)
     {
         _userService = userService;
         _bodyService = bodyService;
         _foodApi = foodApi;
         _foodRepository = foodRepository;
     }
-    
+
     public async Task<IEnumerable<Macros>> GenerateMacros(Guid userId)
     {
         var user = await _userService.GetUserById(userId);
-        
+
         if (user == null) return new List<Macros>();
 
         var userWeights = await _bodyService.GetAllUserWeights(userId);
         var bodyFat = await _bodyService.GenerateBodyFats(user.Id);
         var macros = new List<Macros>();
         var currentBodyFat = bodyFat?.LastOrDefault()?.BodyFat ?? 10;
-        
-        
+
+
         foreach (var userWeight in userWeights)
         {
             var calories = 0.0;
@@ -45,7 +46,7 @@ public sealed class FoodService : IFoodService
             {
                 calories = currentBodyFat > 22 ? userWeight.Weight * 11 : userWeight.Weight * 13 + 500;
             }
-            
+
             var protein = userWeight.Weight * 0.8;
             var fat = userWeight.Weight * 0.35;
             var carbs = (calories - protein * 4 - fat * 9) / 4;
@@ -67,18 +68,18 @@ public sealed class FoodService : IFoodService
 
         return macros;
     }
-    
+
     public async Task<IEnumerable<string>?> AutocompleteFood(string query)
     {
         return await _foodApi.AutocompleteFood(query);
     }
-    
+
     public async Task<IEnumerable<EdamamFood>?> ParseFood(string foodQuery, string? barcode)
     {
         return await _foodApi.ParseFood(foodQuery, barcode);
     }
-    
-    public async Task<EdamamNutrients?> GetFoodDetails(string foodId )
+
+    public async Task<EdamamNutrients?> GetFoodDetails(string foodId)
     {
         return await _foodApi.Nutrients(foodId);
     }
@@ -100,24 +101,83 @@ public sealed class FoodService : IFoodService
         foreach (var userFood in userFoods)
         {
             var servings = userFood.Amount / userFood.Food?.ServingSize ?? 1;
-            
-            macros.Calories += userFood.Food?.Calories ?? 0 * servings;
-            macros.Protein += userFood.Food?.Protein ?? 0 * servings;
-            macros.Fat += userFood.Food?.TotalFat ?? 0 * servings;
-            macros.Carbs += userFood.Food?.Carbohydrates ?? 0 * servings;
-            macros.Fiber += userFood.Food?.Fiber ?? 0 * servings;
-            macros.Alcohol += userFood.Food?.Alcohol ?? 0 * servings;
-            macros.Water += userFood.Food?.Water ?? 0 * servings;
+
+            macros.Calories += (userFood.Food?.Calories ?? 0) * servings;
+            macros.Protein += (userFood.Food?.Protein ?? 0) * servings;
+            macros.Fat += (userFood.Food?.TotalFat ?? 0) * servings;
+            macros.Carbs += (userFood.Food?.Carbohydrates ?? 0) * servings;
+            macros.Fiber += (userFood.Food?.Fiber ?? 0) * servings;
+            macros.Alcohol += (userFood.Food?.Alcohol ?? 0) * servings;
+            macros.Water += (userFood.Food?.Water ?? 0) * servings;
         }
-        
+
         return macros;
     }
-    
+
     public async Task<IEnumerable<UserFood>> GetUserFoods(Guid userId)
     {
         return await _foodRepository.GetUserFoods(userId);
     }
-    
+
+    public async Task<IEnumerable<UserFoodGridItem>> GetUserFoodsForGrid(Guid userId)
+    {
+        var userFoods = await _foodRepository.GetUserFoods(userId);
+        var userFoodsGrid = new List<UserFoodGridItem>();
+
+        foreach (var userFood in userFoods)
+        {
+            var servings = userFood.Amount / userFood.Food?.ServingSize ?? 1;
+
+            userFoodsGrid.Add(new UserFoodGridItem()
+            {
+                Amount = userFood.Amount,
+                Created = userFood.Created,
+                FoodId = userFood.FoodId,
+                EdamamFoodId = userFood.EdamamFoodId,
+                Id = userFood.Id,
+                Servings = servings,
+                UserId = userFood.UserId,
+                Food = new Food()
+                {
+                    Name = userFood.Food?.Name ?? string.Empty,
+                    Id = userFood.Food?.Id ?? 0,
+                    ServingSize = userFood.Food?.ServingSize ?? 0,
+                    ServingSizeUnit = userFood.Food?.ServingSizeUnit ?? Units.Gram,
+                    Alcohol = (userFood.Food?.Alcohol ?? 0) * servings,
+                    Calories = (userFood.Food?.Calories ?? 0) * servings,
+                    Carbohydrates = (userFood.Food?.Carbohydrates ?? 0) * servings,
+                    Fiber = (userFood.Food?.Fiber ?? 0) * servings,
+                    TotalFat = (userFood.Food?.TotalFat ?? 0) * servings,
+                    Protein = (userFood.Food?.Protein ?? 0) * servings,
+                    Water = (userFood.Food?.Water ?? 0) * servings,
+                    SaturatedFat = (userFood.Food?.SaturatedFat ?? 0) * servings,
+                    TransFat = (userFood.Food?.TransFat ?? 0) * servings,
+                    Cholesterol = (userFood.Food?.Cholesterol ?? 0) * servings,
+                    Sodium = (userFood.Food?.Sodium ?? 0) * servings,
+                    Potassium = (userFood.Food?.Potassium ?? 0) * servings,
+                    Sugar = (userFood.Food?.Sugar ?? 0) * servings,
+                    VitaminA = (userFood.Food?.VitaminA ?? 0) * servings,
+                    VitaminC = (userFood.Food?.VitaminC ?? 0) * servings,
+                    Calcium = (userFood.Food?.Calcium ?? 0) * servings,
+                    Iron = (userFood.Food?.Iron ?? 0) * servings,
+                    VitaminD = (userFood.Food?.VitaminD ?? 0) * servings,
+                    VitaminB6 = (userFood.Food?.VitaminB6 ?? 0) * servings,
+                    VitaminB12 = (userFood.Food?.VitaminB12 ?? 0) * servings,
+                    Magnesium = (userFood.Food?.Magnesium ?? 0) * servings,
+                    Zinc = (userFood.Food?.Zinc ?? 0) * servings,
+                    Folate = (userFood.Food?.Folate ?? 0) * servings,
+                    VitaminK = (userFood.Food?.VitaminK ?? 0) * servings,
+                    Thiamin = (userFood.Food?.Thiamin ?? 0) * servings,
+                    Riboflavin = (userFood.Food?.Riboflavin ?? 0) * servings,
+                    Niacin = (userFood.Food?.Niacin ?? 0) * servings,
+                    Phosphorus = (userFood.Food?.Phosphorus ?? 0) * servings,
+                }
+            });
+        }
+
+        return userFoodsGrid;
+    }
+
     private static EdamamNutrient? GetValueFromDictionary(Dictionary<string, EdamamNutrient>? dictionary, string key)
     {
         if (dictionary == null) return null;
@@ -130,7 +190,7 @@ public sealed class FoodService : IFoodService
     {
         var newFood = new Food();
         var newUserFood = new UserFood();
-        
+
         if (userFood.FoodId == null && userFood.EdamamFoodId != null)
         {
             var food = await _foodRepository.GetFoodByEdamamId(userFood.EdamamFoodId);
@@ -197,7 +257,7 @@ public sealed class FoodService : IFoodService
         {
             throw new Exception("Invalid food");
         }
-        
+
         newUserFood.Created = DateTime.UtcNow.Date;
         await _foodRepository.AddUserFood(newUserFood);
     }
