@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44c9f887-7366-470e-aa69-48cbd8c88cb7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FitnessApi/Controllers/DashboardController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FitnessServices/Models/Dashboard.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FitnessServices/Services/DashboardService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/FitnessServices/Services/IDashboardService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessApi/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessApi/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessServices/Services/IWorkoutService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessServices/Services/IWorkoutService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FitnessServices/Services/WorkoutService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessServices/Services/WorkoutService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

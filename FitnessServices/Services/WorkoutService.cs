@@ -225,6 +225,11 @@ public sealed class WorkoutService : IWorkoutService
 
         await _workoutRepository.AddUserWorkoutCompleted(userWorkout);
     }
+    
+    public async Task<IEnumerable<UserWorkoutsCompleted>> GetUserWorkoutsCompleted(Guid userId)
+    {
+        return await _workoutRepository.GetUserWorkoutsCompleted(userId);
+    }
 
     public async Task<UserWorkoutsCompleted?> GetUserNextWorkout(Guid userId)
     {

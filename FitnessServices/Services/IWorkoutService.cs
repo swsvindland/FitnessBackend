@@ -18,5 +18,6 @@ public interface IWorkoutService
     Task AddUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity);
     Task<IEnumerable<UserOneRepMaxEstimates>> GetUserOneRepMaxes(Guid userId);
     Task UserCompleteWorkout(UserWorkoutsCompleted userWorkoutsCompleted);
+    Task<IEnumerable<UserWorkoutsCompleted>> GetUserWorkoutsCompleted(Guid userId);
     Task<UserWorkoutsCompleted?> GetUserNextWorkout(Guid userId);
 }

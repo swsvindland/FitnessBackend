@@ -48,6 +48,7 @@ namespace FitnessApi
             builder.Services.AddScoped<IBodyService, BodyService>();
             builder.Services.AddScoped<IFoodService, FoodService>();
             builder.Services.AddScoped<IWorkoutService, WorkoutService>();
+            builder.Services.AddScoped<IDashboardService, DashboardService>();
         }
     }
 }
