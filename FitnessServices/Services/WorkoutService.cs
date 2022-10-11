@@ -96,6 +96,7 @@ public sealed class WorkoutService : IWorkoutService
         {
             var newWorkoutActivity = new UserWorkoutActivityModel()
             {
+                Id = workoutActivity.Id,
                 UserId = workoutActivity.UserId,
                 WorkoutBlockExerciseId = workoutActivity.WorkoutBlockExerciseId,
                 Set = workoutActivity.Set,
@@ -111,7 +112,7 @@ public sealed class WorkoutService : IWorkoutService
         var userExerciseOneRepMax = await GetUserOneRepMaxesByExerciseId(userId, workout.ExerciseId);
 
         var recommendedWeight =
-            (int) Math.Floor(userExerciseOneRepMax?.Estimate * REPS_TO_PERCENT[workout.MaxReps + 1] ?? 0);
+            (int) Math.Floor(userExerciseOneRepMax?.Estimate * REPS_TO_PERCENT[workout.MaxReps - 1] ?? 0);
         var recommendedWeightByFive = (int) Math.Round(recommendedWeight / 5.0) * 5;
 
         if (set == 0)
@@ -121,7 +122,7 @@ public sealed class WorkoutService : IWorkoutService
                 WorkoutBlockExerciseId = workoutBlockExerciseId,
                 Set = set,
                 Reps = workout.MaxReps,
-                Weight = recommendedWeightByFive + 10, // increase the estimate by 10 for progressive overload
+                Weight = recommendedWeightByFive + 5,
                 Created = DateTime.UtcNow,
                 Saved = false
             };
@@ -137,7 +138,7 @@ public sealed class WorkoutService : IWorkoutService
                 WorkoutBlockExerciseId = workoutBlockExerciseId,
                 Set = set,
                 Reps = workout.MaxReps,
-                Weight = recommendedWeightByFive + 10, // increase the estimate by 10 for progressive overload
+                Weight = recommendedWeightByFive,
                 Created = DateTime.UtcNow,
                 Saved = false
             };

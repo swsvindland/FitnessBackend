@@ -135,7 +135,7 @@ public sealed class WorkoutRepository : IWorkoutRepository
         return await _context.UserOneRepMaxEstimates
             .Where(e => e.UserId == userId)
             .Where(e => e.ExerciseId == exerciseId)
-            .OrderBy(e => e.Created)
+            .OrderByDescending(e => e.Created)
             .FirstOrDefaultAsync();
     }
 
