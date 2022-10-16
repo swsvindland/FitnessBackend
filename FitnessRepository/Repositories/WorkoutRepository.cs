@@ -49,6 +49,15 @@ public sealed class WorkoutRepository : IWorkoutRepository
         return workoutBlocks;
     }
 
+    public async Task<IEnumerable<WorkoutBlockExercise>> GetWorkoutBlockExercises(long workoutBlockId)
+    {
+        var workoutBlockExercise = await _context.WorkoutBlockExercise
+            .Where(e => e.WorkoutBlockId == workoutBlockId)
+            .ToListAsync();
+
+        return workoutBlockExercise;
+    }
+
     public async Task<WorkoutBlockExercise?> GetWorkoutBlockExercise(long workoutBlockId)
     {
         var workoutBlockExercise = await _context.WorkoutBlockExercise
@@ -63,7 +72,7 @@ public sealed class WorkoutRepository : IWorkoutRepository
     {
         return await _context.UserWorkout.Where(e => e.UserId == userId).ToListAsync();
     }
-    
+
     public async Task<UserWorkout?> GetActiveUserWorkouts(Guid userId)
     {
         return await _context.UserWorkout.Where(e => e.UserId == userId).Where(e => e.Active).FirstOrDefaultAsync();
@@ -100,7 +109,15 @@ public sealed class WorkoutRepository : IWorkoutRepository
             .ToListAsync();
     }
 
-    public async Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set, int week, int day)
+    public async Task DeleteUserWorkoutActivities(IEnumerable<UserWorkoutActivity> activities)
+    {
+        _context.UserWorkoutActivity.RemoveRange(activities);
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set,
+        int week, int day)
     {
         return await _context.UserWorkoutActivity
             .Where(e => e.UserId == userId)
@@ -145,16 +162,23 @@ public sealed class WorkoutRepository : IWorkoutRepository
 
         await _context.SaveChangesAsync();
     }
-    
+
     public async Task AddUserWorkoutCompleted(UserWorkoutsCompleted userWorkoutsCompleted)
     {
         _context.UserWorkoutsCompleted.Add(userWorkoutsCompleted);
 
         await _context.SaveChangesAsync();
     }
-    
+
     public async Task<IEnumerable<UserWorkoutsCompleted>> GetUserWorkoutsCompleted(Guid userId)
     {
         return await _context.UserWorkoutsCompleted.Where(e => e.UserId == userId).ToListAsync();
+    }
+
+    public async Task DeleteUserWorkoutCompleted(IEnumerable<UserWorkoutsCompleted> workoutsCompleted)
+    {
+        _context.UserWorkoutsCompleted.RemoveRange(workoutsCompleted);
+
+        await _context.SaveChangesAsync();
     }
 }

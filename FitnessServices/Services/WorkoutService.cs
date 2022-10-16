@@ -276,4 +276,27 @@ public sealed class WorkoutService : IWorkoutService
             WorkoutCompleted = false
         };
     }
+
+    public async Task RestartWorkout(Guid userId, long workoutId)
+    {
+        var workoutBlock = await _workoutRepository.GetWorkoutBlock(workoutId);
+
+        if (workoutBlock == null)
+        {
+            return;
+        }
+
+        var workoutBlockExercises = await _workoutRepository.GetWorkoutBlockExercises(workoutBlock.Id);
+
+        foreach (var workoutBlockExercise in workoutBlockExercises)
+        {
+            var workoutActivities =  await _workoutRepository.GetUserWorkoutActivities(userId, workoutBlockExercise.Id);
+
+            await _workoutRepository.DeleteUserWorkoutActivities(workoutActivities);
+        }
+        
+        var userWorkoutsCompleted = await _workoutRepository.GetUserWorkoutsCompleted(userId);
+        
+        await _workoutRepository.DeleteUserWorkoutCompleted(userWorkoutsCompleted);
+    }
 }

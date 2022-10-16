@@ -189,4 +189,17 @@ public sealed class WorkoutController
 
         return new OkObjectResult(nextWorkout);
     }
+    
+    [FunctionName("RestartWorkout")]
+    public async Task<IActionResult> RestartWorkout(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var userId = Guid.Parse(req.Query["userId"]);
+        var workoutId = long.Parse(req.Query["workoutId"]);
+
+        await _workoutService.RestartWorkout(userId, workoutId);
+
+        return new OkObjectResult(true);
+    }
 }

@@ -20,4 +20,5 @@ public interface IWorkoutService
     Task UserCompleteWorkout(UserWorkoutsCompleted userWorkoutsCompleted);
     Task<IEnumerable<UserWorkoutsCompleted>> GetUserWorkoutsCompleted(Guid userId);
     Task<UserNextWorkout?> GetUserNextWorkout(Guid userId);
+    Task RestartWorkout(Guid userId, long workoutId);
 }
