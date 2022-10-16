@@ -231,7 +231,7 @@ public sealed class WorkoutService : IWorkoutService
         return await _workoutRepository.GetUserWorkoutsCompleted(userId);
     }
 
-    public async Task<UserWorkoutsCompleted?> GetUserNextWorkout(Guid userId)
+    public async Task<UserNextWorkout?> GetUserNextWorkout(Guid userId)
     {
         var currentWorkout = await _workoutRepository.GetActiveUserWorkouts(userId);
         var workoutsCompleted = (await _workoutRepository.GetUserWorkoutsCompleted(userId)).ToArray();
@@ -253,17 +253,27 @@ public sealed class WorkoutService : IWorkoutService
         // workout would be complete
         if (nextWeek > weeks)
         {
-            return null;
+            return new UserNextWorkout()
+            {
+                UserId = userId,
+                Created = DateTime.UtcNow,
+                Day = (short) 0,
+                Week = (short) 0,
+                WorkoutId = currentWorkout?.WorkoutId ?? 0,
+                WorkoutBlock = 1,
+                WorkoutCompleted = true
+            };
         }
 
-        return new UserWorkoutsCompleted()
+        return new UserNextWorkout()
         {
             UserId = userId,
             Created = DateTime.UtcNow,
             Day = (short) nextDay,
             Week = (short) nextWeek,
             WorkoutId = currentWorkout?.WorkoutId ?? 0,
-            WorkoutBlock = 1
+            WorkoutBlock = 1,
+            WorkoutCompleted = false
         };
     }
 }
