@@ -28,7 +28,7 @@ public class DashboardService: IDashboardService
             AddWeight = userWeights.All(e => e.Created.Date != date.Date),
             AddBloodPressure = !userBloodPressure.Any(e => e.Created.AddDays(-7) < date),
             AddBodyMeasurements = !userBodies.Any(e => e.Created.AddDays(-7) < date),
-            DoWorkout = !userWorkouts.Any(e => e.Created.AddDays(-1) <= date),
+            DoWorkout = userWorkouts.Any(e => e.Created.Date != date),
         };
     }
 }
