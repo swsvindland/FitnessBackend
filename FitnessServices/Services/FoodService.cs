@@ -21,6 +21,11 @@ public sealed class FoodService : IFoodService
         _foodApi = foodApi;
         _foodRepository = foodRepository;
     }
+    
+    private static float GramToFluidOunce(float gram)
+    {
+        return gram * 0.035274f;
+    }
 
     public async Task<IEnumerable<Macros>> GenerateMacros(Guid userId)
     {
@@ -108,7 +113,7 @@ public sealed class FoodService : IFoodService
             macros.Carbs += (userFood.Food?.Carbohydrates ?? 0) * servings;
             macros.Fiber += (userFood.Food?.Fiber ?? 0) * servings;
             macros.Alcohol += (userFood.Food?.Alcohol ?? 0) * servings;
-            macros.Water += (userFood.Food?.Water ?? 0) * servings;
+            macros.Water += GramToFluidOunce((userFood.Food?.Water ?? 0) * servings);
         }
 
         return macros;
@@ -149,7 +154,7 @@ public sealed class FoodService : IFoodService
                     Fiber = (userFood.Food?.Fiber ?? 0) * servings,
                     TotalFat = (userFood.Food?.TotalFat ?? 0) * servings,
                     Protein = (userFood.Food?.Protein ?? 0) * servings,
-                    Water = (userFood.Food?.Water ?? 0) * servings,
+                    Water = GramToFluidOunce((userFood.Food?.Water ?? 0) * servings),
                     SaturatedFat = (userFood.Food?.SaturatedFat ?? 0) * servings,
                     TransFat = (userFood.Food?.TransFat ?? 0) * servings,
                     Cholesterol = (userFood.Food?.Cholesterol ?? 0) * servings,
@@ -237,7 +242,7 @@ public sealed class FoodService : IFoodService
                     VitaminB6 = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITB6A")?.Quantity ?? 0,
                     Folate = GetValueFromDictionary(edamamFood?.TotalNutrients, "FOLDFE")?.Quantity ?? 0,
                     VitaminB12 = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITB12")?.Quantity ?? 0,
-                    Water = GetValueFromDictionary(edamamFood?.TotalNutrients, "WATER")?.Quantity ?? 0,
+                    Water = GramToFluidOunce(GetValueFromDictionary(edamamFood?.TotalNutrients, "WATER")?.Quantity ?? 0),
                 };
 
                 var id = await _foodRepository.AddFood(newFood);
