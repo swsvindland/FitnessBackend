@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44c9f887-7366-470e-aa69-48cbd8c88cb7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/3e8d4dd5-1f7e-4b0d-abc4-1f0c12a34fc0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/3e8d4dd5-1f7e-4b0d-abc4-1f0c12a34fc0.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessApi/Controllers/WorkoutController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessApi/Controllers/WorkoutController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessRepository/Repositories/IWorkoutRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessRepository/Repositories/IWorkoutRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessRepository/Repositories/WorkoutRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessRepository/Repositories/WorkoutRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessServices/Services/IWorkoutService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessServices/Services/IWorkoutService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FitnessServices/Services/WorkoutService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessServices/Services/WorkoutService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessApi/Controllers/FoodController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessApi/Controllers/FoodController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessRepository/Repositories/FoodRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessRepository/Repositories/FoodRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessRepository/Repositories/IFoodRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessRepository/Repositories/IFoodRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessServices/Services/FoodService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessServices/Services/FoodService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessServices/Services/IFoodService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessServices/Services/IFoodService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

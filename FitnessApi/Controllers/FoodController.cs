@@ -76,8 +76,9 @@ public sealed class FoodController
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
+        var date = DateTime.Parse(req.Query["date"]);
 
-        var user = await _foodService.GetUserFoods(userId);
+        var user = await _foodService.GetUserFoods(userId, date);
 
         return new OkObjectResult(user);
     }
@@ -88,8 +89,9 @@ public sealed class FoodController
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
+        var date = DateTime.Parse(req.Query["date"]);
 
-        var user = await _foodService.GetUserFoodsForGrid(userId);
+        var user = await _foodService.GetUserFoodsForGrid(userId, date);
 
         return new OkObjectResult(user);
     }
@@ -100,8 +102,9 @@ public sealed class FoodController
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
+        var date = DateTime.Parse(req.Query["date"]);
 
-        var user = await _foodService.GetUserCurrentMacos(userId);
+        var user = await _foodService.GetUserCurrentMacos(userId, date);
 
         return new OkObjectResult(user);
     }

@@ -89,9 +89,9 @@ public sealed class FoodService : IFoodService
         return await _foodApi.Nutrients(foodId);
     }
 
-    public async Task<Macros> GetUserCurrentMacos(Guid userId)
+    public async Task<Macros> GetUserCurrentMacos(Guid userId, DateTime date)
     {
-        var userFoods = await _foodRepository.GetUserFoods(userId);
+        var userFoods = await _foodRepository.GetUserFoods(userId, date);
         var macros = new Macros()
         {
             Alcohol = 0,
@@ -119,14 +119,14 @@ public sealed class FoodService : IFoodService
         return macros;
     }
 
-    public async Task<IEnumerable<UserFood>> GetUserFoods(Guid userId)
+    public async Task<IEnumerable<UserFood>> GetUserFoods(Guid userId, DateTime date)
     {
-        return await _foodRepository.GetUserFoods(userId);
+        return await _foodRepository.GetUserFoods(userId, date);
     }
 
-    public async Task<IEnumerable<UserFoodGridItem>> GetUserFoodsForGrid(Guid userId)
+    public async Task<IEnumerable<UserFoodGridItem>> GetUserFoodsForGrid(Guid userId, DateTime date)
     {
-        var userFoods = await _foodRepository.GetUserFoods(userId);
+        var userFoods = await _foodRepository.GetUserFoods(userId, date);
         var userFoodsGrid = new List<UserFoodGridItem>();
 
         foreach (var userFood in userFoods)
@@ -263,7 +263,6 @@ public sealed class FoodService : IFoodService
             throw new Exception("Invalid food");
         }
 
-        newUserFood.Created = DateTime.UtcNow.Date;
         await _foodRepository.AddUserFood(newUserFood);
     }
 }

@@ -10,8 +10,8 @@ public interface IFoodService
     Task<IEnumerable<string>?> AutocompleteFood(string query);
     Task<IEnumerable<EdamamFood>?> ParseFood(string foodQuery, string? barcode);
     Task<EdamamNutrients?> GetFoodDetails(string foodId);
-    Task<Macros> GetUserCurrentMacos(Guid userId);
-    Task<IEnumerable<UserFood>> GetUserFoods(Guid userId);
-    Task<IEnumerable<UserFoodGridItem>> GetUserFoodsForGrid(Guid userId);
+    Task<Macros> GetUserCurrentMacos(Guid userId, DateTime date);
+    Task<IEnumerable<UserFood>> GetUserFoods(Guid userId, DateTime date);
+    Task<IEnumerable<UserFoodGridItem>> GetUserFoodsForGrid(Guid userId, DateTime date);
     Task AddUserFood(UserFood userFood);
 }

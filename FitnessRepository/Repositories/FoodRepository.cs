@@ -46,11 +46,11 @@ public sealed class FoodRepository: IFoodRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<UserFood>> GetUserFoods(Guid userId)
+    public async Task<IEnumerable<UserFood>> GetUserFoods(Guid userId, DateTime date)
     {
         return await _context.UserFood
             .Where(f => f.UserId == userId)
-            .Where(e => e.Created.Date == DateTime.UtcNow.Date)
+            .Where(e => e.Created.Date == date.Date)
             .Include(f => f.Food)
             .ToListAsync();
     }
