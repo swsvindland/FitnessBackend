@@ -8,5 +8,6 @@ public interface IUserRepository
     public Task<Users?> GetUserByEmail(string email);
     public Task AddUser(Users user);
     Task AddToken(UserToken token);
-    Task<UserToken?> GetTokenByUserId(Guid userId);
+    Task<UserToken?> GetToken(Guid userId, string token);
+    
 }

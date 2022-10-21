@@ -8,5 +8,5 @@ public interface IUserService
     Task<Users?> GetUserById(Guid userId);
     public Task<Users?> GetUserByEmail(string email);
     Task CreateUser(string email, string password);
-    Task<UserToken?> GetTokenByUserId(Guid userId);
+    Task<UserToken?> GetToken(Guid userId, string token);
 }

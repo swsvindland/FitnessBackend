@@ -21,7 +21,7 @@ public class AuthService: IAuthService
             return false;
         }
 
-        var currentToken = await _userService.GetTokenByUserId(userId);
+        var currentToken = await _userService.GetToken(userId, token.ToString());
 
         if (currentToken == null)
         {

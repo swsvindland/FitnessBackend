@@ -94,8 +94,8 @@ public sealed class UserService: IUserService
         return await _userRepository.GetUserByEmail(email);
     }
     
-    public async Task<UserToken?> GetTokenByUserId(Guid userId)
+    public async Task<UserToken?> GetToken(Guid userId, string token)
     {
-        return await _userRepository.GetTokenByUserId(userId);
+        return await _userRepository.GetToken(userId, token);
     }
 }

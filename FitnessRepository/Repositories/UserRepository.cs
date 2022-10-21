@@ -34,10 +34,12 @@ public sealed class UserRepository : IUserRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<UserToken?> GetTokenByUserId(Guid userId)
+    public async Task<UserToken?> GetToken(Guid userId, string token)
     {
         return await _context.UserToken
             .OrderBy(e => e.Created)
-            .LastOrDefaultAsync(e => e.UserId == userId);
+            .Where(e => e.Token == token)
+            .Where(e => e.UserId == userId)
+            .FirstOrDefaultAsync();
     }
 }
