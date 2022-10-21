@@ -43,7 +43,7 @@ public sealed class FoodService : IFoodService
         {
             var calories = 0.0;
 
-            if (user.Sex == "Male")
+            if (user.Sex == Sex.Male)
             {
                 calories = currentBodyFat > 15 ? userWeight.Weight * 11 : userWeight.Weight * 13 + 500;
             }

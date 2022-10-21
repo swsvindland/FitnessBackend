@@ -15,17 +15,26 @@ namespace FitnessApi.Controllers;
 public sealed class DashboardController
 {
     private readonly IDashboardService _dashboardService;
+    private readonly IAuthService _authService;
 
-    public DashboardController(IDashboardService dashboardService)
+    public DashboardController(IDashboardService dashboardService, IAuthService authService)
     {
         _dashboardService = dashboardService;
+        _authService = authService;
     }
-    
+
     [FunctionName("GetUserDashboard")]
     public async Task<IActionResult> GetUser(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
         var date = DateTime.Parse(req.Query["date"]);
 

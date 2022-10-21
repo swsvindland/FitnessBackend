@@ -15,10 +15,12 @@ namespace FitnessApi.Controllers;
 public sealed class BodyController
 {
     private readonly IBodyService _bodyService;
+    private readonly IAuthService _authService;
 
-    public BodyController(IBodyService bodyService)
+    public BodyController(IBodyService bodyService, IAuthService authService)
     {
         _bodyService = bodyService;
+        _authService = authService;
     }
 
     [FunctionName("GetUserWeights")]
@@ -26,6 +28,13 @@ public sealed class BodyController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GetAllUserWeights(userId);
@@ -38,6 +47,13 @@ public sealed class BodyController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -56,6 +72,13 @@ public sealed class BodyController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GetAllUserBodies(userId);
@@ -68,6 +91,13 @@ public sealed class BodyController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -86,6 +116,13 @@ public sealed class BodyController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GetAllUserBloodPressures(userId);
@@ -98,6 +135,13 @@ public sealed class BodyController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GenerateBodyFats(userId);
@@ -110,6 +154,13 @@ public sealed class BodyController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -128,6 +179,13 @@ public sealed class BodyController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {

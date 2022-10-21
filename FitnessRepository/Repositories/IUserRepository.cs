@@ -6,4 +6,7 @@ public interface IUserRepository
 {
     Task<Users?> GetUserById(Guid userId);
     public Task<Users?> GetUserByEmail(string email);
+    public Task AddUser(Users user);
+    Task AddToken(UserToken token);
+    Task<UserToken?> GetTokenByUserId(Guid userId);
 }

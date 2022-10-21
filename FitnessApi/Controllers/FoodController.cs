@@ -15,10 +15,12 @@ namespace FitnessApi.Controllers;
 public sealed class FoodController
 {
     private readonly IFoodService _foodService;
+    private readonly IAuthService _authService;
 
-    public FoodController(IFoodService foodService)
+    public FoodController(IFoodService foodService, IAuthService authService)
     {
         _foodService = foodService;
+        _authService = authService;
     }
 
     [FunctionName("GetMacros")]
@@ -26,6 +28,13 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _foodService.GenerateMacros(userId);
@@ -38,6 +47,13 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var query = req.Query["query"];
 
         var user = await _foodService.AutocompleteFood(query);
@@ -50,6 +66,13 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var query = req.Query["query"];
         var barcode = req.Query["barcode"];
 
@@ -63,6 +86,13 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var foodId = req.Query["foodId"];
 
         var user = await _foodService.GetFoodDetails(foodId);
@@ -75,6 +105,13 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
         var date = DateTime.Parse(req.Query["date"]);
 
@@ -82,12 +119,19 @@ public sealed class FoodController
 
         return new OkObjectResult(user);
     }
-    
+
     [FunctionName("GetUserFoodsForGrid")]
     public async Task<IActionResult> GetUserFoodsForGrid(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
         var date = DateTime.Parse(req.Query["date"]);
 
@@ -101,6 +145,13 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
         var date = DateTime.Parse(req.Query["date"]);
 
@@ -115,6 +166,13 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {

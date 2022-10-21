@@ -96,7 +96,7 @@ public sealed class BodyService: IBodyService
         
         foreach (var userBody in userBodies)
         {
-            if (user.Sex == "Male")
+            if (user.Sex == Sex.Male)
             {
                 userBodyFats.Add(new UserBodyFat()
                 {

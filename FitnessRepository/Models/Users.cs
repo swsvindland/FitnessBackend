@@ -1,4 +1,6 @@
-﻿namespace FitnessRepository.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FitnessRepository.Models;
 
 public sealed class Users
 {
@@ -8,5 +10,6 @@ public sealed class Users
     public string Email { get; set; }
     public string Salt { get; set; }
     public string Password { get; set; }
-    public string Sex { get; set; }
+    [Column(TypeName = "varchar(255)")]
+    public Sex Sex { get; set; }
 }

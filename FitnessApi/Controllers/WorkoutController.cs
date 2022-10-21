@@ -15,10 +15,12 @@ namespace FitnessApi.Controllers;
 public sealed class WorkoutController
 {
     private readonly IWorkoutService _workoutService;
+    private readonly IAuthService _authService;
 
-    public WorkoutController(IWorkoutService workoutService)
+    public WorkoutController(IWorkoutService workoutService, IAuthService authService)
     {
         _workoutService = workoutService;
+        _authService = authService;
     }
 
     [FunctionName("GetExercises")]
@@ -26,6 +28,13 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var exercises = await _workoutService.GetExercises();
 
         return new OkObjectResult(exercises);
@@ -36,6 +45,13 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var workouts = await _workoutService.GetWorkouts();
 
         return new OkObjectResult(workouts);
@@ -46,6 +62,13 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var workoutId = long.Parse(req.Query["workoutId"]);
 
         var workouts = await _workoutService.GetWorkout(workoutId);
@@ -58,6 +81,13 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var workoutId = long.Parse(req.Query["workoutId"]);
 
         var workouts = await _workoutService.GetWorkoutBlocks(workoutId);
@@ -70,6 +100,13 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
 
         var workouts = await _workoutService.GetUserWorkouts(userId);
@@ -82,6 +119,13 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
         var workoutId = long.Parse(req.Query["workoutId"]);
 
@@ -95,6 +139,13 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
         var workoutId = long.Parse(req.Query["workoutId"]);
 
@@ -108,6 +159,13 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
         var workoutBlockExerciseId = long.Parse(req.Query["workoutBlockExerciseId"]);
 
@@ -121,6 +179,13 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
         var workoutBlockExerciseId = long.Parse(req.Query["workoutBlockExerciseId"]);
         var set = int.Parse(req.Query["set"]);
@@ -137,6 +202,13 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -160,6 +232,13 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -183,18 +262,32 @@ public sealed class WorkoutController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
 
         var nextWorkout = await _workoutService.GetUserNextWorkout(userId);
 
         return new OkObjectResult(nextWorkout);
     }
-    
+
     [FunctionName("RestartWorkout")]
     public async Task<IActionResult> RestartWorkout(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
         var userId = Guid.Parse(req.Query["userId"]);
         var workoutId = long.Parse(req.Query["workoutId"]);
 
