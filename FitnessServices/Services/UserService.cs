@@ -98,4 +98,9 @@ public sealed class UserService: IUserService
     {
         return await _userRepository.GetToken(userId, token);
     }
+
+    public async Task DeleteUser(Guid userId)
+    {
+        await _userRepository.DeleteUser(userId);
+    }
 }

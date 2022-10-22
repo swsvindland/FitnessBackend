@@ -93,4 +93,23 @@ public sealed class UserController
 
         return new OkObjectResult(true);
     }
+    
+    [FunctionName("DeleteUser")]
+    public async Task<IActionResult> DeleteUser(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        var userId = Guid.Parse(req.Query["userId"]);
+
+        await _userService.DeleteUser(userId);
+
+        return new OkObjectResult(true);
+    }
 }

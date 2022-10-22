@@ -9,4 +9,5 @@ public interface IUserService
     public Task<Users?> GetUserByEmail(string email);
     Task CreateUser(string email, string password);
     Task<UserToken?> GetToken(Guid userId, string token);
+    Task DeleteUser(Guid userId);
 }

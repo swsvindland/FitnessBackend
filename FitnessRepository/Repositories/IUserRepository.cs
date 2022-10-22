@@ -9,5 +9,5 @@ public interface IUserRepository
     public Task AddUser(Users user);
     Task AddToken(UserToken token);
     Task<UserToken?> GetToken(Guid userId, string token);
-    
+    Task DeleteUser(Guid userId);
 }
