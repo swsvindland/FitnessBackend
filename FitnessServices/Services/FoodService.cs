@@ -79,14 +79,14 @@ public sealed class FoodService : IFoodService
         return await _foodApi.AutocompleteFood(query);
     }
 
-    public async Task<IEnumerable<EdamamFood>?> ParseFood(string foodQuery, string? barcode)
+    public async Task<IEnumerable<EdamamFoodHint>?> ParseFood(string foodQuery, string? barcode)
     {
         return await _foodApi.ParseFood(foodQuery, barcode);
     }
 
-    public async Task<EdamamNutrients?> GetFoodDetails(string foodId)
+    public async Task<EdamamNutrients?> GetFoodDetails(string foodId, float servingSizeInGrams)
     {
-        return await _foodApi.Nutrients(foodId);
+        return await _foodApi.Nutrients(foodId, servingSizeInGrams);
     }
 
     public async Task<Macros> GetUserCurrentMacos(Guid userId, DateTime date)
@@ -204,13 +204,13 @@ public sealed class FoodService : IFoodService
             if (food == null)
             {
                 var edamamFoods = await _foodApi.ParseFood(userFood.EdamamFoodId, null);
-                var edamamFood = await _foodApi.Nutrients(userFood.EdamamFoodId);
-                var enumerable = edamamFoods as EdamamFood[] ?? edamamFoods?.ToArray();
+                var edamamFood = await _foodApi.Nutrients(userFood.EdamamFoodId, userFood.Amount);
+                var enumerable = edamamFoods as EdamamFoodHint[] ?? edamamFoods?.ToArray();
                 newFood = new Food()
                 {
                     EdamamFoodId = userFood.EdamamFoodId,
-                    Name = enumerable?.FirstOrDefault()?.Label ?? "",
-                    Brand = enumerable?.FirstOrDefault()?.CategoryLabel ?? "Generic",
+                    Name = enumerable?.FirstOrDefault()?.Food.Label ?? "",
+                    Brand = enumerable?.FirstOrDefault()?.Food.CategoryLabel ?? "Generic",
                     ServingSize = 100,
                     ServingSizeUnit = Units.Gram,
                     Calories = GetValueFromDictionary(edamamFood?.TotalNutrients, "ENERC_KCAL")?.Quantity ?? 0,

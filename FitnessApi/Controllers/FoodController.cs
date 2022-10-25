@@ -94,8 +94,9 @@ public sealed class FoodController
         }
 
         var foodId = req.Query["foodId"];
+        var servingSize = float.Parse(req.Query["servingSize"]);
 
-        var user = await _foodService.GetFoodDetails(foodId);
+        var user = await _foodService.GetFoodDetails(foodId, servingSize);
 
         return new OkObjectResult(user);
     }

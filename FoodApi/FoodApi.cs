@@ -18,7 +18,7 @@ public sealed class FoodApi : IFoodApi
         _appKey = "7f691d4ec6672e60f3864543f6a00efe";
     }
 
-    public async Task<IEnumerable<EdamamFood>?> ParseFood(string foodQuery, string? barcode)
+    public async Task<IEnumerable<EdamamFoodHint>?> ParseFood(string foodQuery, string? barcode)
     {
         try
         {
@@ -28,23 +28,23 @@ public sealed class FoodApi : IFoodApi
                     await _client.GetAsync(
                         $"https://api.edamam.com/api/food-database/v2/parser?ingr={foodQuery}&app_id={_appId}&app_key={_appKey}");
                 var queryResult = await queryResponse.Content.ReadFromJsonAsync<EdamamParser>();
-                return queryResult?.Hints.Select(e => e.Food);
+                return queryResult?.Hints.Select(e => e);
             }
 
             var response =
                 await _client.GetAsync(
                     $"https://api.edamam.com/api/food-database/v2/parser?upc={barcode}&app_id={_appId}&app_key={_appKey}");
             var result = await response.Content.ReadFromJsonAsync<EdamamParser>();
-            return result?.Hints.Select(e => e.Food);
+            return result?.Hints.Select(e => e);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return null;
+            return new List<EdamamFoodHint>();
         }
     }
 
-    public async Task<EdamamNutrients?> Nutrients(string foodId)
+    public async Task<EdamamNutrients?> Nutrients(string foodId, float servingSizeInGrams)
     {
         try
         {
@@ -54,7 +54,7 @@ public sealed class FoodApi : IFoodApi
                 {
                     new Ingredient()
                     {
-                        Quantity = 100,
+                        Quantity = servingSizeInGrams,
                         MeasureURI = "Gram",
                         FoodId = foodId
                     }
@@ -104,7 +104,7 @@ public sealed class Content
 
 public sealed class Ingredient
 {
-    public int Quantity { get; set; }
+    public float Quantity { get; set; }
     public string MeasureURI { get; set; }
     public string FoodId { get; set; }
 }

@@ -10,7 +10,14 @@ public sealed class EdamamParser
 public sealed class EdamamFoodHint
 {
     public EdamamFood Food { get; set; }
-    public string Measure { get; set; }
+    public IEnumerable<EdamamFoodMeasures> Measures { get; set; }
+}
+
+public sealed class EdamamFoodMeasures
+{
+    public string Uri { get; set; }
+    public string Label { get; set; }
+    public double Weight { get; set; }
 }
 
 public sealed class EdamamFood
