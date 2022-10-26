@@ -211,7 +211,7 @@ public sealed class FoodService : IFoodService
                     EdamamFoodId = userFood.EdamamFoodId,
                     Name = enumerable?.FirstOrDefault()?.Food.Label ?? "",
                     Brand = enumerable?.FirstOrDefault()?.Food.CategoryLabel ?? "Generic",
-                    ServingSize = 100,
+                    ServingSize = (int) (enumerable?.FirstOrDefault()?.Measures.FirstOrDefault(e => e.Label == "Serving")?.Weight ?? 0),
                     ServingSizeUnit = Units.Gram,
                     Calories = GetValueFromDictionary(edamamFood?.TotalNutrients, "ENERC_KCAL")?.Quantity ?? 0,
                     TotalFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FAT")?.Quantity ?? 0,

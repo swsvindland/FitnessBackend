@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="44c9f887-7366-470e-aa69-48cbd8c88cb7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodApi/FoodApi.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodApi/FoodApi.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FoodApi/Models/Parser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FoodApi/Models/Parser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FitnessServices/Services/FoodService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/FitnessServices/Services/FoodService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
