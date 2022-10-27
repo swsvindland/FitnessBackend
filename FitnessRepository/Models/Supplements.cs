@@ -1,4 +1,6 @@
-﻿namespace FitnessRepository.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace FitnessRepository.Models;
 
 public sealed class Supplements
 {
@@ -8,4 +10,18 @@ public sealed class Supplements
     public string Brand { get; set; }
     public string? Url { get; set; }
     public int? Commission { get; set; }
+    [Column(TypeName = "varchar(255)")]
+    public SupplementIcon Icon { get; set; }
+    
+}
+
+public enum SupplementIcon
+{
+    Unknown,
+    SmallScoop,
+    LargeScoop,
+    Capsule,
+    Tablet,
+    Liquid,
+    Injection,
 }
