@@ -11,7 +11,7 @@ public sealed class Supplements
     public string? Url { get; set; }
     public int? Commission { get; set; }
     [Column(TypeName = "varchar(255)")]
-    public SupplementIcon Icon { get; set; }
+    public SupplementIcon? Icon { get; set; }
     
 }
 
