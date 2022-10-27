@@ -64,22 +64,13 @@ public sealed class SupplementRepository : ISupplementRepository
 
         await _context.SaveChangesAsync();
     }
-
-    public async Task<IEnumerable<UserSupplementActivity>> GetUserSupplementActivityByUserId(Guid userId)
-    {
-        return await _context.UserSupplementActivity
-            .Where(e => e.UserId == userId)
-            .Where(e => e.Updated == DateTime.UtcNow.Date)
-            .Include(e => e.UserSupplement)
-            .ToListAsync();
-    }
     
     public async Task<UserSupplementActivity?> GetUserSupplementActivity(Guid userId, long userSupplementId, DateTime date, SupplementTimes supplementTime)
     {
         return await _context.UserSupplementActivity
             .Where(e => e.UserId == userId)
             .Where(e => e.UserSupplementId == userSupplementId)
-            .Where(e => e.Updated == date)
+            .Where(e => e.Updated.Date == date.Date)
             .Where(e => e.Time == supplementTime)
             .Include(e => e.UserSupplement)
             .FirstOrDefaultAsync();
