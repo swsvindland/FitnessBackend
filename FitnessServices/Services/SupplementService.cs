@@ -59,24 +59,24 @@ public sealed class SupplementService: ISupplementService
     
     public async Task<UserSupplementActivity?> GetUserSupplementActivity(Guid userId, long userSupplementId, string date, SupplementTimes time)
     {
-        var today = DateTime.Parse(date).ToUniversalTime().Date;
+        var today = DateTime.Parse(date);
 
-        return await _supplementRepository.GetUserSupplementActivity(userId, userSupplementId, today.ToUniversalTime(), time);
+        return await _supplementRepository.GetUserSupplementActivity(userId, userSupplementId, today, time);
     }
     
     public async Task ToggleUserSupplementActivity(UpdateUserSupplementActivity updateUserSupplementActivity)
     {
-        var today = DateTime.Parse(updateUserSupplementActivity.Date).ToUniversalTime().Date;
+        var today = DateTime.Parse(updateUserSupplementActivity.Date).Date;
         
         var entity =
             await _supplementRepository.GetUserSupplementActivity(
-                updateUserSupplementActivity.UserId, updateUserSupplementActivity.UserSupplementId, today.ToUniversalTime(), updateUserSupplementActivity.Time);
+                updateUserSupplementActivity.UserId, updateUserSupplementActivity.UserSupplementId, today, updateUserSupplementActivity.Time);
         
         if (entity == null)
         {
             var newEntity = new UserSupplementActivity()
             {
-                Updated = today.ToUniversalTime(),
+                Updated = today,
                 UserId = updateUserSupplementActivity.UserId,
                 UserSupplementId = updateUserSupplementActivity.UserSupplementId,
                 Time = updateUserSupplementActivity.Time

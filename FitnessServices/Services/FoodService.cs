@@ -263,6 +263,7 @@ public sealed class FoodService : IFoodService
             throw new Exception("Invalid food");
         }
 
+        newUserFood.Created = userFood.Created.Date;
         await _foodRepository.AddUserFood(newUserFood);
     }
 }
