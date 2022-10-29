@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using FitnessRepository.Models;
 using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -90,6 +91,31 @@ public sealed class UserController
         }
 
         await _userService.CreateUser(data.Email, data.Password);
+
+        return new OkObjectResult(true);
+    }
+    
+    [FunctionName("UpdateUserSex")]
+    public async Task<IActionResult> UpdateUserSex(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<UpdateSex>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+        
+        var userId = Guid.Parse(req.Query["userId"]);
+        
+        await _userService.UpdateUserSex(userId, data.Sex);
 
         return new OkObjectResult(true);
     }

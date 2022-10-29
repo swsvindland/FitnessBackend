@@ -28,6 +28,12 @@ public sealed class UserRepository : IUserRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task UpdateUser(Users user)
+    {
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+    }
+    
     public async Task AddToken(UserToken token)
     {
         _context.UserToken.Add(token);

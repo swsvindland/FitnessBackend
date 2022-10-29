@@ -103,4 +103,17 @@ public sealed class UserService: IUserService
     {
         await _userRepository.DeleteUser(userId);
     }
+
+    public async Task UpdateUserSex(Guid userId, Sex sex)
+    {
+        var user = await _userRepository.GetUserById(userId);
+
+        if (user == null)
+        {
+            return;
+        }
+
+        user.Sex = sex;
+        await _userRepository.UpdateUser(user);
+    }
 }
