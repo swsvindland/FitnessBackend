@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using FitnessRepository.Models;
 using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +50,32 @@ public sealed class UserController
         }
         
         return new OkObjectResult(auth.Item2);
+    }
+    
+    [FunctionName("ChangePassword")]
+    public async Task<IActionResult> ChangePassword(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req,
+        ILogger log)
+    {
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<ChangePassword>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+        
+        var userId = Guid.Parse(req.Query["userId"]);
+        
+        await _userService.ChangePassword(userId, data.OldPassword, data.NewPassword);
+        
+        return new OkObjectResult(true);
     }
 
     [FunctionName("GetUser")]
