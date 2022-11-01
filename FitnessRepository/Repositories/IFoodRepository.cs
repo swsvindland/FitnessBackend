@@ -11,4 +11,6 @@ public interface IFoodRepository
     Task AddUserFood(UserFood userFood);
     Task UpdateUserFood(UserFood userFood);
     Task<IEnumerable<UserFood>> GetUserFoods(Guid userId, DateTime date);
+    Task<UserFood?> GetUserFood(Guid userId, DateTime date, long foodId);
+    Task DeleteUserFood(long userFoodId);
 }

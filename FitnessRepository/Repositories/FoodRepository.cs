@@ -54,4 +54,27 @@ public sealed class FoodRepository: IFoodRepository
             .Include(f => f.Food)
             .ToListAsync();
     }
+    
+    public async Task<UserFood?> GetUserFood(Guid userId, DateTime date, long foodId)
+    {
+        return await _context.UserFood
+            .Where(e => e.FoodId == foodId)
+            .Where(e => e.UserId == userId)
+            .Where(e => e.Created.Date == date.Date)
+            .Include(f => f.Food)
+            .FirstOrDefaultAsync();
+    }
+    
+    public async Task DeleteUserFood(long userFoodId)
+    {
+        var userFood = await _context.UserFood.FirstOrDefaultAsync(e => e.Id == userFoodId);
+
+        if (userFood == null)
+        {
+            return;
+        }
+        
+        _context.UserFood.Remove(userFood);
+        await _context.SaveChangesAsync();
+    }
 }

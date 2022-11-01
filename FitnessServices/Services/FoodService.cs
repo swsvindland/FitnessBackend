@@ -123,7 +123,17 @@ public sealed class FoodService : IFoodService
     {
         return await _foodRepository.GetUserFoods(userId, date);
     }
+    
+    public async Task<UserFood?> GetUserFood(Guid userId, DateTime date, long foodId)
+    {
+        return await _foodRepository.GetUserFood(userId, date, foodId);
+    }
 
+    public async Task<Food?> GetFood(long foodId)
+    {
+        return await _foodRepository.GetFood(foodId);
+    }
+    
     public async Task<IEnumerable<UserFoodGridItem>> GetUserFoodsForGrid(Guid userId, DateTime date)
     {
         var userFoods = await _foodRepository.GetUserFoods(userId, date);
@@ -265,5 +275,15 @@ public sealed class FoodService : IFoodService
 
         newUserFood.Created = userFood.Created.Date;
         await _foodRepository.AddUserFood(newUserFood);
+    }
+    
+    public async Task UpdateUserFood(UserFood userFood)
+    {
+        await _foodRepository.UpdateUserFood(userFood);
+    }
+    
+    public async Task DeleteUserFood(long userFoodId)
+    {
+        await _foodRepository.DeleteUserFood(userFoodId);
     }
 }
