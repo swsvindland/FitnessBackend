@@ -12,6 +12,26 @@ public sealed class FoodRepository: IFoodRepository
         _context = context;
     }
 
+    public async Task<UserCustomMacros?> GetUserCustomMacros(Guid userId)
+    {
+            return await _context.UserCustomMacros
+            .OrderBy(e => e.Created)
+            .FirstOrDefaultAsync(x => x.UserId == userId);
+    }
+    
+    public async Task AddUserCustomMacros(UserCustomMacros userCustomMacros)
+    {
+        _context.UserCustomMacros.Add(userCustomMacros);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateUserCustomMacros(UserCustomMacros userCustomMacros)
+    {
+        _context.UserCustomMacros.Update(userCustomMacros);
+        await _context.SaveChangesAsync();
+    }
+
+    
     public async Task<long> AddFood(Food food)
     {
         _context.Food.Add(food);

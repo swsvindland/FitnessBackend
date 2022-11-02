@@ -1,8 +1,10 @@
-namespace FitnessServices.Models;
+namespace FitnessRepository.Models;
 
-public sealed class Macros
+public class UserCustomMacros
 {
     public long? Id { get; set; }
+    public Guid UserId { get; set; }
+    public DateTime Created { get; set; }
     public float Calories { get; set; }
     public float Protein { get; set; }
     public float Fat { get; set; }

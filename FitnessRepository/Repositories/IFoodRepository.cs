@@ -4,6 +4,9 @@ namespace FitnessRepository.Repositories;
 
 public interface IFoodRepository
 {
+    Task<UserCustomMacros?> GetUserCustomMacros(Guid userId);
+    Task AddUserCustomMacros(UserCustomMacros userCustomMacros);
+    Task UpdateUserCustomMacros(UserCustomMacros userCustomMacros);
     Task<long> AddFood(Food food);
     Task<Food?> GetFoodByEdamamId(string edamamFoodId);
     Task<Food?> GetFood(long foodId);

@@ -6,7 +6,9 @@ namespace FitnessServices.Services;
 
 public interface IFoodService
 {
+    Task<Macros?> GetUserMacros(Guid userId);
     Task<IEnumerable<Macros>> GenerateMacros(Guid userId);
+    Task AddUserCustomMacros(Guid userId, Macros macros);
     Task<IEnumerable<string>?> AutocompleteFood(string query);
     Task<IEnumerable<EdamamFoodHint>?> ParseFood(string foodQuery, string? barcode);
     Task<EdamamNutrients?> GetFoodDetails(string foodId, float servingSizeInGrams);

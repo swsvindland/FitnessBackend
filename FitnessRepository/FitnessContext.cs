@@ -29,4 +29,5 @@ public sealed class FitnessContext: DbContext
     public DbSet<Food> Food { get; set; }
     public DbSet<UserFood> UserFood { get; set; }
     public DbSet<UserToken> UserToken { get; set; }
+    public DbSet<UserCustomMacros> UserCustomMacros { get; set; }
 }
