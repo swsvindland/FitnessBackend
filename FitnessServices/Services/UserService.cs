@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using FitnessRepository.Models;
 using FitnessRepository.Repositories;
@@ -65,6 +66,30 @@ public sealed class UserService: IUserService
             numBytesRequested: 256 / 8));
     }
 
+    public async Task ChangePassword(Guid userId, string oldPassword, string newPassword)
+    {
+        var user = await GetUserById(userId);
+        
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        var oldHashedPassword = HashPassword(oldPassword, user.Salt);
+        if (oldHashedPassword != user.Password)
+        {
+            throw new Exception("Old password is incorrect");
+        }
+        
+        var salt = GenerateSalt();
+        var hashedPassword = HashPassword(newPassword, salt);
+
+        user.Salt = salt;
+        user.Password = hashedPassword;
+        
+        await _userRepository.UpdateUser(user);
+    }
+
     public async Task CreateUser(string email, string password)
     {
         var salt = GenerateSalt();
@@ -102,5 +127,18 @@ public sealed class UserService: IUserService
     public async Task DeleteUser(Guid userId)
     {
         await _userRepository.DeleteUser(userId);
+    }
+
+    public async Task UpdateUserSex(Guid userId, Sex sex)
+    {
+        var user = await _userRepository.GetUserById(userId);
+
+        if (user == null)
+        {
+            return;
+        }
+
+        user.Sex = sex;
+        await _userRepository.UpdateUser(user);
     }
 }

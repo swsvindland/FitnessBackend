@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using FitnessRepository.Models;
+using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -37,10 +38,38 @@ public sealed class FoodController
 
         var userId = Guid.Parse(req.Query["userId"]);
 
-        var user = await _foodService.GenerateMacros(userId);
+        var user = await _foodService.GetUserMacros(userId);
 
         return new OkObjectResult(user);
     }
+    
+    [FunctionName("AddCustomMacros")]
+    public async Task<IActionResult> AddCustomMacros(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<Macros>(requestBody);
+        
+        var userId = Guid.Parse(req.Query["userId"]);
+
+        await _foodService.AddUserCustomMacros(userId, data);
+
+        return new OkObjectResult(true);
+    }
+
 
     [FunctionName("AutocompleteFood")]
     public async Task<IActionResult> AutocompleteFood(
@@ -137,6 +166,90 @@ public sealed class FoodController
         var date = DateTime.Parse(req.Query["date"]);
 
         var user = await _foodService.GetUserFoodsForGrid(userId, date);
+
+        return new OkObjectResult(user);
+    }
+    
+    [FunctionName("GetUserFood")]
+    public async Task<IActionResult> GetUserFood(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userId = Guid.Parse(req.Query["userId"]);
+        var date = DateTime.Parse(req.Query["date"]);
+        var foodId = long.Parse(req.Query["foodId"]);
+
+        var user = await _foodService.GetUserFood(userId, date, foodId);
+
+        return new OkObjectResult(user);
+    }
+    
+    [FunctionName("UpdateUserFood")]
+    public async Task<IActionResult> UpdateUserFood(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<UserFood>(requestBody);
+
+        await _foodService.UpdateUserFood(data);
+
+        return new OkObjectResult(true);
+    }
+    
+    [FunctionName("DeleteUserFood")]
+    public async Task<IActionResult> DeleteUserFood(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userFoodId = long.Parse(req.Query["userFoodId"]);
+
+        await _foodService.DeleteUserFood(userFoodId);
+
+        return new OkObjectResult(true);
+    }
+    
+    [FunctionName("GetFood")]
+    public async Task<IActionResult> GetFood(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var foodId = long.Parse(req.Query["foodId"]);
+
+        var user = await _foodService.GetFood(foodId);
 
         return new OkObjectResult(user);
     }

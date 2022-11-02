@@ -21,10 +21,56 @@ public sealed class FoodService : IFoodService
         _foodApi = foodApi;
         _foodRepository = foodRepository;
     }
-    
+
     private static float GramToFluidOunce(float gram)
     {
         return gram * 0.035274f;
+    }
+
+    public async Task AddUserCustomMacros(Guid userId, Macros macros)
+    {
+        var userCustomMacros = new UserCustomMacros()
+        {
+            Id = macros.Id,
+            UserId = userId,
+            Calories = macros.Calories,
+            Protein = macros.Protein,
+            Carbs = macros.Carbs,
+            Fat = macros.Fat,
+            Fiber = macros.Fiber,
+            Alcohol = macros.Alcohol,
+            Water = macros.Water
+        };
+
+        if (userCustomMacros.Id == null)
+        {
+            await _foodRepository.AddUserCustomMacros(userCustomMacros);
+        }
+        else
+        {
+            await _foodRepository.UpdateUserCustomMacros(userCustomMacros);
+        }
+    }
+
+    public async Task<Macros?> GetUserMacros(Guid userId)
+    {
+        var userCustomMacros = await _foodRepository.GetUserCustomMacros(userId);
+
+        if (userCustomMacros == null)
+        {
+            return (await GenerateMacros(userId)).LastOrDefault();
+        }
+
+        return new Macros()
+        {
+            Calories = userCustomMacros.Calories,
+            Carbs = userCustomMacros.Carbs,
+            Fat = userCustomMacros.Fat,
+            Protein = userCustomMacros.Protein,
+            Fiber = userCustomMacros.Fiber,
+            Alcohol = userCustomMacros.Alcohol,
+            Water = userCustomMacros.Water
+        };
     }
 
     public async Task<IEnumerable<Macros>> GenerateMacros(Guid userId)
@@ -56,8 +102,11 @@ public sealed class FoodService : IFoodService
             var fat = userWeight.Weight * 0.35;
             var carbs = (calories - protein * 4 - fat * 9) / 4;
             var fiber = calories * 0.015;
-            var alcohol = calories * 0.10 / 7;
+            const int
+                alcohol = 24; // 2 standard american drinks, 3 standard european/asian drinks, 1 standard russian drink
             var water = userWeight.Weight * 0.6;
+
+            calories += alcohol * 7;
 
             macros.Add(new Macros()
             {
@@ -66,7 +115,7 @@ public sealed class FoodService : IFoodService
                 Fat = (int) Math.Floor(fat),
                 Carbs = (int) Math.Floor(carbs),
                 Fiber = (int) Math.Floor(fiber),
-                Alcohol = (int) Math.Floor(alcohol),
+                Alcohol = alcohol,
                 Water = (int) Math.Floor(water),
             });
         }
@@ -122,6 +171,16 @@ public sealed class FoodService : IFoodService
     public async Task<IEnumerable<UserFood>> GetUserFoods(Guid userId, DateTime date)
     {
         return await _foodRepository.GetUserFoods(userId, date);
+    }
+
+    public async Task<UserFood?> GetUserFood(Guid userId, DateTime date, long foodId)
+    {
+        return await _foodRepository.GetUserFood(userId, date, foodId);
+    }
+
+    public async Task<Food?> GetFood(long foodId)
+    {
+        return await _foodRepository.GetFood(foodId);
     }
 
     public async Task<IEnumerable<UserFoodGridItem>> GetUserFoodsForGrid(Guid userId, DateTime date)
@@ -211,7 +270,9 @@ public sealed class FoodService : IFoodService
                     EdamamFoodId = userFood.EdamamFoodId,
                     Name = enumerable?.FirstOrDefault()?.Food.Label ?? "",
                     Brand = enumerable?.FirstOrDefault()?.Food.CategoryLabel ?? "Generic",
-                    ServingSize = (int) (enumerable?.FirstOrDefault()?.Measures.FirstOrDefault(e => e.Label == "Serving")?.Weight ?? 0),
+                    ServingSize = (int) (enumerable?.FirstOrDefault()?.Measures
+                        .FirstOrDefault(e => e.Label == "Serving")
+                        ?.Weight ?? 0),
                     ServingSizeUnit = Units.Gram,
                     Calories = GetValueFromDictionary(edamamFood?.TotalNutrients, "ENERC_KCAL")?.Quantity ?? 0,
                     TotalFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FAT")?.Quantity ?? 0,
@@ -242,7 +303,8 @@ public sealed class FoodService : IFoodService
                     VitaminB6 = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITB6A")?.Quantity ?? 0,
                     Folate = GetValueFromDictionary(edamamFood?.TotalNutrients, "FOLDFE")?.Quantity ?? 0,
                     VitaminB12 = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITB12")?.Quantity ?? 0,
-                    Water = GramToFluidOunce(GetValueFromDictionary(edamamFood?.TotalNutrients, "WATER")?.Quantity ?? 0),
+                    Water =
+                        GramToFluidOunce(GetValueFromDictionary(edamamFood?.TotalNutrients, "WATER")?.Quantity ?? 0),
                 };
 
                 var id = await _foodRepository.AddFood(newFood);
@@ -265,5 +327,15 @@ public sealed class FoodService : IFoodService
 
         newUserFood.Created = userFood.Created.Date;
         await _foodRepository.AddUserFood(newUserFood);
+    }
+
+    public async Task UpdateUserFood(UserFood userFood)
+    {
+        await _foodRepository.UpdateUserFood(userFood);
+    }
+
+    public async Task DeleteUserFood(long userFoodId)
+    {
+        await _foodRepository.DeleteUserFood(userFoodId);
     }
 }

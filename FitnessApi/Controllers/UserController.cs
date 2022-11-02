@@ -51,6 +51,32 @@ public sealed class UserController
         
         return new OkObjectResult(auth.Item2);
     }
+    
+    [FunctionName("ChangePassword")]
+    public async Task<IActionResult> ChangePassword(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req,
+        ILogger log)
+    {
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<ChangePassword>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+        
+        var userId = Guid.Parse(req.Query["userId"]);
+        
+        await _userService.ChangePassword(userId, data.OldPassword, data.NewPassword);
+        
+        return new OkObjectResult(true);
+    }
 
     [FunctionName("GetUser")]
     public async Task<IActionResult> GetUser(
@@ -90,6 +116,31 @@ public sealed class UserController
         }
 
         await _userService.CreateUser(data.Email, data.Password);
+
+        return new OkObjectResult(true);
+    }
+    
+    [FunctionName("UpdateUserSex")]
+    public async Task<IActionResult> UpdateUserSex(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<UpdateSex>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+        
+        var userId = Guid.Parse(req.Query["userId"]);
+        
+        await _userService.UpdateUserSex(userId, data.Sex);
 
         return new OkObjectResult(true);
     }

@@ -10,4 +10,6 @@ public interface IUserService
     Task CreateUser(string email, string password);
     Task<UserToken?> GetToken(Guid userId, string token);
     Task DeleteUser(Guid userId);
+    Task UpdateUserSex(Guid userId, Sex sex);
+    Task ChangePassword(Guid userId, string oldPassword, string newPassword);
 }
