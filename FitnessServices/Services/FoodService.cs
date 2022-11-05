@@ -263,16 +263,20 @@ public sealed class FoodService : IFoodService
             if (food == null)
             {
                 var edamamFoods = await _foodApi.ParseFood(userFood.EdamamFoodId, null);
-                var edamamFood = await _foodApi.Nutrients(userFood.EdamamFoodId, userFood.Amount);
                 var enumerable = edamamFoods as EdamamFoodHint[] ?? edamamFoods?.ToArray();
+
+                var servingSize = (int) (enumerable?.FirstOrDefault()?.Measures
+                    .FirstOrDefault(e => e.Label == "Serving")
+                    ?.Weight ?? 0);
+                
+                var edamamFood = await _foodApi.Nutrients(userFood.EdamamFoodId, servingSize);
+                
                 newFood = new Food()
                 {
                     EdamamFoodId = userFood.EdamamFoodId,
                     Name = enumerable?.FirstOrDefault()?.Food.Label ?? "",
                     Brand = enumerable?.FirstOrDefault()?.Food.CategoryLabel ?? "Generic",
-                    ServingSize = (int) (enumerable?.FirstOrDefault()?.Measures
-                        .FirstOrDefault(e => e.Label == "Serving")
-                        ?.Weight ?? 0),
+                    ServingSize = servingSize,
                     ServingSizeUnit = Units.Gram,
                     Calories = GetValueFromDictionary(edamamFood?.TotalNutrients, "ENERC_KCAL")?.Quantity ?? 0,
                     TotalFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FAT")?.Quantity ?? 0,
@@ -317,7 +321,6 @@ public sealed class FoodService : IFoodService
         }
         else if (userFood.FoodId != null && userFood.EdamamFoodId == null)
         {
-            var food = await _foodRepository.GetFood(userFood.FoodId.Value);
             newUserFood = userFood;
         }
         else
