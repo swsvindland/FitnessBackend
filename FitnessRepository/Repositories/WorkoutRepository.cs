@@ -172,7 +172,7 @@ public sealed class WorkoutRepository : IWorkoutRepository
 
     public async Task<IEnumerable<UserWorkoutsCompleted>> GetUserWorkoutsCompleted(Guid userId)
     {
-        return await _context.UserWorkoutsCompleted.Where(e => e.UserId == userId).ToListAsync();
+        return await _context.UserWorkoutsCompleted.Where(e => e.UserId == userId).OrderBy(e => e.Created).ToListAsync();
     }
 
     public async Task DeleteUserWorkoutCompleted(IEnumerable<UserWorkoutsCompleted> workoutsCompleted)
