@@ -268,7 +268,7 @@ public sealed class FoodService : IFoodService
                 var servingSize = (int) (enumerable?.FirstOrDefault()?.Measures
                     .FirstOrDefault(e => e.Label == "Serving")
                     ?.Weight ?? 28);
-                
+
                 var edamamFood = await _foodApi.Nutrients(userFood.EdamamFoodId, servingSize);
                 
                 newFood = new Food()
