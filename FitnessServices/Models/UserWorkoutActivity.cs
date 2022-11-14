@@ -8,6 +8,6 @@ public sealed class UserWorkoutActivityModel
     public long WorkoutBlockExerciseId { get; set; }
     public int Set { get; set; }
     public int Reps { get; set; }
-    public int Weight { get; set; }
+    public float Weight { get; set; }
     public bool? Saved { get; set; }
 }
