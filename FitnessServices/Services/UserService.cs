@@ -103,7 +103,8 @@ public sealed class UserService: IUserService
             Created = DateTime.UtcNow,
             Sex = Sex.Unknown,
             Salt = salt,
-            Password = hashedPassword
+            Password = hashedPassword,
+            UserRole = UserRole.User
         };
 
         await _userRepository.AddUser(user);
