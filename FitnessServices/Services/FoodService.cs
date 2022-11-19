@@ -72,6 +72,11 @@ public sealed class FoodService : IFoodService
             Water = userCustomMacros.Water
         };
     }
+    
+    private static float FluidOunceToMilliliter(float fluidOunce)
+    {
+        return fluidOunce * 29.5735f;
+    }
 
     public async Task<IEnumerable<Macros>> GenerateMacros(Guid userId)
     {
@@ -104,7 +109,7 @@ public sealed class FoodService : IFoodService
             var fiber = calories * 0.015;
             const int
                 alcohol = 24; // 2 standard american drinks, 3 standard european/asian drinks, 1 standard russian drink
-            var water = userWeight.Weight * 0.6;
+            var water = user.Unit == UserUnits.Imperial ? userWeight.Weight * 0.6 : FluidOunceToMilliliter(userWeight.Weight * 0.6f);
 
             calories += alcohol * 7;
 

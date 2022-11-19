@@ -104,7 +104,8 @@ public sealed class UserService: IUserService
             Sex = Sex.Unknown,
             Salt = salt,
             Password = hashedPassword,
-            UserRole = UserRole.User
+            UserRole = UserRole.User,
+            Unit = UserUnits.Imperial,
         };
 
         await _userRepository.AddUser(user);

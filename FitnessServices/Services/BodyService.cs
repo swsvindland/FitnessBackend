@@ -70,13 +70,28 @@ public sealed class BodyService: IBodyService
         return await _bodyRepository.GetUserHeights(userId);
     }
     
-    private static double ComputeMaleBodyFat(float navel, float neck, float height)
+    private static double CentimetersToInches(double centimeters)
     {
+        return centimeters * 0.393701;
+    }
+    
+    private static double ComputeMaleBodyFat(UserUnits unit, float navel, float neck, float height)
+    {
+        if (unit == UserUnits.Metric)
+        {
+            return 86.010 * Math.Log10(CentimetersToInches(navel) - CentimetersToInches(neck)) - 70.041 * Math.Log10(CentimetersToInches(height)) + 36.76;
+        }
+        
         return 86.010 * Math.Log10(navel - neck) - 70.041 * Math.Log10(height) + 36.76;
     }
     
-    private static double ComputeFemaleBodyFat(float navel, float hip, float neck, float height)
+    private static double ComputeFemaleBodyFat(UserUnits unit, float navel, float hip, float neck, float height)
     {
+        if (unit == UserUnits.Metric)
+        {
+            return  163.205 * Math.Log10(CentimetersToInches(navel) + CentimetersToInches(hip) - CentimetersToInches(neck)) - 97.684 * Math.Log10(CentimetersToInches(height)) - 78.387;
+        }
+        
         return 163.205 * Math.Log10(navel + hip - neck) - 97.684 * Math.Log10(height) - 78.387;
     }
 
@@ -100,7 +115,7 @@ public sealed class BodyService: IBodyService
             {
                 userBodyFats.Add(new UserBodyFat()
                 {
-                    BodyFat = ComputeMaleBodyFat(userBody.Navel, userBody.Neck, currentHeight.Height),
+                    BodyFat = ComputeMaleBodyFat(user.Unit, userBody.Navel, userBody.Neck, currentHeight.Height),
                     Created = userBody.Created,
                     UserId = userId
                 });
@@ -109,7 +124,7 @@ public sealed class BodyService: IBodyService
             {
                 userBodyFats.Add(new UserBodyFat()
                 {
-                    BodyFat = ComputeFemaleBodyFat(userBody.Navel, userBody.Hip, userBody.Neck, currentHeight.Height),
+                    BodyFat = ComputeFemaleBodyFat(user.Unit, userBody.Navel, userBody.Hip, userBody.Neck, currentHeight.Height),
                     Created = userBody.Created,
                     UserId = userId
                 });
