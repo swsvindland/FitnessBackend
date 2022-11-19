@@ -14,4 +14,6 @@ public sealed class Users
     public Sex Sex { get; set; }
     [Column(TypeName = "varchar(255)")]
     public UserRole UserRole { get; set; }
+    [Column(TypeName = "varchar(255)")]
+    public UserUnits Unit { get; set; }
 }
