@@ -12,7 +12,7 @@
 ### Push
  - Bench Press
  - Incline Bench Press
- - Overhead Press
+ - DB Overhead Press
  - Cable Lateral Raise
  - Tricep Pushdown
 
@@ -36,7 +36,7 @@
 ### Push
  - Dip
  - CG Bench
- - French Press
+ - BB Overhead Press
  - DB Lateral Raise
  - French Press
 
