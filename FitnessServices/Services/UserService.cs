@@ -104,7 +104,8 @@ public sealed class UserService: IUserService
             Sex = Sex.Unknown,
             Salt = salt,
             Password = hashedPassword,
-            UserRole = UserRole.User
+            UserRole = UserRole.User,
+            Unit = UserUnits.Imperial,
         };
 
         await _userRepository.AddUser(user);
@@ -140,6 +141,19 @@ public sealed class UserService: IUserService
         }
 
         user.Sex = sex;
+        await _userRepository.UpdateUser(user);
+    }
+    
+    public async Task UpdateUserUnits(Guid userId, UserUnits unit)
+    {
+        var user = await _userRepository.GetUserById(userId);
+
+        if (user == null)
+        {
+            return;
+        }
+
+        user.Unit = unit;
         await _userRepository.UpdateUser(user);
     }
 }
