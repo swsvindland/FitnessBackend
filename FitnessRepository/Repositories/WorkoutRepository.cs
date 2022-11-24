@@ -27,45 +27,35 @@ public sealed class WorkoutRepository : IWorkoutRepository
         return await _context.Workout.FirstOrDefaultAsync(e => e.Id == workoutId);
     }
 
-    public async Task<WorkoutBlock?> GetWorkoutBlock(long workoutId)
+    public async Task<IEnumerable<WorkoutExercise>> GetWorkoutExercises(long workoutId)
     {
-        return await _context.WorkoutBlock.FirstOrDefaultAsync(e => e.WorkoutId == workoutId);
-    }
-
-    public async Task<IEnumerable<WorkoutBlock>> GetWorkoutBlocks(long workoutId)
-    {
-        var workoutBlocks = await _context.WorkoutBlock.Where(e => e.WorkoutId == workoutId).ToListAsync();
-
-        foreach (var workoutBlock in workoutBlocks)
-        {
-            var exercises = await _context.WorkoutBlockExercise
-                .Where(e => e.WorkoutBlockId == workoutBlock.Id)
-                .Include(e => e.Exercise)
-                .ToListAsync();
-
-            workoutBlock.WorkoutBlockExercises = exercises;
-        }
-
-        return workoutBlocks;
-    }
-
-    public async Task<IEnumerable<WorkoutBlockExercise>> GetWorkoutBlockExercises(long workoutBlockId)
-    {
-        var workoutBlockExercise = await _context.WorkoutBlockExercise
-            .Where(e => e.WorkoutBlockId == workoutBlockId)
+        var workoutBlockExercise = await _context.WorkoutExercise
+            .Where(e => e.WorkoutId == workoutId)
             .ToListAsync();
 
         return workoutBlockExercise;
     }
 
-    public async Task<WorkoutBlockExercise?> GetWorkoutBlockExercise(long workoutBlockId)
+    public async Task<IEnumerable<WorkoutExercise>> GetWorkoutExercises(long workoutId, int day)
     {
-        var workoutBlockExercise = await _context.WorkoutBlockExercise
-            .Where(e => e.Id == workoutBlockId)
+        var workoutBlockExercise = await _context.WorkoutExercise
+            .Where(e => e.WorkoutId == workoutId)
+            .Where(e => e.Day == day)
+            .Include(e => e.Exercise)
+            .ToListAsync();
+
+        return workoutBlockExercise;
+    }
+
+    
+    public async Task<WorkoutExercise?> GetWorkoutExercise(long workoutExerciseId)
+    {
+        var workoutExercise = await _context.WorkoutExercise
+            .Where(e => e.Id == workoutExerciseId)
             .Include(e => e.Exercise)
             .FirstOrDefaultAsync();
 
-        return workoutBlockExercise;
+        return workoutExercise;
     }
 
     public async Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId)
@@ -100,11 +90,11 @@ public sealed class WorkoutRepository : IWorkoutRepository
     }
 
     public async Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId,
-        long workoutBlockExerciseId)
+        long workoutExerciseId)
     {
         return await _context.UserWorkoutActivity
             .Where(e => e.UserId == userId)
-            .Where(e => e.WorkoutBlockExerciseId == workoutBlockExerciseId)
+            .Where(e => e.WorkoutExerciseId == workoutExerciseId)
             .Where(e => e.Created == DateTime.UtcNow.Date)
             .ToListAsync();
     }
@@ -116,12 +106,12 @@ public sealed class WorkoutRepository : IWorkoutRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set,
+    public async Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutExerciseId, int set,
         int week, int day)
     {
         return await _context.UserWorkoutActivity
             .Where(e => e.UserId == userId)
-            .Where(e => e.WorkoutBlockExerciseId == workoutBlockExerciseId)
+            .Where(e => e.WorkoutExerciseId == workoutExerciseId)
             .Where(e => e.Set == set)
             .Where(e => e.Week == week)
             .Where(e => e.Day == day)

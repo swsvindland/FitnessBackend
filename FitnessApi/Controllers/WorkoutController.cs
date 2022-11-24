@@ -75,9 +75,9 @@ public sealed class WorkoutController
 
         return new OkObjectResult(workouts);
     }
-
-    [FunctionName("GetWorkoutDetails")]
-    public async Task<IActionResult> GetWorkoutDetails(
+    
+    [FunctionName("GetWorkoutExercises")]
+    public async Task<IActionResult> GetWorkoutExercises(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
@@ -89,8 +89,9 @@ public sealed class WorkoutController
         }
 
         var workoutId = long.Parse(req.Query["workoutId"]);
+        var day = int.Parse(req.Query["day"]);
 
-        var workouts = await _workoutService.GetWorkoutBlocks(workoutId);
+        var workouts = await _workoutService.GetWorkoutExercises(workoutId, day);
 
         return new OkObjectResult(workouts);
     }

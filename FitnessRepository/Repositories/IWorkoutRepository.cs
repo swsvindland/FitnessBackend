@@ -7,10 +7,9 @@ public interface IWorkoutRepository
     Task<IEnumerable<Exercise>> GetExercises();
     Task<IEnumerable<Workout>> GetWorkouts();
     Task<Workout?> GetWorkout(long workoutId);
-    Task<WorkoutBlock?> GetWorkoutBlock(long workoutId);
-    Task<IEnumerable<WorkoutBlock>> GetWorkoutBlocks(long workoutId);
-    Task<IEnumerable<WorkoutBlockExercise>> GetWorkoutBlockExercises(long workoutBlockId);
-    Task<WorkoutBlockExercise?> GetWorkoutBlockExercise(long workoutBlockId);
+    Task<IEnumerable<WorkoutExercise>> GetWorkoutExercises(long workoutId);
+    Task<IEnumerable<WorkoutExercise>> GetWorkoutExercises(long workoutId, int day);
+    Task<WorkoutExercise?> GetWorkoutExercise(long workoutExerciseId);
     Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId);
     Task<UserWorkout?> GetActiveUserWorkouts(Guid userId);
     Task AddUserWorkout(UserWorkout workout);

@@ -1,10 +1,10 @@
 namespace FitnessRepository.Models;
 
-public sealed class WorkoutBlockExercise
+public sealed class WorkoutExercise
 {
     public long Id { get; set; }
     public DateTime Created { get; set; }
-    public long WorkoutBlockId { get; set; }
+    public long WorkoutId { get; set; }
     public long ExerciseId { get; set; }
     public Exercise? Exercise { get; set; }
     public int Day { get; set; }

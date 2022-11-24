@@ -20,8 +20,7 @@ public sealed class FitnessContext: DbContext
     public DbSet<UserHeight> UserHeight { get; set; }
     public DbSet<Exercise> Exercise { get; set; }
     public DbSet<Workout> Workout { get; set; }
-    public DbSet<WorkoutBlock> WorkoutBlock { get; set; }
-    public DbSet<WorkoutBlockExercise> WorkoutBlockExercise { get; set; }
+    public DbSet<WorkoutExercise> WorkoutExercise { get; set; }
     public DbSet<UserWorkout> UserWorkout { get; set; }
     public DbSet<UserWorkoutActivity> UserWorkoutActivity { get; set; }
     public DbSet<UserOneRepMaxEstimates> UserOneRepMaxEstimates { get; set; }

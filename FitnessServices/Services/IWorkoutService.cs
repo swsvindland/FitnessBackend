@@ -8,12 +8,12 @@ public interface IWorkoutService
     Task<IEnumerable<Exercise>> GetExercises();
     Task<IEnumerable<Workout>> GetWorkouts();
     Task<Workout?> GetWorkout(long workoutId);
-    Task<IEnumerable<WorkoutBlock>> GetWorkoutBlocks(long workoutId);
+    Task<IEnumerable<WorkoutExercise>> GetWorkoutExercises(long workoutId, int day);
     Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId);
     Task BuyWorkout(Guid userId, long workoutId);
     Task SetActiveWorkout(Guid userId, long workoutId);
     Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId, long workoutBlockExerciseId);
-    Task<UserWorkoutActivityModel?> GetUserWorkoutActivity(Guid userId, long workoutBlockExerciseId, int set, int week,
+    Task<UserWorkoutActivityModel?> GetUserWorkoutActivity(Guid userId, long workoutExerciseId, int set, int week,
         int day);
     Task AddUserWorkoutActivity(UserWorkoutActivity userWorkoutActivity);
     Task<IEnumerable<UserOneRepMaxEstimates>> GetUserOneRepMaxes(Guid userId);
