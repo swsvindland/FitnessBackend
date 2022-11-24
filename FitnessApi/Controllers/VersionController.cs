@@ -34,7 +34,7 @@ public sealed class VersionController
             return new UnauthorizedResult();
         }
 
-        const int minVersion = 1;
+        const int minVersion = 24;
         
         return new OkObjectResult(minVersion);
     }
