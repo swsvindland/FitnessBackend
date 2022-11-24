@@ -50,9 +50,7 @@ public sealed class WorkoutService : IWorkoutService
     {
         // should set all to inactive as workoutId is not added
         await SetActiveWorkout(userId, workoutId);
-
-        // TODO: Payment processing for paid workouts
-
+        
         await _workoutRepository.AddUserWorkout(new UserWorkout()
         {
             UserId = userId,
