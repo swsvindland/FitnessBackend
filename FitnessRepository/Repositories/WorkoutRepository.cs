@@ -29,22 +29,22 @@ public sealed class WorkoutRepository : IWorkoutRepository
 
     public async Task<IEnumerable<WorkoutExercise>> GetWorkoutExercises(long workoutId)
     {
-        var workoutBlockExercise = await _context.WorkoutExercise
+        var workoutExercise = await _context.WorkoutExercise
             .Where(e => e.WorkoutId == workoutId)
             .ToListAsync();
 
-        return workoutBlockExercise;
+        return workoutExercise;
     }
 
     public async Task<IEnumerable<WorkoutExercise>> GetWorkoutExercises(long workoutId, int day)
     {
-        var workoutBlockExercise = await _context.WorkoutExercise
+        var workoutExercise = await _context.WorkoutExercise
             .Where(e => e.WorkoutId == workoutId)
             .Where(e => e.Day == day)
             .Include(e => e.Exercise)
             .ToListAsync();
 
-        return workoutBlockExercise;
+        return workoutExercise;
     }
 
     

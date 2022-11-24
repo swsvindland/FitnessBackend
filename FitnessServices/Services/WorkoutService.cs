@@ -74,9 +74,9 @@ public sealed class WorkoutService : IWorkoutService
     }
 
     public async Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId,
-        long workoutBlockExerciseId)
+        long workoutExerciseId)
     {
-        return await _workoutRepository.GetUserWorkoutActivities(userId, workoutBlockExerciseId);
+        return await _workoutRepository.GetUserWorkoutActivities(userId, workoutExerciseId);
     }
 
     public async Task<UserWorkoutActivityModel?> GetUserWorkoutActivity(Guid userId, long workoutExerciseId,
@@ -178,6 +178,7 @@ public sealed class WorkoutService : IWorkoutService
         var activity = new UserWorkoutActivity()
         {
             Id = userWorkoutActivity.Id,
+            WorkoutExerciseId = userWorkoutActivity.WorkoutExerciseId,
             Created = DateTime.UtcNow.Date,
             UserId = userWorkoutActivity.UserId,
             Reps = userWorkoutActivity.Reps,
@@ -262,7 +263,6 @@ public sealed class WorkoutService : IWorkoutService
                 Day = (short) 0,
                 Week = (short) 0,
                 WorkoutId = currentWorkout?.WorkoutId ?? 0,
-                WorkoutBlock = 1,
                 WorkoutCompleted = true
             };
         }
@@ -274,7 +274,6 @@ public sealed class WorkoutService : IWorkoutService
             Day = (short) nextDay,
             Week = (short) nextWeek,
             WorkoutId = currentWorkout?.WorkoutId ?? 0,
-            WorkoutBlock = 1,
             WorkoutCompleted = false
         };
     }

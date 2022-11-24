@@ -168,9 +168,9 @@ public sealed class WorkoutController
         }
 
         var userId = Guid.Parse(req.Query["userId"]);
-        var workoutBlockExerciseId = long.Parse(req.Query["workoutBlockExerciseId"]);
+        var workoutExerciseId = long.Parse(req.Query["workoutExerciseId"]);
 
-        var activity = await _workoutService.GetUserWorkoutActivities(userId, workoutBlockExerciseId);
+        var activity = await _workoutService.GetUserWorkoutActivities(userId, workoutExerciseId);
 
         return new OkObjectResult(activity);
     }
@@ -188,12 +188,12 @@ public sealed class WorkoutController
         }
 
         var userId = Guid.Parse(req.Query["userId"]);
-        var workoutBlockExerciseId = long.Parse(req.Query["workoutBlockExerciseId"]);
+        var workoutExerciseId = long.Parse(req.Query["workoutExerciseId"]);
         var set = int.Parse(req.Query["set"]);
         var week = int.Parse(req.Query["week"]);
         var day = int.Parse(req.Query["day"]);
 
-        var activity = await _workoutService.GetUserWorkoutActivity(userId, workoutBlockExerciseId, set, week, day);
+        var activity = await _workoutService.GetUserWorkoutActivity(userId, workoutExerciseId, set, week, day);
 
         return new OkObjectResult(activity);
     }
