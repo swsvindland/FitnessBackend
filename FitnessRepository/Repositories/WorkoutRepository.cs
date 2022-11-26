@@ -95,10 +95,9 @@ public sealed class WorkoutRepository : IWorkoutRepository
         return await _context.UserWorkoutActivity
             .Where(e => e.UserId == userId)
             .Where(e => e.WorkoutExerciseId == workoutExerciseId)
-            .Where(e => e.Created == DateTime.UtcNow.Date)
             .ToListAsync();
     }
-
+    
     public async Task DeleteUserWorkoutActivities(IEnumerable<UserWorkoutActivity> activities)
     {
         _context.UserWorkoutActivity.RemoveRange(activities);
