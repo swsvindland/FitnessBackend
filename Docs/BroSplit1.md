@@ -1,4 +1,7 @@
 # Bro Split 1
+ - Full Gym
+
+This is a workout remenesent of the traditional bro-split. It is made up of 12 weeks, with 5 workouts a week. Each workout should take around 40-50 minutes. This is a great workout to start for beginners all the way up to intermediate lifters. But likely does not have enough volume for advanced lifters. 
 
 ## Monday
 ### chest

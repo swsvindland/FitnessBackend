@@ -1,4 +1,7 @@
-# Hoe Split 1
+# Booty Split 1
+ - full gym
+
+This is a workout split for building your legs and glutes more than anything else. It is a 12 weeks, 5 days a week, with 3 of the 5 days being focuses to glutes and legs. The remaining 2 days are upper body days. This workout is suited for intermediate to advanced lifters, as it has a lot of volume on the lower body that a newcomer might not be ready for. If you are a newcomer, try out Size 1 for a good intro.
 
 ## Monday
 ### legs
