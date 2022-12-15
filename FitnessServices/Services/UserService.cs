@@ -155,6 +155,13 @@ public sealed class UserService: IUserService
         await _userRepository.AddUser(user);
     }
     
+    public async Task UpdateLastLogin(Guid userId)
+    {
+        var user = await GetUserById(userId);
+        user.LastLogin = DateTime.UtcNow;
+        await _userRepository.UpdateUser(user);
+    }
+    
     public async Task<Users?> GetUserById(Guid userId)
     {
         return await _userRepository.GetUserById(userId);

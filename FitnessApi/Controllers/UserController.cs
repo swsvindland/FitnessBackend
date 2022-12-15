@@ -106,6 +106,7 @@ public sealed class UserController
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _userService.GetUserById(userId);
+        await _userService.UpdateLastLogin(userId);
 
         return new OkObjectResult(user);
     }
