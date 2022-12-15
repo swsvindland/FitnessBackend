@@ -4,6 +4,8 @@ using System.Text;
 using FitnessRepository.Models;
 using FitnessRepository.Repositories;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace FitnessServices.Services;
 
@@ -88,6 +90,48 @@ public sealed class UserService: IUserService
         user.Password = hashedPassword;
         
         await _userRepository.UpdateUser(user);
+    }
+    
+    public async Task ForgotPassword(string email)
+    {
+        var user = await GetUserByEmail(email);
+        
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+        
+        var newPassword = GenerateRandomString(8);
+        
+        var salt = GenerateSalt();
+        var hashedPassword = HashPassword(newPassword, salt);
+        
+        await SendForgotPasswordEmail(email, newPassword);
+
+        user.Salt = salt;
+        user.Password = hashedPassword;
+        
+        await _userRepository.UpdateUser(user);
+    }
+    
+    private static string GenerateRandomString(int length)
+    {
+        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[new Random().Next(s.Length)]).ToArray());
+    }
+    
+    private static async Task SendForgotPasswordEmail(string email, string password)
+    {
+        var apiKey = "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";
+        var client = new SendGridClient(apiKey);
+        var from = new EmailAddress("sam@workout-track.com");
+        var subject = "Workout Track - Forgot Password";
+        var to = new EmailAddress(email);
+        var plainTextContent = $"Your new password is {password}. Remember to change it after you login. You can do so by clicking on the user icon in the top right, and then the change password button.";
+        var htmlContent = $"<p>Your new password is <strong>{password}</strong>. Remember to change it after you login. You can do so by clicking on the user icon in the top right, and then the change password button.</p>";
+        var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+        await client.SendEmailAsync(msg);
     }
 
     public async Task CreateUser(string email, string password)

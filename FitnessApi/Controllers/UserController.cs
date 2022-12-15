@@ -77,6 +77,19 @@ public sealed class UserController
         
         return new OkObjectResult(true);
     }
+    
+    [FunctionName("ForgotPassword")]
+    public async Task<IActionResult> ForgotPassword(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req,
+        ILogger log)
+    {
+        var email = req.Query["email"];
+        
+        await _userService.ForgotPassword(email);
+        
+        return new OkObjectResult(true);
+    }
 
     [FunctionName("GetUser")]
     public async Task<IActionResult> GetUser(

@@ -13,4 +13,5 @@ public interface IUserService
     Task UpdateUserSex(Guid userId, Sex sex);
     Task UpdateUserUnits(Guid userId, UserUnits unit);
     Task ChangePassword(Guid userId, string oldPassword, string newPassword);
+    Task ForgotPassword(string email);
 }
