@@ -1,4 +1,7 @@
 # Size 1
+ - Full Gym
+ - 
+This is an Upper Lower split, with 4 workouts a week. Each workout should take around 40-50 minutes. This is a great workout to start for beginners all the way up to intermediate lifters.
 
 ## Monday
 ### Upper

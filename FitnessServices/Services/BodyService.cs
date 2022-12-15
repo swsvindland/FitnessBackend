@@ -62,6 +62,7 @@ public sealed class BodyService: IBodyService
 
     public async Task AddUserHeight(UserHeight userHeight)
     {
+        userHeight.Created = DateTime.UtcNow;
         await _bodyRepository.AddUserHeight(userHeight);
     }
     
