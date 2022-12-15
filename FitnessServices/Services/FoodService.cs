@@ -33,6 +33,7 @@ public sealed class FoodService : IFoodService
         {
             Id = macros.Id,
             UserId = userId,
+            Created = DateTime.UtcNow,
             Calories = macros.Calories,
             Protein = macros.Protein,
             Carbs = macros.Carbs,
