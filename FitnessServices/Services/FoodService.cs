@@ -133,7 +133,7 @@ public sealed class FoodService : IFoodService
         return await _foodApi.AutocompleteFood(query);
     }
 
-    public async Task<IEnumerable<EdamamFoodHint>?> ParseFood(string foodQuery, string? barcode)
+    public async Task<FatSecretSearch?> ParseFood(string foodQuery, string? barcode)
     {
         return await _foodApi.ParseFood(foodQuery, barcode);
     }
@@ -265,64 +265,64 @@ public sealed class FoodService : IFoodService
             var food = await _foodRepository.GetFoodByEdamamId(userFood.EdamamFoodId);
             newUserFood = userFood;
 
-            if (food == null)
-            {
-                var edamamFoods = await _foodApi.ParseFood(userFood.EdamamFoodId, null);
-                var enumerable = edamamFoods as EdamamFoodHint[] ?? edamamFoods?.ToArray();
-
-                var servingSize = (int) (enumerable?.FirstOrDefault()?.Measures
-                    .FirstOrDefault(e => e.Label == "Serving")
-                    ?.Weight ?? 28);
-
-                var edamamFood = await _foodApi.Nutrients(userFood.EdamamFoodId, servingSize);
-                
-                newFood = new Food()
-                {
-                    EdamamFoodId = userFood.EdamamFoodId,
-                    Name = enumerable?.FirstOrDefault()?.Food.Label ?? "",
-                    Brand = enumerable?.FirstOrDefault()?.Food.CategoryLabel ?? "Generic",
-                    ServingSize = servingSize,
-                    ServingSizeUnit = Units.Gram,
-                    Calories = GetValueFromDictionary(edamamFood?.TotalNutrients, "ENERC_KCAL")?.Quantity ?? 0,
-                    TotalFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FAT")?.Quantity ?? 0,
-                    SaturatedFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FASAT")?.Quantity ?? 0,
-                    TransFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FATRN")?.Quantity ?? 0,
-                    MonounsaturatedFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FAMS")?.Quantity ?? 0,
-                    PolyunsaturatedFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FAPU")?.Quantity ?? 0,
-                    Cholesterol = GetValueFromDictionary(edamamFood?.TotalNutrients, "CHOLE")?.Quantity ?? 0,
-                    Sodium = GetValueFromDictionary(edamamFood?.TotalNutrients, "NA")?.Quantity ?? 0,
-                    Potassium = GetValueFromDictionary(edamamFood?.TotalNutrients, "K")?.Quantity ?? 0,
-                    Carbohydrates = GetValueFromDictionary(edamamFood?.TotalNutrients, "CHOCDF")?.Quantity ?? 0,
-                    Fiber = GetValueFromDictionary(edamamFood?.TotalNutrients, "FIBTG")?.Quantity ?? 0,
-                    Sugar = GetValueFromDictionary(edamamFood?.TotalNutrients, "SUGAR")?.Quantity ?? 0,
-                    Protein = GetValueFromDictionary(edamamFood?.TotalNutrients, "PROCNT")?.Quantity ?? 0,
-                    Magnesium = GetValueFromDictionary(edamamFood?.TotalNutrients, "MG")?.Quantity ?? 0,
-                    Calcium = GetValueFromDictionary(edamamFood?.TotalNutrients, "CA")?.Quantity ?? 0,
-                    Iron = GetValueFromDictionary(edamamFood?.TotalNutrients, "FE")?.Quantity ?? 0,
-                    Zinc = GetValueFromDictionary(edamamFood?.TotalNutrients, "ZN")?.Quantity ?? 0,
-                    Phosphorus = GetValueFromDictionary(edamamFood?.TotalNutrients, "P")?.Quantity ?? 0,
-                    VitaminA = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITA_RAE")?.Quantity ?? 0,
-                    VitaminC = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITC")?.Quantity ?? 0,
-                    VitaminD = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITD")?.Quantity ?? 0,
-                    VitaminE = GetValueFromDictionary(edamamFood?.TotalNutrients, "TOCPHA")?.Quantity ?? 0,
-                    VitaminK = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITK1")?.Quantity ?? 0,
-                    Thiamin = GetValueFromDictionary(edamamFood?.TotalNutrients, "THIA")?.Quantity ?? 0,
-                    Riboflavin = GetValueFromDictionary(edamamFood?.TotalNutrients, "RIBF")?.Quantity ?? 0,
-                    Niacin = GetValueFromDictionary(edamamFood?.TotalNutrients, "NIA")?.Quantity ?? 0,
-                    VitaminB6 = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITB6A")?.Quantity ?? 0,
-                    Folate = GetValueFromDictionary(edamamFood?.TotalNutrients, "FOLDFE")?.Quantity ?? 0,
-                    VitaminB12 = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITB12")?.Quantity ?? 0,
-                    Water =
-                        GramToFluidOunce(GetValueFromDictionary(edamamFood?.TotalNutrients, "WATER")?.Quantity ?? 0),
-                };
-
-                var id = await _foodRepository.AddFood(newFood);
-                newUserFood.FoodId = id;
-            }
-            else
-            {
-                newUserFood.FoodId = food.Id;
-            }
+            // if (food == null)
+            // {
+            //     var edamamFoods = await _foodApi.ParseFood(userFood.EdamamFoodId, null);
+            //     var enumerable = edamamFoods as EdamamFoodHint[] ?? edamamFoods?.ToArray();
+            //
+            //     var servingSize = (int) (enumerable?.FirstOrDefault()?.Measures
+            //         .FirstOrDefault(e => e.Label == "Serving")
+            //         ?.Weight ?? 28);
+            //
+            //     var edamamFood = await _foodApi.Nutrients(userFood.EdamamFoodId, servingSize);
+            //     
+            //     newFood = new Food()
+            //     {
+            //         EdamamFoodId = userFood.EdamamFoodId,
+            //         Name = enumerable?.FirstOrDefault()?.Food.Label ?? "",
+            //         Brand = enumerable?.FirstOrDefault()?.Food.CategoryLabel ?? "Generic",
+            //         ServingSize = servingSize,
+            //         ServingSizeUnit = Units.Gram,
+            //         Calories = GetValueFromDictionary(edamamFood?.TotalNutrients, "ENERC_KCAL")?.Quantity ?? 0,
+            //         TotalFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FAT")?.Quantity ?? 0,
+            //         SaturatedFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FASAT")?.Quantity ?? 0,
+            //         TransFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FATRN")?.Quantity ?? 0,
+            //         MonounsaturatedFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FAMS")?.Quantity ?? 0,
+            //         PolyunsaturatedFat = GetValueFromDictionary(edamamFood?.TotalNutrients, "FAPU")?.Quantity ?? 0,
+            //         Cholesterol = GetValueFromDictionary(edamamFood?.TotalNutrients, "CHOLE")?.Quantity ?? 0,
+            //         Sodium = GetValueFromDictionary(edamamFood?.TotalNutrients, "NA")?.Quantity ?? 0,
+            //         Potassium = GetValueFromDictionary(edamamFood?.TotalNutrients, "K")?.Quantity ?? 0,
+            //         Carbohydrates = GetValueFromDictionary(edamamFood?.TotalNutrients, "CHOCDF")?.Quantity ?? 0,
+            //         Fiber = GetValueFromDictionary(edamamFood?.TotalNutrients, "FIBTG")?.Quantity ?? 0,
+            //         Sugar = GetValueFromDictionary(edamamFood?.TotalNutrients, "SUGAR")?.Quantity ?? 0,
+            //         Protein = GetValueFromDictionary(edamamFood?.TotalNutrients, "PROCNT")?.Quantity ?? 0,
+            //         Magnesium = GetValueFromDictionary(edamamFood?.TotalNutrients, "MG")?.Quantity ?? 0,
+            //         Calcium = GetValueFromDictionary(edamamFood?.TotalNutrients, "CA")?.Quantity ?? 0,
+            //         Iron = GetValueFromDictionary(edamamFood?.TotalNutrients, "FE")?.Quantity ?? 0,
+            //         Zinc = GetValueFromDictionary(edamamFood?.TotalNutrients, "ZN")?.Quantity ?? 0,
+            //         Phosphorus = GetValueFromDictionary(edamamFood?.TotalNutrients, "P")?.Quantity ?? 0,
+            //         VitaminA = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITA_RAE")?.Quantity ?? 0,
+            //         VitaminC = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITC")?.Quantity ?? 0,
+            //         VitaminD = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITD")?.Quantity ?? 0,
+            //         VitaminE = GetValueFromDictionary(edamamFood?.TotalNutrients, "TOCPHA")?.Quantity ?? 0,
+            //         VitaminK = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITK1")?.Quantity ?? 0,
+            //         Thiamin = GetValueFromDictionary(edamamFood?.TotalNutrients, "THIA")?.Quantity ?? 0,
+            //         Riboflavin = GetValueFromDictionary(edamamFood?.TotalNutrients, "RIBF")?.Quantity ?? 0,
+            //         Niacin = GetValueFromDictionary(edamamFood?.TotalNutrients, "NIA")?.Quantity ?? 0,
+            //         VitaminB6 = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITB6A")?.Quantity ?? 0,
+            //         Folate = GetValueFromDictionary(edamamFood?.TotalNutrients, "FOLDFE")?.Quantity ?? 0,
+            //         VitaminB12 = GetValueFromDictionary(edamamFood?.TotalNutrients, "VITB12")?.Quantity ?? 0,
+            //         Water =
+            //             GramToFluidOunce(GetValueFromDictionary(edamamFood?.TotalNutrients, "WATER")?.Quantity ?? 0),
+            //     };
+            //
+            //     var id = await _foodRepository.AddFood(newFood);
+            //     newUserFood.FoodId = id;
+            // }
+            // else
+            // {
+            //     newUserFood.FoodId = food.Id;
+            // }
         }
         else if (userFood.FoodId != null && userFood.EdamamFoodId == null)
         {
