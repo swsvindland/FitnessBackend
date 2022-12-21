@@ -6,6 +6,7 @@ public interface IUserService
 {
     Task<(bool, UserToken?)> AuthByEmailPassword(string email, string password);
     Task UpdateLastLogin(Guid userId);
+    Task UpdatePaid(Guid userId, bool paid);
     Task<Users?> GetUserById(Guid userId);
     public Task<Users?> GetUserByEmail(string email);
     Task CreateUser(string email, string password);
