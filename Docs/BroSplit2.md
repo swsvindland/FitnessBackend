@@ -50,9 +50,9 @@ This is a workout reminiscent of the traditional bro-split. It is made up of 12 
 ## Friday
 ### shoulders
 
-- Overhead press
+- Dumbbell Overhead press
 - Upright Row
 - Rear Delt fly
 - Lateral raises 
 - Face pull
-- Shrugs
+- Barbell Shrugs

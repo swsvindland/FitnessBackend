@@ -22,18 +22,15 @@ This is a workout designed for users of home gyms. It is a 12 week, 4 day a week
 
 - Squat
 - RDl
+- Glute Bridge
 - Calf Raise (toes out)
 - Calf Raise (toes in)
-- Plank
-- Crunch
-- Leg Raise
 
 ## Thursday
 ### Upper
 
 - Incline Bench Press
 - DB Overhead Press
-- Chin Up
 - Chin Up
 - Chest Supported DB Row
 - Hammer Curl
@@ -44,8 +41,6 @@ This is a workout designed for users of home gyms. It is a 12 week, 4 day a week
 
 - Hip Thrust
 - Sumo Deadlift
+- Goblet Squat
 - Calf Raise (toes out)
 - Calf Raise (toes in)
-- Plank
-- Crunch
-- Leg Raise
