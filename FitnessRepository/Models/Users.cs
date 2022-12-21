@@ -16,4 +16,5 @@ public sealed class Users
     public UserRole UserRole { get; set; }
     [Column(TypeName = "varchar(255)")]
     public UserUnits Unit { get; set; }
+    public bool Paid { get; set; }
 }

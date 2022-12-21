@@ -150,6 +150,7 @@ public sealed class UserService: IUserService
             Password = hashedPassword,
             UserRole = UserRole.User,
             Unit = UserUnits.Imperial,
+            Paid = false,
         };
 
         await _userRepository.AddUser(user);
@@ -159,6 +160,13 @@ public sealed class UserService: IUserService
     {
         var user = await GetUserById(userId);
         user.LastLogin = DateTime.UtcNow;
+        await _userRepository.UpdateUser(user);
+    }
+    
+    public async Task UpdatePaid(Guid userId, bool paid)
+    {
+        var user = await GetUserById(userId);
+        user.Paid = paid;
         await _userRepository.UpdateUser(user);
     }
     

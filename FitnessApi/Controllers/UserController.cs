@@ -166,6 +166,38 @@ public sealed class UserController
         return new OkObjectResult(true);
     }
     
+    [FunctionName("UpdateUserPaid")]
+    public async Task<IActionResult> UpdateUserPaid(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<UpdatePaid>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+        
+        var userId = Guid.Parse(req.Query["userId"]);
+        
+        await _userService.UpdatePaid(userId, data.Paid);
+
+        return new OkObjectResult(true);
+    }
+    
     [FunctionName("UpdateUserUnits")]
     public async Task<IActionResult> UpdateUserUnits(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
