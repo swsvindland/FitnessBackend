@@ -1,7 +1,7 @@
 # Bro Split 1
  - Full Gym
 
-This is a workout remenesent of the traditional bro-split. It is made up of 12 weeks, with 5 workouts a week. Each workout should take around 40-50 minutes. This is a great workout to start for beginners all the way up to intermediate lifters. But likely does not have enough volume for advanced lifters. 
+This is a workout reminiscent of the traditional bro-split. It is made up of 12 weeks, with 5 workouts a week. Each workout should take around 40-50 minutes. This is a great workout to start for beginners all the way up to intermediate lifters. But likely does not have enough volume for advanced lifters. 
 
 ## Monday
 ### chest
@@ -22,12 +22,12 @@ This is a workout remenesent of the traditional bro-split. It is made up of 12 w
    - CG Pulldown
    - T-bar Row
    - Seated Cable Row
-   - Pullups
+   - Straight Arm Lat Pushdown
 
 ## Wednesday
 ### legs
 
-   - Squat
+   - Leg Press
    - RDL
    - Leg Extention
    - Leg Curl
