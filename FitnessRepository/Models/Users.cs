@@ -17,4 +17,5 @@ public sealed class Users
     [Column(TypeName = "varchar(255)")]
     public UserUnits Unit { get; set; }
     public bool Paid { get; set; }
+    public DateTime? PaidUntil { get; set; }
 }

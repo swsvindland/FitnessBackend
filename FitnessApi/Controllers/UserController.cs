@@ -105,9 +105,10 @@ public sealed class UserController
         
         var userId = Guid.Parse(req.Query["userId"]);
 
-        var user = await _userService.GetUserById(userId);
         await _userService.UpdateLastLogin(userId);
-
+        await _userService.CheckIfPaidUntilValid(userId);
+        var user = await _userService.GetUserById(userId);
+        
         return new OkObjectResult(user);
     }
     
@@ -193,7 +194,7 @@ public sealed class UserController
         
         var userId = Guid.Parse(req.Query["userId"]);
         
-        await _userService.UpdatePaid(userId, data.Paid);
+        await _userService.UpdatePaid(userId, data.Paid, data.PaidUntil);
 
         return new OkObjectResult(true);
     }
