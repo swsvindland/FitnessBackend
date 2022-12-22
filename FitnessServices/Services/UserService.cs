@@ -179,7 +179,7 @@ public sealed class UserService: IUserService
         await _userRepository.UpdateUser(user);
     }
     
-    public async Task UpdatePaid(Guid userId, bool paid, DateTime paidUntil)
+    public async Task UpdatePaid(Guid userId, bool paid, DateTime? paidUntil)
     {
         var user = await GetUserById(userId);
         user.Paid = paid;
