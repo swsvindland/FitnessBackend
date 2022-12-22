@@ -163,10 +163,27 @@ public sealed class UserService: IUserService
         await _userRepository.UpdateUser(user);
     }
     
-    public async Task UpdatePaid(Guid userId, bool paid)
+    public async Task CheckIfPaidUntilValid(Guid userId)
+    {
+        var user = await GetUserById(userId);
+        
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        if (user.PaidUntil == null || user.PaidUntil < DateTime.UtcNow)
+        {
+            user.Paid = false;
+        }
+        await _userRepository.UpdateUser(user);
+    }
+    
+    public async Task UpdatePaid(Guid userId, bool paid, DateTime? paidUntil)
     {
         var user = await GetUserById(userId);
         user.Paid = paid;
+        user.PaidUntil = paidUntil;
         await _userRepository.UpdateUser(user);
     }
     
