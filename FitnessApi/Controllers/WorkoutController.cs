@@ -75,7 +75,7 @@ public sealed class WorkoutController
 
         return new OkObjectResult(workouts);
     }
-    
+
     [FunctionName("GetWorkoutExercises")]
     public async Task<IActionResult> GetWorkoutExercises(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
@@ -92,6 +92,25 @@ public sealed class WorkoutController
         var day = int.Parse(req.Query["day"]);
 
         var workouts = await _workoutService.GetWorkoutExercises(workoutId, day);
+
+        return new OkObjectResult(workouts);
+    }
+    
+    [FunctionName("GetAllWorkoutExercises")]
+    public async Task<IActionResult> GetAllWorkoutExercises(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var workoutId = long.Parse(req.Query["workoutId"]);
+
+        var workouts = await _workoutService.GetWorkoutExercises(workoutId);
 
         return new OkObjectResult(workouts);
     }
@@ -295,5 +314,135 @@ public sealed class WorkoutController
         await _workoutService.RestartWorkout(userId, workoutId);
 
         return new OkObjectResult(true);
+    }
+    
+    [FunctionName("GetWorkoutsByUserId")]
+    public async Task<IActionResult> GetWorkoutsByUserId(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userId = Guid.Parse(req.Query["userId"]);
+
+        var customWorkouts = await _workoutService.GetWorkoutsByUserId(userId);
+
+        return new OkObjectResult(customWorkouts);
+    }
+
+    [FunctionName("AddWorkout")]
+    public async Task<IActionResult> AddWorkout(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<Workout>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+
+        var id = await _workoutService.AddWorkout(data);
+
+        return new OkObjectResult(id);
+    }
+
+    [FunctionName("EditWorkout")]
+    public async Task<IActionResult> EditWorkout(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<Workout>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+
+        var id = await _workoutService.EditWorkout(data);
+
+        return new OkObjectResult(id);
+    }
+
+    [FunctionName("DeleteWorkout")]
+    public async Task<IActionResult> DeleteUserCustomWorkout(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var workoutId = long.Parse(req.Query["workoutId"]);
+
+        await _workoutService.DeleteWorkout(workoutId);
+
+        return new OkObjectResult(true);
+    }
+
+
+
+    [FunctionName("UpsertWorkoutExercises")]
+    public async Task<IActionResult> UpsertWorkoutExercises(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<WorkoutExercise>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+
+        var workoutExerciseId = await _workoutService.UpsertWorkoutExercise(data);
+
+        return new OkObjectResult(workoutExerciseId);
     }
 }

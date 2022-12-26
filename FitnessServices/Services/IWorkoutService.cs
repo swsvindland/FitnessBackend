@@ -7,8 +7,10 @@ public interface IWorkoutService
 {
     Task<IEnumerable<Exercise>> GetExercises();
     Task<IEnumerable<Workout>> GetWorkouts();
+    Task<IEnumerable<Workout>> GetWorkoutsByUserId(Guid userId);
     Task<Workout?> GetWorkout(long workoutId);
     Task<IEnumerable<WorkoutExercise>> GetWorkoutExercises(long workoutId, int day);
+    Task<IEnumerable<WorkoutExercise>> GetWorkoutExercises(long workoutId);
     Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId);
     Task BuyWorkout(Guid userId, long workoutId);
     Task SetActiveWorkout(Guid userId, long workoutId);
@@ -21,4 +23,20 @@ public interface IWorkoutService
     Task<IEnumerable<UserWorkoutsCompleted>> GetUserWorkoutsCompleted(Guid userId);
     Task<UserNextWorkout?> GetUserNextWorkout(Guid userId);
     Task RestartWorkout(Guid userId, long workoutId);
+    Task<long> AddWorkout(Workout workout);
+    Task<long> EditWorkout(Workout workout);
+    Task DeleteWorkout(long workoutId);
+
+    Task<long> UpsertWorkoutExercise(WorkoutExercise workoutExercise);
+    // Task<UserCustomWorkout?> GetUserCustomWorkout(Guid userId, long userCustomWorkoutId);
+    // Task<IEnumerable<UserCustomWorkout>> GetUserCustomWorkouts(Guid userId);
+    // Task<long> AddUserCustomWorkout(UserCustomWorkout userCustomWorkout);
+    // Task<long> EditUserCustomWorkout(UserCustomWorkout userCustomWorkout);
+    // Task DeleteUserCustomWorkout(Guid userId, long userCustomWorkoutId);
+    // Task<IEnumerable<UserCustomWorkoutExercise>> GetUserCustomWorkoutExercises(long userCustomWorkoutId);
+    // Task<long> UpsertUserCustomWorkoutExercise(UserCustomWorkoutExercise userCustomWorkoutExercise);
+    // Task AddUserCustomWorkoutActivity(UserCustomWorkoutActivity userCustomWorkoutActivity);
+    //
+    // Task<UserCustomWorkoutActivityModel?> GetUserCustomWorkoutActivity(Guid userId, long userCustomWorkoutExerciseId,
+    //     int set, int week, int day);
 }

@@ -4,6 +4,7 @@ public sealed class WorkoutExercise
 {
     public long Id { get; set; }
     public DateTime Created { get; set; }
+    public DateTime? Updated { get; set; }
     public long WorkoutId { get; set; }
     public long ExerciseId { get; set; }
     public Exercise? Exercise { get; set; }
@@ -11,4 +12,5 @@ public sealed class WorkoutExercise
     public int Sets { get; set; }
     public int MinReps { get; set; }
     public int MaxReps { get; set; }
+    public int? Order { get; set; }
 }
