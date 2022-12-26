@@ -29,6 +29,11 @@ public sealed class WorkoutService : IWorkoutService
     {
         return await _workoutRepository.GetWorkouts();
     }
+    
+    public async Task<IEnumerable<Workout>> GetWorkoutsByUserId(Guid userId)
+    {
+        return await _workoutRepository.GetWorkoutsByUserId(userId);
+    }    
 
     public async Task<Workout?> GetWorkout(long workoutId)
     {
@@ -39,7 +44,11 @@ public sealed class WorkoutService : IWorkoutService
     {
         return await _workoutRepository.GetWorkoutExercises(workoutId, day);
     }
-
+    
+    public async Task<IEnumerable<WorkoutExercise>> GetWorkoutExercises(long workoutId)
+    {
+        return await _workoutRepository.GetWorkoutExercises(workoutId);
+    }
     
     public async Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId)
     {
@@ -293,4 +302,212 @@ public sealed class WorkoutService : IWorkoutService
         
         await _workoutRepository.DeleteUserWorkoutCompleted(userWorkoutsCompleted);
     }
+    
+    public async Task<long> AddWorkout(Workout workout)
+    {
+        if (workout.UserId == null)
+        {
+            throw new Exception("Must have a user id");
+        }
+        
+        workout.Created = DateTime.UtcNow;
+        workout.Updated = DateTime.UtcNow;
+        return await _workoutRepository.AddWorkout(workout);
+    }
+    
+    public async Task<long> EditWorkout(Workout workout)
+    {
+        workout.Updated = DateTime.UtcNow;
+        return await _workoutRepository.UpdateWorkout(workout);
+    }
+    
+    public async Task DeleteWorkout(long workoutId)
+    {
+        var workout = await GetWorkout(workoutId);
+        if (workout.UserId == null)
+        {
+            throw new Exception("Must have a user id");
+        }
+        
+        await _workoutRepository.DeleteWorkout(workoutId);
+    }
+    
+    public async Task<long> UpsertWorkoutExercise(WorkoutExercise workoutExercise)
+    {
+        workoutExercise.Updated = DateTime.UtcNow;
+    
+        if (workoutExercise.Id == null)
+        {
+            workoutExercise.Created = DateTime.UtcNow;
+            return await _workoutRepository.AddWorkoutExercise(workoutExercise);
+        }
+        return await _workoutRepository.UpdateWorkoutExercise(workoutExercise);
+    }
+
+    // public async Task<IEnumerable<UserCustomWorkout>> GetUserCustomWorkouts(Guid userId)
+    // {
+    //     return await _workoutRepository.GetUserCustomWorkouts(userId);
+    // }
+    //
+    // public async Task<UserCustomWorkout?> GetUserCustomWorkout(Guid userId, long userCustomWorkoutId)
+    // {
+    //     return await _workoutRepository.GetUserCustomWorkout(userId, userCustomWorkoutId);
+    // }
+    //
+    // public async Task<long> AddUserCustomWorkout(UserCustomWorkout userCustomWorkout)
+    // {
+    //     userCustomWorkout.Created = DateTime.UtcNow;
+    //     userCustomWorkout.Updated = DateTime.UtcNow;
+    //     return await _workoutRepository.AddUserCustomWorkout(userCustomWorkout);
+    // }
+    //
+    // public async Task<long> EditUserCustomWorkout(UserCustomWorkout userCustomWorkout)
+    // {
+    //     userCustomWorkout.Updated = DateTime.UtcNow;
+    //     return await _workoutRepository.UpdateUserCustomWorkout(userCustomWorkout);
+    // }
+    //
+    // public async Task DeleteUserCustomWorkout(Guid userId, long userCustomWorkoutId)
+    // {
+    //     await _workoutRepository.DeleteUserCustomWorkout(userId, userCustomWorkoutId);
+    // }
+    //
+    // public async Task<IEnumerable<UserCustomWorkoutExercise>> GetUserCustomWorkoutExercises(long userCustomWorkoutId)
+    // {
+    //     return await _workoutRepository.GetUserCustomWorkoutExercises(userCustomWorkoutId);
+    // }
+    //
+    // public async Task<long> UpsertUserCustomWorkoutExercise(UserCustomWorkoutExercise userCustomWorkoutExercise)
+    // {
+    //     userCustomWorkoutExercise.Updated = DateTime.UtcNow;
+    //
+    //     if (userCustomWorkoutExercise.Id == null)
+    //     {
+    //         userCustomWorkoutExercise.Created = DateTime.UtcNow;
+    //         return await _workoutRepository.AddUserCustomWorkoutExercise(userCustomWorkoutExercise);
+    //     }
+    //     return await _workoutRepository.UpdateUserCustomWorkoutExercise(userCustomWorkoutExercise);
+    // }
+    //
+    // public async Task AddUserCustomWorkoutActivity(UserCustomWorkoutActivity userCustomWorkoutActivity)
+    // {
+    //     var workoutExercise =
+    //         await _workoutRepository.GetUserCustomWorkoutExercise(userCustomWorkoutActivity.UserCustomWorkoutExerciseId);
+    //     var estimatedOneRepMax =
+    //         (int) Math.Floor(userCustomWorkoutActivity.Weight * (1.0 + (userCustomWorkoutActivity.Reps / 30.0)));
+    //
+    //     if (workoutExercise == null)
+    //     {
+    //         return;
+    //     }
+    //
+    //     var estimatedOneRepMaxModel = new UserOneRepMaxEstimates()
+    //     {
+    //         UserId = userCustomWorkoutActivity.UserId,
+    //         ExerciseId = workoutExercise.ExerciseId,
+    //         Estimate = estimatedOneRepMax,
+    //         Created = DateTime.UtcNow,
+    //     };
+    //
+    //     var activity = new UserCustomWorkoutActivity()
+    //     {
+    //         Id = userCustomWorkoutActivity.Id,
+    //         UserCustomWorkoutExerciseId = userCustomWorkoutActivity.UserCustomWorkoutExerciseId,
+    //         Created = DateTime.UtcNow.Date,
+    //         UserId = userCustomWorkoutActivity.UserId,
+    //         Reps = userCustomWorkoutActivity.Reps,
+    //         Set = userCustomWorkoutActivity.Set,
+    //         Weight = userCustomWorkoutActivity.Weight,
+    //         Week = userCustomWorkoutActivity.Week,
+    //         Day = userCustomWorkoutActivity.Day
+    //     };
+    //
+    //     if (userCustomWorkoutActivity.Id == null)
+    //     {
+    //         await _workoutRepository.AddUserCustomWorkoutActivity(activity);
+    //     }
+    //     else
+    //     {
+    //         await _workoutRepository.UpdateUserCustomWorkoutActivity(activity);
+    //     }
+    //
+    //     await _workoutRepository.AddUserOneRepMax(estimatedOneRepMaxModel);
+    // }
+    //
+    // public async Task<UserCustomWorkoutActivityModel?> GetUserCustomWorkoutActivity(Guid userId,
+    //     long userCustomWorkoutExerciseId,
+    //     int set, int week, int day)
+    // {
+    //     var workoutActivity =
+    //         await _workoutRepository.GetUserCustomWorkoutActivity(userId, userCustomWorkoutExerciseId, set, week, day);
+    //     var workout = await _workoutRepository.GetUserCustomWorkoutExercise(userCustomWorkoutExerciseId);
+    //
+    //     if (workout == null)
+    //     {
+    //         return null;
+    //     }
+    //
+    //     if (workoutActivity != null)
+    //     {
+    //         var newWorkoutActivity = new UserCustomWorkoutActivityModel()
+    //         {
+    //             Id = workoutActivity.Id,
+    //             UserId = workoutActivity.UserId,
+    //             UserCustomWorkoutExerciseId = workoutActivity.UserCustomWorkoutExerciseId,
+    //             Set = workoutActivity.Set,
+    //             Reps = workoutActivity.Reps,
+    //             Weight = workoutActivity.Weight,
+    //             Created = DateTime.UtcNow,
+    //             Saved = true
+    //         };
+    //
+    //         return newWorkoutActivity;
+    //     }
+    //     
+    //     var userExerciseOneRepMax = await GetUserOneRepMaxesByExerciseId(userId, workout.ExerciseId);
+    //
+    //     var recommendedWeight =
+    //         (int) Math.Floor(userExerciseOneRepMax?.Estimate * REPS_TO_PERCENT[workout.MaxReps - 1] ?? 0);
+    //     var recommendedWeightByFive = (int) Math.Round(recommendedWeight / 5.0) * 5;
+    //
+    //     if (set == 0)
+    //         return new UserCustomWorkoutActivityModel()
+    //         {
+    //             UserId = userId,
+    //             UserCustomWorkoutExerciseId = userCustomWorkoutExerciseId,
+    //             Set = set,
+    //             Reps = workout.MaxReps,
+    //             Weight = recommendedWeightByFive + 5,
+    //             Created = DateTime.UtcNow,
+    //             Saved = false
+    //         };
+    //
+    //     var prevWorkoutActivity =
+    //         await _workoutRepository.GetUserCustomWorkoutActivity(userId, userCustomWorkoutExerciseId, set - 1, week, day);
+    //
+    //     if (prevWorkoutActivity == null)
+    //     {
+    //         return new UserCustomWorkoutActivityModel()
+    //         {
+    //             UserId = userId,
+    //             UserCustomWorkoutExerciseId = userCustomWorkoutExerciseId,
+    //             Set = set,
+    //             Reps = workout.MaxReps,
+    //             Weight = recommendedWeightByFive,
+    //             Created = DateTime.UtcNow,
+    //             Saved = false
+    //         };
+    //     }
+    //
+    //     return new UserCustomWorkoutActivityModel()
+    //     {
+    //         UserId = userId,
+    //         UserCustomWorkoutExerciseId = userCustomWorkoutExerciseId,
+    //         Set = set,
+    //         Reps = prevWorkoutActivity.Reps,
+    //         Weight = prevWorkoutActivity.Weight,
+    //         Created = DateTime.UtcNow,
+    //         Saved = false
+    //     };
+    // }
 }

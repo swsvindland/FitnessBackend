@@ -64,7 +64,8 @@ public sealed class UserRepository : IUserRepository
         _context.UserFood.RemoveRange(_context.UserFood.Where(e => e.UserId == userId));
         _context.UserBody.RemoveRange(_context.UserBody.Where(e => e.UserId == userId));
         _context.UserBloodPressure.RemoveRange(_context.UserBloodPressure.Where(e => e.UserId == userId));
-        
+        _context.UserCustomMacros.RemoveRange(_context.UserCustomMacros.Where(e => e.UserId == userId));
+
         await _context.SaveChangesAsync();
     }
 }

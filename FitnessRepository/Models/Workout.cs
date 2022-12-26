@@ -3,7 +3,9 @@ namespace FitnessRepository.Models;
 public sealed class Workout
 {
     public long Id { get; set; }
+    public Guid? UserId { get; set; }
     public DateTime Created { get; set; }
+    public DateTime? Updated { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
     public int Days { get; set; }
