@@ -38,23 +38,4 @@ public interface IWorkoutRepository
     Task<long> AddWorkoutExercise(WorkoutExercise workoutExercise);
 
     Task<long> UpdateWorkoutExercise(WorkoutExercise workoutExercise);
-    // Task<UserCustomWorkout?> GetUserCustomWorkout(Guid userId, long id);
-    // Task<IEnumerable<UserCustomWorkout>> GetUserCustomWorkouts(Guid userId);
-    // Task<long> AddUserCustomWorkout(UserCustomWorkout userCustomWorkout);
-    // Task<long> UpdateUserCustomWorkout(UserCustomWorkout userCustomWorkout);
-    // Task DeleteUserCustomWorkout(Guid userId, long id);
-    //
-    // Task<UserCustomWorkoutActivity?> GetUserCustomWorkoutActivity(Guid userId, long workoutExerciseId, int set,
-    //     int week, int day);
-    //
-    // Task<IEnumerable<UserCustomWorkoutActivity>> GetUserCustomWorkoutActivities(Guid userId,
-    //     long workoutExerciseId);
-    //
-    // Task DeleteUserCustomWorkoutActivities(IEnumerable<UserCustomWorkoutActivity> activities);
-    // Task AddUserCustomWorkoutActivity(UserCustomWorkoutActivity userCustomWorkoutActivity);
-    // Task UpdateUserCustomWorkoutActivity(UserCustomWorkoutActivity userCustomWorkoutActivity);
-    // Task<IEnumerable<UserCustomWorkoutExercise>> GetUserCustomWorkoutExercises(long workoutExerciseId);
-    // Task<UserCustomWorkoutExercise?> GetUserCustomWorkoutExercise(long userCustomWorkoutExerciseId);
-    // Task<long> AddUserCustomWorkoutExercise(UserCustomWorkoutExercise userCustomWorkoutExercise);
-    // Task<long> UpdateUserCustomWorkoutExercise(UserCustomWorkoutExercise userCustomWorkoutExercise);
 }
