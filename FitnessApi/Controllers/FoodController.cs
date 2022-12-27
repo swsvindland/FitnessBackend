@@ -299,4 +299,24 @@ public sealed class FoodController
 
         return new OkObjectResult(true);
     }
+    
+    [FunctionName("SearchFood")]
+    public async Task<IActionResult> SearchFood(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        // var authed = await _authService.CheckAuth(req);
+        //
+        // if (authed == false)
+        // {
+        //     return new UnauthorizedResult();
+        // }
+
+        var query = req.Query["query"];
+        var page = int.Parse(req.Query["page"]);
+
+        var foods = await _foodService.SearchFood(query, page);
+
+        return new OkObjectResult(foods);
+    }
 }

@@ -11,14 +11,16 @@ public sealed class FoodService : IFoodService
     private readonly IUserService _userService;
     private readonly IBodyService _bodyService;
     private readonly IFoodApi _foodApi;
+    private readonly IFatSecretApi _fatSecretApi;
     private readonly IFoodRepository _foodRepository;
 
-    public FoodService(IUserService userService, IBodyService bodyService, IFoodApi foodApi,
+    public FoodService(IUserService userService, IBodyService bodyService, IFoodApi foodApi, IFatSecretApi fatSecretApi,
         IFoodRepository foodRepository)
     {
         _userService = userService;
         _bodyService = bodyService;
         _foodApi = foodApi;
+        _fatSecretApi = fatSecretApi;
         _foodRepository = foodRepository;
     }
 
@@ -137,6 +139,11 @@ public sealed class FoodService : IFoodService
     public async Task<IEnumerable<EdamamFoodHint>?> ParseFood(string foodQuery, string? barcode)
     {
         return await _foodApi.ParseFood(foodQuery, barcode);
+    }
+
+    public async Task<IEnumerable<FatSecretSearchItem>> SearchFood(string query, int page)
+    {
+        return await _fatSecretApi.SearchFoods(query, page);
     }
 
     public async Task<EdamamNutrients?> GetFoodDetails(string foodId, float servingSizeInGrams)
