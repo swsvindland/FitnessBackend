@@ -319,4 +319,23 @@ public sealed class FoodController
 
         return new OkObjectResult(foods);
     }
+    
+    [FunctionName("GetFoodV2")]
+    public async Task<IActionResult> GetFoodV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        // var authed = await _authService.CheckAuth(req);
+        //
+        // if (authed == false)
+        // {
+        //     return new UnauthorizedResult();
+        // }
+
+        var foodId = long.Parse(req.Query["foodId"]);
+
+        var foods = await _foodService.GetFoodById(foodId);
+
+        return new OkObjectResult(foods);
+    }
 }

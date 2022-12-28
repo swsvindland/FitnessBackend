@@ -145,6 +145,11 @@ public sealed class FoodService : IFoodService
     {
         return await _fatSecretApi.SearchFoods(query, page);
     }
+    
+    public async Task<FatSecretItem> GetFoodById(long foodId)
+    {
+        return await _fatSecretApi.GetFood(foodId);
+    }
 
     public async Task<EdamamNutrients?> GetFoodDetails(string foodId, float servingSizeInGrams)
     {

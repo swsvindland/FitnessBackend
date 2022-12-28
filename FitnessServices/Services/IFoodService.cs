@@ -12,6 +12,7 @@ public interface IFoodService
     Task<IEnumerable<string>?> AutocompleteFood(string query);
     Task<IEnumerable<EdamamFoodHint>?> ParseFood(string foodQuery, string? barcode);
     Task<IEnumerable<FatSecretSearchItem>> SearchFood(string query, int page);
+    Task<FatSecretItem> GetFoodById(long foodId);
     Task<EdamamNutrients?> GetFoodDetails(string foodId, float servingSizeInGrams);
     Task<Macros> GetUserCurrentMacos(Guid userId, DateTime date);
     Task<IEnumerable<UserFood>> GetUserFoods(Guid userId, DateTime date);
