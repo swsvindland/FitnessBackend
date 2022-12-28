@@ -305,12 +305,12 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        // var authed = await _authService.CheckAuth(req);
-        //
-        // if (authed == false)
-        // {
-        //     return new UnauthorizedResult();
-        // }
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
 
         var query = req.Query["query"];
         var page = int.Parse(req.Query["page"]);
@@ -325,12 +325,12 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        // var authed = await _authService.CheckAuth(req);
-        //
-        // if (authed == false)
-        // {
-        //     return new UnauthorizedResult();
-        // }
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
 
         var foodId = long.Parse(req.Query["foodId"]);
 
