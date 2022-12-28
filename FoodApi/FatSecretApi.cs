@@ -1,8 +1,6 @@
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Xml.Linq;
-using System.Xml.Serialization;
 using FoodApi.Models;
 
 namespace FoodApi;
