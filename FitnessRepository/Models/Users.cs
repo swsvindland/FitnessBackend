@@ -18,4 +18,5 @@ public sealed class Users
     public UserUnits Unit { get; set; }
     public bool Paid { get; set; }
     public DateTime? PaidUntil { get; set; }
+    public int LoginCount { get; set; }
 }
