@@ -25,10 +25,15 @@ public class DashboardService: IDashboardService
         return new Dashboard()
         {
             AddHeight = !userHeights.Any(),
+            HeightAdded = userHeights.Where(e => e.Created.Date == date.Date).Any(),
             AddWeight = userWeights.LastOrDefault()?.Created.Date != date.Date,
-            AddBloodPressure = (userBloodPressure.LastOrDefault()?.Created ?? DateTime.Now) < date.AddDays(-7),
-            AddBodyMeasurements = (userBodies.LastOrDefault()?.Created ?? DateTime.Now) < date.AddDays(-7),
-            DoWorkout = userWorkouts.LastOrDefault()?.Created.Date != date.Date
+            WeightAdded = userWeights.Where(e => e.Created.Date == date.Date).Any(),
+            AddBloodPressure = (userBloodPressure.LastOrDefault()?.Created ?? DateTime.Now) < date.AddDays(-6),
+            BloodPressureAdded = userBloodPressure.Where(e => e.Created.Date == date.Date).Any(),
+            AddBodyMeasurements = (userBodies.LastOrDefault()?.Created ?? DateTime.Now) < date.AddDays(-6),
+            BodyMeasurementsAdded = userBodies.Where(e => e.Created.Date == date.Date).Any(),
+            DoWorkout = userWorkouts.LastOrDefault()?.Created.Date != date.Date,
+            WorkoutAdded = userWorkouts.Where(e => e.Created.Date == date.Date).Any()
         };
     }
 }
