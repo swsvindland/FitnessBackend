@@ -40,6 +40,7 @@ namespace FitnessApi
             builder.Services.AddScoped<IFoodRepository, FoodRepository>();
 
             // add external api calls
+            builder.Services.AddScoped<IFatSecretApi, FatSecretApi>();
             builder.Services.AddScoped<IFoodApi, FoodApi.FoodApi>();
 
             // add service functions

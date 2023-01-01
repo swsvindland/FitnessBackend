@@ -299,4 +299,171 @@ public sealed class FoodController
 
         return new OkObjectResult(true);
     }
+    
+    [FunctionName("SearchFood")]
+    public async Task<IActionResult> SearchFood(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var query = req.Query["query"];
+        var page = int.Parse(req.Query["page"]);
+
+        var foods = await _foodService.SearchFood(query, page);
+
+        return new OkObjectResult(foods);
+    }
+    
+    [FunctionName("GetFoodV2")]
+    public async Task<IActionResult> GetFoodV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var foodId = long.Parse(req.Query["foodId"]);
+
+        var foods = await _foodService.GetFoodById(foodId);
+
+        return new OkObjectResult(foods);
+    }
+    
+    [FunctionName("GetUserFoodV2")]
+    public async Task<IActionResult> GetUserFoodV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userFoodId = long.Parse(req.Query["userFoodId"]);
+
+        var foods = await _foodService.GetUserFoodV2(userFoodId);
+
+        return new OkObjectResult(foods);
+    }
+    
+    [FunctionName("GetAllUserFoodV2")]
+    public async Task<IActionResult> GetAllUserFoodV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userId = Guid.Parse(req.Query["userId"]);
+        var date = DateTime.Parse(req.Query["date"]);
+
+        var foods = await _foodService.GetAllUserFoodsV2ByDate(userId, date);
+
+        return new OkObjectResult(foods);
+    }
+    
+    [FunctionName("AddUserFoodV2")]
+    public async Task<IActionResult> AddUserFoodV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<UserFoodV2>(requestBody);
+
+        var id = await _foodService.AddUserFoodV2(data);
+
+        return new OkObjectResult(id);
+    }
+    
+    [FunctionName("UpdateUserFoodV2")]
+    public async Task<IActionResult> UpdateUserFoodV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<UserFoodV2>(requestBody);
+
+        await _foodService.UpdateUserFoodV2(data);
+
+        return new OkObjectResult(true);
+    }
+    
+    [FunctionName("DeleteUserFoodV2")]
+    public async Task<IActionResult> DeleteUserFoodV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userFoodId = long.Parse(req.Query["userFoodId"]);
+        
+        await _foodService.DeleteUserFoodV2(userFoodId);
+
+        return new OkObjectResult(true);
+    }
+    
+    [FunctionName("GetCurrentUserMacrosV2")]
+    public async Task<IActionResult> GetCurrentUserMacrosV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userId = Guid.Parse(req.Query["userId"]);
+        var date = DateTime.Parse(req.Query["date"]);
+
+        var user = await _foodService.GetUserCurrentMacosV2(userId, date);
+
+        return new OkObjectResult(user);
+    }
 }

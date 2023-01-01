@@ -28,15 +28,4 @@ public interface IWorkoutService
     Task DeleteWorkout(long workoutId);
 
     Task<long> UpsertWorkoutExercise(WorkoutExercise workoutExercise);
-    // Task<UserCustomWorkout?> GetUserCustomWorkout(Guid userId, long userCustomWorkoutId);
-    // Task<IEnumerable<UserCustomWorkout>> GetUserCustomWorkouts(Guid userId);
-    // Task<long> AddUserCustomWorkout(UserCustomWorkout userCustomWorkout);
-    // Task<long> EditUserCustomWorkout(UserCustomWorkout userCustomWorkout);
-    // Task DeleteUserCustomWorkout(Guid userId, long userCustomWorkoutId);
-    // Task<IEnumerable<UserCustomWorkoutExercise>> GetUserCustomWorkoutExercises(long userCustomWorkoutId);
-    // Task<long> UpsertUserCustomWorkoutExercise(UserCustomWorkoutExercise userCustomWorkoutExercise);
-    // Task AddUserCustomWorkoutActivity(UserCustomWorkoutActivity userCustomWorkoutActivity);
-    //
-    // Task<UserCustomWorkoutActivityModel?> GetUserCustomWorkoutActivity(Guid userId, long userCustomWorkoutExerciseId,
-    //     int set, int week, int day);
 }

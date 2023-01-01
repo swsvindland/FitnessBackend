@@ -160,6 +160,7 @@ public sealed class UserService: IUserService
     {
         var user = await GetUserById(userId);
         user.LastLogin = DateTime.UtcNow;
+        user.LoginCount++;
         await _userRepository.UpdateUser(user);
     }
     
