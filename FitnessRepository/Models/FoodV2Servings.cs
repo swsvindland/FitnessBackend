@@ -29,4 +29,5 @@ public sealed class FoodV2Servings
     public float? VitaminC { get; set; }
     public float? VitaminD { get; set; }
     public DateTime Created { get; set; }
+    public DateTime Updated { get; set; }
 }

@@ -28,4 +28,5 @@ public interface IFoodService
     Task UpdateUserFoodV2(UserFoodV2 userFood);
     Task DeleteUserFoodV2(long userFoodId);
     Task<Macros> GetUserCurrentMacosV2(Guid userId, DateTime date);
+    Task RefreshCashedFoodDb();
 }
