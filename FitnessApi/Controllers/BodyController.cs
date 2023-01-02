@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FitnessRepository.Models;
 using FitnessServices.Services;
@@ -8,7 +9,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace FitnessApi.Controllers;
 
@@ -29,12 +29,12 @@ public sealed class BodyController
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-        
+
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GetAllUserWeights(userId);
@@ -48,19 +48,19 @@ public sealed class BodyController
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-        
+
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonConvert.DeserializeObject<UserWeight>(requestBody);
+        var data = JsonSerializer.Deserialize<UserWeight>(requestBody);
 
         await _bodyService.AddUserWeight(data);
 
@@ -73,12 +73,12 @@ public sealed class BodyController
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-        
+
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GetAllUserBodies(userId);
@@ -92,19 +92,19 @@ public sealed class BodyController
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-        
+
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonConvert.DeserializeObject<UserBody>(requestBody);
+        var data = JsonSerializer.Deserialize<UserBody>(requestBody);
 
         await _bodyService.AddUserBody(data);
 
@@ -117,12 +117,12 @@ public sealed class BodyController
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-        
+
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GetAllUserBloodPressures(userId);
@@ -136,12 +136,12 @@ public sealed class BodyController
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-        
+
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GenerateBodyFats(userId);
@@ -155,19 +155,19 @@ public sealed class BodyController
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-        
+
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonConvert.DeserializeObject<UserBloodPressure>(requestBody);
+        var data = JsonSerializer.Deserialize<UserBloodPressure>(requestBody);
 
         await _bodyService.AddUserBloodPressure(data);
 
@@ -180,19 +180,19 @@ public sealed class BodyController
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-        
+
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonConvert.DeserializeObject<UserHeight>(requestBody);
+        var data = JsonSerializer.Deserialize<UserHeight>(requestBody);
 
         await _bodyService.AddUserHeight(data);
 

@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FitnessRepository.Models;
 using FitnessServices.Models;
@@ -9,7 +10,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace FitnessApi.Controllers
 {
@@ -30,12 +30,12 @@ namespace FitnessApi.Controllers
             HttpRequest req, ILogger log)
         {
             var authed = await _authService.CheckAuth(req);
-        
+
             if (authed == false)
             {
                 return new UnauthorizedResult();
             }
-            
+
             var supplements = await _supplementService.GetAllSupplements();
 
             return new OkObjectResult(supplements);
@@ -47,12 +47,12 @@ namespace FitnessApi.Controllers
             HttpRequest req, ILogger log)
         {
             var authed = await _authService.CheckAuth(req);
-        
+
             if (authed == false)
             {
                 return new UnauthorizedResult();
             }
-            
+
             var userId = Guid.Parse(req.Query["userId"]);
 
             var userSupplements = await _supplementService.GetUserSupplements(userId);
@@ -66,19 +66,19 @@ namespace FitnessApi.Controllers
             HttpRequest req, ILogger log)
         {
             var authed = await _authService.CheckAuth(req);
-        
+
             if (authed == false)
             {
                 return new UnauthorizedResult();
             }
-            
+
             string requestBody;
             using (var streamReader = new StreamReader(req.Body))
             {
                 requestBody = await streamReader.ReadToEndAsync();
             }
 
-            var data = JsonConvert.DeserializeObject<UpdateUserSupplement>(requestBody);
+            var data = JsonSerializer.Deserialize<UpdateUserSupplement>(requestBody);
 
             await _supplementService.UpdateUserSupplement(data);
 
@@ -91,12 +91,12 @@ namespace FitnessApi.Controllers
             HttpRequest req, ILogger log)
         {
             var authed = await _authService.CheckAuth(req);
-        
+
             if (authed == false)
             {
                 return new UnauthorizedResult();
             }
-            
+
             var userId = Guid.Parse(req.Query["userId"]);
             var userSupplementId = long.Parse(req.Query["userSupplementId"]);
             var date = req.Query["date"];
@@ -114,19 +114,19 @@ namespace FitnessApi.Controllers
             HttpRequest req, ILogger log)
         {
             var authed = await _authService.CheckAuth(req);
-        
+
             if (authed == false)
             {
                 return new UnauthorizedResult();
             }
-            
+
             string requestBody;
             using (var streamReader = new StreamReader(req.Body))
             {
                 requestBody = await streamReader.ReadToEndAsync();
             }
 
-            var data = JsonConvert.DeserializeObject<UpdateUserSupplementActivity>(requestBody);
+            var data = JsonSerializer.Deserialize<UpdateUserSupplementActivity>(requestBody);
 
             await _supplementService.ToggleUserSupplementActivity(data);
 
