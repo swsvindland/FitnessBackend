@@ -62,7 +62,7 @@ public sealed class FatSecretApi : IFatSecretApi
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return null;
+            throw new Exception("Error while searching foods");
         }
     }
 
@@ -116,7 +116,7 @@ public sealed class FatSecretApi : IFatSecretApi
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return null;
+            throw new Exception("Error while searching foods");
         }
     }
 }
