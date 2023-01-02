@@ -1,6 +1,6 @@
 namespace FitnessRepository.Models;
 
-public class FoodV2Servings
+public sealed class FoodV2Servings
 {
     public long Id { get; set; }
     public long FoodV2Id { get; set; }
@@ -29,4 +29,5 @@ public class FoodV2Servings
     public float? VitaminC { get; set; }
     public float? VitaminD { get; set; }
     public DateTime Created { get; set; }
+    public DateTime Updated { get; set; }
 }

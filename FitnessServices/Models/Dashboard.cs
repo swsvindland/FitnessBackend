@@ -1,6 +1,6 @@
 namespace FitnessServices.Models;
 
-public class Dashboard
+public sealed class Dashboard
 {
     public bool AddWeight { get; set; }
     public bool WeightAdded { get; set; }

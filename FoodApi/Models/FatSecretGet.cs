@@ -1,11 +1,11 @@
 namespace FoodApi.Models;
 
-public class FatSecretGet
+public sealed class FatSecretGet
 {
     public FatSecretItem food { get; set; }
 }
 
-public class FatSecretItem
+public sealed class FatSecretItem
 {
     public string FoodId { get; set; }
     public string? BrandName { get; set; }
@@ -15,18 +15,18 @@ public class FatSecretItem
     public FatSecretServings Servings { get; set; }
 }
 
-public class FatSecretServings
+public sealed class FatSecretServings
 {
     public IEnumerable<FatSecretServing> Serving { get; set; }
 }
 
 
-public class FatSecretGetSingleServing
+public sealed class FatSecretGetSingleServing
 {
     public FatSecretItemSingleServing food { get; set; }
 }
 
-public class FatSecretItemSingleServing
+public sealed class FatSecretItemSingleServing
 {
     public string FoodId { get; set; }
     public string? BrandName { get; set; }
@@ -36,12 +36,12 @@ public class FatSecretItemSingleServing
     public FatSecretSingleServing Servings { get; set; }
 }
 
-public class FatSecretSingleServing
+public sealed class FatSecretSingleServing
 {
     public FatSecretServing Serving { get; set; }
 }
 
-public class FatSecretServing
+public sealed class FatSecretServing
 {
     public string? AddedSugar { get; set; }
     public string? Calcium { get; set; }

@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace FoodApi
 {
-    public class SnakeCaseNamingPolicy : JsonNamingPolicy
+    public sealed class SnakeCaseNamingPolicy : JsonNamingPolicy
     {
         public override string ConvertName(string name)
         {

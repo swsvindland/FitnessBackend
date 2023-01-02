@@ -97,6 +97,13 @@ public sealed class FoodRepository : IFoodRepository
         _context.UserFood.Remove(userFood);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<IEnumerable<FoodV2>> GetAllFoodsV2()
+    {
+        return await _context.FoodV2
+            .Include(e => e.Servings)
+            .ToListAsync();
+    }
 
     public async Task<FoodV2?> GetFoodV2ById(long id)
     {
@@ -112,9 +119,22 @@ public sealed class FoodRepository : IFoodRepository
         return food.Id;
     }
     
+    public async Task<long> UpdateFoodV2(FoodV2 food)
+    {
+        _context.FoodV2.Update(food);
+        await _context.SaveChangesAsync();
+        return food.Id;
+    }
+    
     public async Task AddFoodV2Servings(IEnumerable<FoodV2Servings> servings)
     {
         _context.FoodV2Servings.AddRange(servings);
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task UpdateFoodV2Servings(IEnumerable<FoodV2Servings> servings)
+    {
+        _context.FoodV2Servings.UpdateRange(servings);
         await _context.SaveChangesAsync();
     }
 

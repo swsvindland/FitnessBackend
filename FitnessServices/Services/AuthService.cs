@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace FitnessServices.Services;
 
-public class AuthService: IAuthService
+public sealed class AuthService: IAuthService
 {
     private readonly IUserService _userService;
     

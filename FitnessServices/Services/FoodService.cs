@@ -145,19 +145,14 @@ public sealed class FoodService : IFoodService
     {
         return await _fatSecretApi.SearchFoods(query, page);
     }
-    
-    public async Task<FoodV2> GetFoodById(long foodId)
-    {
-        var food = await _foodRepository.GetFoodV2ById(foodId);
-        
-        if (food == null || !food.Servings.Any())
-        {
-            var newFood = await _fatSecretApi.GetFood(foodId);
 
-            var foodV2 = new FoodV2()
+    private (FoodV2, IEnumerable<FoodV2Servings>) MapFatSecretFoodToFoodV2(FatSecretItem newFood)
+    {
+        var foodV2 = new FoodV2()
             {
                 Brand = newFood.BrandName,
                 Created = DateTime.UtcNow,
+                Updated = DateTime.UtcNow,
                 FoodType = newFood.FoodType,
                 Id = long.Parse(newFood.FoodId),
                 Name = newFood.FoodName
@@ -167,12 +162,13 @@ public sealed class FoodService : IFoodService
             {
                 Id = long.Parse(s.ServingId ?? "0"),
                 FoodV2Id = long.Parse(newFood.FoodId),
+                Created = DateTime.UtcNow,
+                Updated = DateTime.UtcNow,
                 Calories = float.Parse(s.Calories ?? "0"),
                 AddedSugar = float.Parse(s.AddedSugar ?? "0"),
                 Calcium = float.Parse(s.Calcium ?? "0"),
                 Carbohydrate = float.Parse(s.Carbohydrate ?? "0"),
                 Cholesterol = float.Parse(s.Cholesterol ?? "0"),
-                Created = DateTime.UtcNow,
                 Fat = float.Parse(s.Fat ?? "0"),
                 Fiber = float.Parse(s.Fiber ?? "0"),
                 Iron = float.Parse(s.Iron ?? "0"),
@@ -193,6 +189,19 @@ public sealed class FoodService : IFoodService
                 VitaminC = float.Parse(s.VitaminC ?? "0"),
                 VitaminD = float.Parse(s.VitaminD ?? "0"),
             }).ToList();
+
+            return (foodV2, servings);
+    }
+    
+    public async Task<FoodV2> GetFoodById(long foodId)
+    {
+        var food = await _foodRepository.GetFoodV2ById(foodId);
+        
+        if (food == null || !food.Servings.Any())
+        {
+            var newFood = await _fatSecretApi.GetFood(foodId);
+
+            var (foodV2, servings) = MapFatSecretFoodToFoodV2(newFood);
 
             if (food == null)
             {
@@ -476,5 +485,19 @@ public sealed class FoodService : IFoodService
         }
 
         return macros;
+    }
+
+    public async Task RefreshCashedFoodDb()
+    {
+        var foods = await _foodRepository.GetAllFoods();
+
+        foreach (var food in foods)
+        {
+            var updatedFood = await _fatSecretApi.GetFood(food.Id);
+            var (foodV2, servings) = MapFatSecretFoodToFoodV2(updatedFood);
+            
+            await _foodRepository.UpdateFoodV2(foodV2);
+            await _foodRepository.UpdateFoodV2Servings(servings);
+        }
     }
 }

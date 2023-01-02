@@ -1,6 +1,6 @@
 namespace FoodApi.Models;
 
-public class FatSecretAuth
+public sealed class FatSecretAuth
 {
     public string AccessToken { get; set; }
     public string TokenType { get; set; }

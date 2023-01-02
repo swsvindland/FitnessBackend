@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace FitnessRepository.Models;
 
-public class Food
+public sealed class Food
 {
     public long Id { get; set; }
     public string? EdamamFoodId { get; set; }

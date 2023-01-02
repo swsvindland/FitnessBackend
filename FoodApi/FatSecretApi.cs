@@ -5,7 +5,7 @@ using FoodApi.Models;
 
 namespace FoodApi;
 
-public class FatSecretApi : IFatSecretApi
+public sealed class FatSecretApi : IFatSecretApi
 {
     private readonly string _clientId;
     private readonly string _clientSecret;
@@ -62,7 +62,7 @@ public class FatSecretApi : IFatSecretApi
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return null;
+            throw new Exception("Error while searching foods");
         }
     }
 
@@ -116,7 +116,7 @@ public class FatSecretApi : IFatSecretApi
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return null;
+            throw new Exception("Error while searching foods");
         }
     }
 }

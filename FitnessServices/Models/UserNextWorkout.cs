@@ -1,6 +1,6 @@
 namespace FitnessServices.Models;
 
-public class UserNextWorkout
+public sealed class UserNextWorkout
 {
     public long Id { get; set; }
     public long WorkoutId { get; set; }

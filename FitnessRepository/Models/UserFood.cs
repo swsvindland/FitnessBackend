@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessRepository.Models;
 
-public class UserFood
+public sealed class UserFood
 {
     public long Id { get; set; }
     public Guid UserId { get; set; }
