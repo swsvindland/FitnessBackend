@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text.Json;
 using System.Threading.Tasks;
 using FitnessRepository.Models;
 using FitnessServices.Services;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace FitnessApi.Controllers;
 
@@ -95,7 +95,7 @@ public sealed class WorkoutController
 
         return new OkObjectResult(workouts);
     }
-
+    
     [FunctionName("GetAllWorkoutExercises")]
     public async Task<IActionResult> GetAllWorkoutExercises(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
@@ -235,7 +235,7 @@ public sealed class WorkoutController
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonSerializer.Deserialize<UserWorkoutActivity>(requestBody);
+        var data = JsonConvert.DeserializeObject<UserWorkoutActivity>(requestBody);
 
         if (data == null)
         {
@@ -265,7 +265,7 @@ public sealed class WorkoutController
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonSerializer.Deserialize<UserWorkoutsCompleted>(requestBody);
+        var data = JsonConvert.DeserializeObject<UserWorkoutsCompleted>(requestBody);
 
         if (data == null)
         {
@@ -315,7 +315,7 @@ public sealed class WorkoutController
 
         return new OkObjectResult(true);
     }
-
+    
     [FunctionName("GetWorkoutsByUserId")]
     public async Task<IActionResult> GetWorkoutsByUserId(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
@@ -353,7 +353,7 @@ public sealed class WorkoutController
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonSerializer.Deserialize<Workout>(requestBody);
+        var data = JsonConvert.DeserializeObject<Workout>(requestBody);
 
         if (data == null)
         {
@@ -383,7 +383,7 @@ public sealed class WorkoutController
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonSerializer.Deserialize<Workout>(requestBody);
+        var data = JsonConvert.DeserializeObject<Workout>(requestBody);
 
         if (data == null)
         {
@@ -415,6 +415,7 @@ public sealed class WorkoutController
     }
 
 
+
     [FunctionName("UpsertWorkoutExercises")]
     public async Task<IActionResult> UpsertWorkoutExercises(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
@@ -433,7 +434,7 @@ public sealed class WorkoutController
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonSerializer.Deserialize<WorkoutExercise>(requestBody);
+        var data = JsonConvert.DeserializeObject<WorkoutExercise>(requestBody);
 
         if (data == null)
         {

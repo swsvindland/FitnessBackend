@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text.Json;
 using System.Threading.Tasks;
 using FitnessServices.Models;
 using FitnessServices.Services;
@@ -9,6 +8,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace FitnessApi.Controllers;
 
@@ -35,7 +35,7 @@ public sealed class UserController
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonSerializer.Deserialize<Auth>(requestBody);
+        var data = JsonConvert.DeserializeObject<Auth>(requestBody);
 
         if (data == null)
         {
@@ -48,10 +48,10 @@ public sealed class UserController
         {
             return new UnauthorizedResult();
         }
-
+        
         return new OkObjectResult(auth.Item2);
     }
-
+    
     [FunctionName("ChangePassword")]
     public async Task<IActionResult> ChangePassword(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
@@ -64,20 +64,20 @@ public sealed class UserController
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonSerializer.Deserialize<ChangePassword>(requestBody);
+        var data = JsonConvert.DeserializeObject<ChangePassword>(requestBody);
 
         if (data == null)
         {
             return new BadRequestResult();
         }
-
+        
         var userId = Guid.Parse(req.Query["userId"]);
-
+        
         await _userService.ChangePassword(userId, data.OldPassword, data.NewPassword);
-
+        
         return new OkObjectResult(true);
     }
-
+    
     [FunctionName("ForgotPassword")]
     public async Task<IActionResult> ForgotPassword(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
@@ -85,9 +85,9 @@ public sealed class UserController
         ILogger log)
     {
         var email = req.Query["email"];
-
+        
         await _userService.ForgotPassword(email);
-
+        
         return new OkObjectResult(true);
     }
 
@@ -97,21 +97,21 @@ public sealed class UserController
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-
+        
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-
+        
         var userId = Guid.Parse(req.Query["userId"]);
 
         await _userService.UpdateLastLogin(userId);
         await _userService.CheckIfPaidUntilValid(userId);
         var user = await _userService.GetUserById(userId);
-
+        
         return new OkObjectResult(user);
     }
-
+    
     [FunctionName("CreateUser")]
     public async Task<IActionResult> CreateUser(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
@@ -123,7 +123,7 @@ public sealed class UserController
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonSerializer.Deserialize<Auth>(requestBody);
+        var data = JsonConvert.DeserializeObject<Auth>(requestBody);
 
         if (data == null)
         {
@@ -134,115 +134,115 @@ public sealed class UserController
 
         return new OkObjectResult(true);
     }
-
+    
     [FunctionName("UpdateUserSex")]
     public async Task<IActionResult> UpdateUserSex(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-
+        
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonSerializer.Deserialize<UpdateSex>(requestBody);
+        var data = JsonConvert.DeserializeObject<UpdateSex>(requestBody);
 
         if (data == null)
         {
             return new BadRequestResult();
         }
-
+        
         var userId = Guid.Parse(req.Query["userId"]);
-
+        
         await _userService.UpdateUserSex(userId, data.Sex);
 
         return new OkObjectResult(true);
     }
-
+    
     [FunctionName("UpdateUserPaid")]
     public async Task<IActionResult> UpdateUserPaid(
         [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-
+        
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonSerializer.Deserialize<UpdatePaid>(requestBody);
+        var data = JsonConvert.DeserializeObject<UpdatePaid>(requestBody);
 
         if (data == null)
         {
             return new BadRequestResult();
         }
-
+        
         var userId = Guid.Parse(req.Query["userId"]);
-
+        
         await _userService.UpdatePaid(userId, data.Paid, data.PaidUntil);
 
         return new OkObjectResult(true);
     }
-
+    
     [FunctionName("UpdateUserUnits")]
     public async Task<IActionResult> UpdateUserUnits(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-
+        
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonSerializer.Deserialize<UpdateUnit>(requestBody);
+        var data = JsonConvert.DeserializeObject<UpdateUnit>(requestBody);
 
         if (data == null)
         {
             return new BadRequestResult();
         }
-
+        
         var userId = Guid.Parse(req.Query["userId"]);
-
+        
         await _userService.UpdateUserUnits(userId, data.Unit);
 
         return new OkObjectResult(true);
     }
-
+    
     [FunctionName("DeleteUser")]
     public async Task<IActionResult> DeleteUser(
         [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
         HttpRequest req, ILogger log)
     {
         var authed = await _authService.CheckAuth(req);
-
+        
         if (authed == false)
         {
             return new UnauthorizedResult();
         }
-
+        
         var userId = Guid.Parse(req.Query["userId"]);
 
         await _userService.DeleteUser(userId);
