@@ -1,6 +1,6 @@
 namespace FitnessServices.Models;
 
-public class ForgotPassword
+public sealed class ForgotPassword
 {
     public string Email { get; set; }
 }

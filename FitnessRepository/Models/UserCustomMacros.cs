@@ -1,6 +1,6 @@
 namespace FitnessRepository.Models;
 
-public class UserCustomMacros
+public sealed class UserCustomMacros
 {
     public long? Id { get; set; }
     public Guid UserId { get; set; }

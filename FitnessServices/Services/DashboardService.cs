@@ -3,7 +3,7 @@ using FitnessServices.Models;
 
 namespace FitnessServices.Services;
 
-public class DashboardService: IDashboardService
+public sealed class DashboardService: IDashboardService
 {
     private readonly IBodyService _bodyService;
     private readonly IWorkoutService _workoutService;

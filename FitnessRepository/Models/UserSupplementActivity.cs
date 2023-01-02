@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace FitnessRepository.Models;
 
 public sealed class UserSupplementActivity

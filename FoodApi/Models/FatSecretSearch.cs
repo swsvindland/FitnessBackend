@@ -1,16 +1,16 @@
 namespace FoodApi.Models;
 
-public class FatSecretSearch
+public sealed class FatSecretSearch
 {
     public FatSecretSearchList foods { get; set; }
 }
 
-public class FatSecretSearchList
+public sealed class FatSecretSearchList
 {
     public IEnumerable<FatSecretSearchItem> food { get; set; }
 }
 
-public class FatSecretSearchItem
+public sealed class FatSecretSearchItem
 {
     public string FoodId { get; set; }
     public string FoodName { get; set; }

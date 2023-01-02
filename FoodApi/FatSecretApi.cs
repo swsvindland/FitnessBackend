@@ -5,7 +5,7 @@ using FoodApi.Models;
 
 namespace FoodApi;
 
-public class FatSecretApi : IFatSecretApi
+public sealed class FatSecretApi : IFatSecretApi
 {
     private readonly string _clientId;
     private readonly string _clientSecret;

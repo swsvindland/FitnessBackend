@@ -1,6 +1,6 @@
 namespace FitnessRepository.Models;
 
-public class FoodV2
+public sealed class FoodV2
 {
     public long Id { get; set; }
     public string? Brand { get; set; }

@@ -1,6 +1,6 @@
 namespace FitnessRepository.Models;
 
-public class FoodV2Servings
+public sealed class FoodV2Servings
 {
     public long Id { get; set; }
     public long FoodV2Id { get; set; }
