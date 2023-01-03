@@ -24,7 +24,7 @@ public interface IFoodService
     Task DeleteUserFood(long userFoodId);
     Task<UserFoodV2?> GetUserFoodV2(long userFoodId);
     Task<IEnumerable<UserFoodV2>> GetAllUserFoodsV2ByDate(Guid userId, DateTime date);
-    Task<long> AddUserFoodV2(UserFoodV2 userFood);
+    Task<long> AddUserFoodV2(UserFoodV2 userFood, DateTime date);
     Task UpdateUserFoodV2(UserFoodV2 userFood);
     Task DeleteUserFoodV2(long userFoodId);
     Task<Macros> GetUserCurrentMacosV2(Guid userId, DateTime date);
