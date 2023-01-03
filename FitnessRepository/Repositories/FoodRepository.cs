@@ -145,7 +145,7 @@ public sealed class FoodRepository : IFoodRepository
             .Include(e => e.Serving)
             .FirstOrDefaultAsync(e => e.Id == userFoodId);
     }
-    
+
     public async Task<IEnumerable<UserFoodV2>> GetAllUserFoodsV2(Guid userId)
     {
         return await _context.UserFoodV2

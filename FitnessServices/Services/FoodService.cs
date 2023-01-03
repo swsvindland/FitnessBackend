@@ -259,6 +259,13 @@ public sealed class FoodService : IFoodService
     {
         return await _foodRepository.GetUserFoods(userId, date);
     }
+    
+    public async Task<IEnumerable<UserFoodV2>> GetRecentUserFoods(Guid userId)
+    {
+        var allFoods = await _foodRepository.GetAllUserFoodsV2(userId);
+
+        return allFoods.Take(20);
+    }
 
     public async Task<UserFood?> GetUserFood(Guid userId, DateTime date, long foodId)
     {
