@@ -133,7 +133,7 @@ public sealed class FoodService : IFoodService
 
     public async Task<IEnumerable<string>?> AutocompleteFood(string query)
     {
-        return await _foodApi.AutocompleteFood(query);
+        return await _fatSecretApi.Autocomplete(query);
     }
 
     public async Task<IEnumerable<EdamamFoodHint>?> ParseFood(string foodQuery, string? barcode)
@@ -258,6 +258,13 @@ public sealed class FoodService : IFoodService
     public async Task<IEnumerable<UserFood>> GetUserFoods(Guid userId, DateTime date)
     {
         return await _foodRepository.GetUserFoods(userId, date);
+    }
+    
+    public async Task<IEnumerable<UserFoodV2>> GetRecentUserFoods(Guid userId)
+    {
+        var allFoods = await _foodRepository.GetAllUserFoodsV2(userId);
+
+        return allFoods.Take(20);
     }
 
     public async Task<UserFood?> GetUserFood(Guid userId, DateTime date, long foodId)
@@ -499,5 +506,17 @@ public sealed class FoodService : IFoodService
             await _foodRepository.UpdateFoodV2(foodV2);
             await _foodRepository.UpdateFoodV2Servings(servings);
         }
+    }
+
+    public async Task<FoodV2> GetFoodByBarcode(string barcode)
+    {
+        var id = await _fatSecretApi.GetIdFromBarcode(barcode);
+        
+        if (id == null)
+        {
+            throw new Exception("Food not found");
+        }
+
+        return await GetFoodById(id);
     }
 }
