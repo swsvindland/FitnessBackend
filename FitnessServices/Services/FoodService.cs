@@ -133,7 +133,7 @@ public sealed class FoodService : IFoodService
 
     public async Task<IEnumerable<string>?> AutocompleteFood(string query)
     {
-        return await _foodApi.AutocompleteFood(query);
+        return await _fatSecretApi.Autocomplete(query);
     }
 
     public async Task<IEnumerable<EdamamFoodHint>?> ParseFood(string foodQuery, string? barcode)

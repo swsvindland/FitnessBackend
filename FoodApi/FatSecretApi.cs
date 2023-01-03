@@ -141,4 +141,26 @@ public sealed class FatSecretApi : IFatSecretApi
             throw new Exception("Error while searching foods");
         }
     }
+    
+    public async Task<IEnumerable<string>> Autocomplete(string query)
+    {
+        try
+        {
+            var token = await AuthFatSecretApi();
+            _client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response =
+                await _client.PostAsync(
+                    $"https://platform.fatsecret.com/rest/server.api?method=foods.autocomplete&expression={query}&format=json",
+                    null);
+            var result = await response.Content.ReadFromJsonAsync<FatSecretAutocomplete>(_jsonSerializerOptions);
+            return result.Suggestions.Suggestion;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return null;
+        }
+    }
 }
