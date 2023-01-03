@@ -167,8 +167,6 @@ public sealed class FoodRepository : IFoodRepository
 
     public async Task <long> AddUserFoodV2(UserFoodV2 userFood)
     {
-        userFood.Created = DateTime.UtcNow;
-        userFood.Updated = DateTime.UtcNow;
         _context.UserFoodV2.Add(userFood);
         await _context.SaveChangesAsync();
         return userFood.Id;
@@ -176,7 +174,6 @@ public sealed class FoodRepository : IFoodRepository
     
     public async Task UpdateUserFoodV2(UserFoodV2 userFood)
     {
-        userFood.Updated = DateTime.UtcNow;
         _context.UserFoodV2.Update(userFood);
         await _context.SaveChangesAsync();
     }

@@ -439,9 +439,9 @@ public sealed class FoodService : IFoodService
         return await _foodRepository.GetAllUserFoodsV2ByDate(userId, date);
     }
 
-    public async Task<long> AddUserFoodV2(UserFoodV2 userFoodV2)
+    public async Task<long> AddUserFoodV2(UserFoodV2 userFoodV2, DateTime date)
     {
-        userFoodV2.Created = DateTime.UtcNow;
+        userFoodV2.Created = date;
         userFoodV2.Updated = DateTime.UtcNow;
         return await _foodRepository.AddUserFoodV2(userFoodV2);
     }

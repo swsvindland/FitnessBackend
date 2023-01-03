@@ -397,8 +397,10 @@ public sealed class FoodController
         }
 
         var data = JsonConvert.DeserializeObject<UserFoodV2>(requestBody);
+        
+        var date = DateTime.Parse(req.Query["date"]);
 
-        var id = await _foodService.AddUserFoodV2(data);
+        var id = await _foodService.AddUserFoodV2(data, date);
 
         return new OkObjectResult(id);
     }
