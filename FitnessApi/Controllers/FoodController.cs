@@ -507,7 +507,7 @@ public sealed class FoodController
         return new OkObjectResult(user);
     }
     
-    // Will run every day at 2am, refreshing food db, in compliance with https://platform.fatsecret.com/api/Default.aspx?screen=tou 1.5
+    // Will run every day at 4:30am, refreshing food db, in compliance with https://platform.fatsecret.com/api/Default.aspx?screen=tou 1.5
     [FunctionName("MaliciousCompliance")]
     public async Task MaliciousCompliance([TimerTrigger("0 30 4 * * *")]TimerInfo myTimer, ILogger log)
     {
