@@ -33,7 +33,7 @@ public sealed class FatSecretApi : IFatSecretApi
 
         var values = new Dictionary<string, string>
         {
-            {"scope", "basic"},
+            {"scope", "basic premier barcode"},
             {"grant_type", "client_credentials"},
             {"format", "json"}
         };
@@ -112,6 +112,28 @@ public sealed class FatSecretApi : IFatSecretApi
 
                 return item;
             }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new Exception("Error while searching foods");
+        }
+    }
+    
+    public async Task<long> GetIdFromBarcode(string barcode)
+    {
+        try
+        {
+            var token = await AuthFatSecretApi();
+            _client.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var response =
+                await _client.PostAsync(
+                    $"https://platform.fatsecret.com/rest/server.api?method=food.find_id_for_barcode&barcode={barcode}&format=json",
+                    null);
+            var result = await response.Content.ReadFromJsonAsync<FatSecretBarcode>(_jsonSerializerOptions);
+            return long.Parse(result.FoodId.Value);
         }
         catch (Exception e)
         {

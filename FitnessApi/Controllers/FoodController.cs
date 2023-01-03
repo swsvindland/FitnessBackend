@@ -469,6 +469,25 @@ public sealed class FoodController
         return new OkObjectResult(user);
     }
     
+    [FunctionName("SearchFoodByBarcode")]
+    public async Task<IActionResult> SearchFoodByBarcode(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var barcode = req.Query["barcode"];
+
+        var user = await _foodService.GetFoodByBarcode(barcode);
+
+        return new OkObjectResult(user);
+    }
+    
     // Will run every day at 2am, refreshing food db, in compliance with https://platform.fatsecret.com/api/Default.aspx?screen=tou 1.5
     [FunctionName("MaliciousCompliance")]
     public async Task MaliciousCompliance([TimerTrigger("0 2 * * *")]TimerInfo myTimer, ILogger log)

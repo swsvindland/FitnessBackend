@@ -500,4 +500,16 @@ public sealed class FoodService : IFoodService
             await _foodRepository.UpdateFoodV2Servings(servings);
         }
     }
+
+    public async Task<FoodV2> GetFoodByBarcode(string barcode)
+    {
+        var id = await _fatSecretApi.GetIdFromBarcode(barcode);
+        
+        if (id == null)
+        {
+            throw new Exception("Food not found");
+        }
+
+        return await GetFoodById(id);
+    }
 }
