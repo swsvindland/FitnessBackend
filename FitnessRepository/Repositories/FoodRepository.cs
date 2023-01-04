@@ -102,6 +102,7 @@ public sealed class FoodRepository : IFoodRepository
     {
         return await _context.FoodV2
             .Include(e => e.Servings)
+            .AsNoTracking()
             .ToListAsync();
     }
 
@@ -124,6 +125,12 @@ public sealed class FoodRepository : IFoodRepository
         _context.FoodV2.Update(food);
         await _context.SaveChangesAsync();
         return food.Id;
+    }
+    
+    public async Task UpdateFoodsV2(IEnumerable<FoodV2> food)
+    {
+        _context.FoodV2.UpdateRange(food);
+        await _context.SaveChangesAsync();
     }
     
     public async Task AddFoodV2Servings(IEnumerable<FoodV2Servings> servings)

@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace FitnessRepository.Models;
 
 public sealed class FoodV2Servings
@@ -29,5 +31,6 @@ public sealed class FoodV2Servings
     public float? VitaminC { get; set; }
     public float? VitaminD { get; set; }
     public DateTime Created { get; set; }
+    [ConcurrencyCheck]
     public DateTime? Updated { get; set; }
 }

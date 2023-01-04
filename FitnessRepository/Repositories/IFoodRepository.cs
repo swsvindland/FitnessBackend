@@ -20,6 +20,7 @@ public interface IFoodRepository
     Task<FoodV2?> GetFoodV2ById(long id);
     Task<long> AddFoodV2(FoodV2 food);
     Task<long> UpdateFoodV2(FoodV2 food);
+    Task UpdateFoodsV2(IEnumerable<FoodV2> food);
     Task AddFoodV2Servings(IEnumerable<FoodV2Servings> servings);
     Task UpdateFoodV2Servings(IEnumerable<FoodV2Servings> servings);
     Task<UserFoodV2?> GetUserFoodV2(long userFoodId);

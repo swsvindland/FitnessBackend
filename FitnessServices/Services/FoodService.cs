@@ -508,16 +508,22 @@ public sealed class FoodService : IFoodService
 
     public async Task RefreshCashedFoodDb()
     {
-        var foods = await _foodRepository.GetAllFoods();
+        var foods = await _foodRepository.GetAllFoodsV2();
+        
+        var updatedFoods = new List<FoodV2>();
+        var updatedServings = new List<FoodV2Servings>();
 
         foreach (var food in foods)
         {
             var updatedFood = await _fatSecretApi.GetFood(food.Id);
             var (foodV2, servings) = MapFatSecretFoodToFoodV2(updatedFood);
             
-            await _foodRepository.UpdateFoodV2(foodV2);
-            await _foodRepository.UpdateFoodV2Servings(servings);
+            updatedFoods.Add(foodV2);
+            updatedServings.AddRange(servings);
         }
+        
+        await _foodRepository.UpdateFoodsV2(updatedFoods);
+        await _foodRepository.UpdateFoodV2Servings(updatedServings);
     }
 
     public async Task<FoodV2> GetFoodByBarcode(string barcode)

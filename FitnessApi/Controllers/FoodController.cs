@@ -506,6 +506,13 @@ public sealed class FoodController
 
         return new OkObjectResult(user);
     }
+
+    [FunctionName("MaliciousComplianceHTTP")]
+    public async Task MaliciousComplianceHTTP([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        await _foodService.RefreshCashedFoodDb();
+    }
     
     // Will run every day at 4:30am, refreshing food db, in compliance with https://platform.fatsecret.com/api/Default.aspx?screen=tou 1.5
     [FunctionName("MaliciousCompliance")]
