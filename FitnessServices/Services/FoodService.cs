@@ -263,8 +263,20 @@ public sealed class FoodService : IFoodService
     public async Task<IEnumerable<UserFoodV2>> GetRecentUserFoods(Guid userId)
     {
         var allFoods = await _foodRepository.GetAllUserFoodsV2(userId);
-
-        return allFoods.Take(20);
+        var seen = new List<long>();
+        var recentFoods = new List<UserFoodV2>();
+        
+        foreach (var allFood in allFoods)
+        {
+            if (seen.Contains(allFood.FoodV2Id))
+            {
+                continue;
+            }
+            recentFoods.Add(allFood);
+            seen.Add(allFood.FoodV2Id);
+        }
+        
+        return recentFoods.Take(20);
     }
 
     public async Task<UserFood?> GetUserFood(Guid userId, DateTime date, long foodId)
