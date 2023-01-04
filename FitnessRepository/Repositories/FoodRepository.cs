@@ -151,6 +151,7 @@ public sealed class FoodRepository : IFoodRepository
         return await _context.UserFoodV2
             .Include(e => e.FoodV2)
             .Include(e => e.Serving)
+            .OrderByDescending(e => e.Created)
             .Where(e => e.UserId == userId)
             .ToListAsync();
     }
