@@ -163,8 +163,9 @@ public sealed class FoodController
         }
 
         var userId = Guid.Parse(req.Query["userId"]);
+        var date = DateTime.Parse(req.Query["date"]);
 
-        var user = await _foodService.GetRecentUserFoods(userId);
+        var user = await _foodService.GetRecentUserFoods(userId, date);
 
         return new OkObjectResult(user);
     }
@@ -447,6 +448,48 @@ public sealed class FoodController
         await _foodService.UpdateUserFoodV2(data);
 
         return new OkObjectResult(true);
+    }
+    
+    [FunctionName("QuickAddUserFoodV2")]
+    public async Task<IActionResult> QuickAddUserFoodV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userId = Guid.Parse(req.Query["userId"]);
+        var foodId = long.Parse(req.Query["foodId"]);
+        var date = DateTime.Parse(req.Query["date"]);
+
+        var amount = await _foodService.QuickAddUserFoodV2(userId, foodId, date);
+
+        return new OkObjectResult(amount);
+    }
+    
+    [FunctionName("QuickRemoveUserFoodV2")]
+    public async Task<IActionResult> QuickRemoveUserFoodV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userId = Guid.Parse(req.Query["userId"]);
+        var foodId = long.Parse(req.Query["foodId"]);
+        var date = DateTime.Parse(req.Query["date"]);
+
+        var amount = await _foodService.QuickRemoveUserFoodV2(userId, foodId, date);
+
+        return new OkObjectResult(amount);
     }
     
     [FunctionName("DeleteUserFoodV2")]

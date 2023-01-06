@@ -12,4 +12,6 @@ public sealed class Dashboard
     public bool BloodPressureAdded { get; set; }
     public bool DoWorkout { get; set; }
     public bool WorkoutAdded { get; set; }
+    public bool TrackMacros { get; set; }
+    public bool MacrosAdded { get; set; }
 }

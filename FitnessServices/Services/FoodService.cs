@@ -196,28 +196,28 @@ public sealed class FoodService : IFoodService
     public async Task<FoodV2> GetFoodById(long foodId)
     {
         var food = await _foodRepository.GetFoodV2ById(foodId);
+
+        if (food != null && food.Servings.Any()) return food;
         
-        if (food == null || !food.Servings.Any())
+        var newFood = await _fatSecretApi.GetFood(foodId);
+
+        var (foodV2, servings) = MapFatSecretFoodToFoodV2(newFood);
+        var foodV2ServingsEnumerable = servings as FoodV2Servings[] ?? servings.ToArray();
+
+        if (food == null)
         {
-            var newFood = await _fatSecretApi.GetFood(foodId);
-
-            var (foodV2, servings) = MapFatSecretFoodToFoodV2(newFood);
-
-            if (food == null)
-            {
-                await _foodRepository.AddFoodV2(foodV2);
-            }
-
-            if (!food.Servings.Any())
-            {
-                await _foodRepository.AddFoodV2Servings(servings);
-            }
-
-            foodV2.Servings = servings;
-            return foodV2;
+            await _foodRepository.AddFoodV2(foodV2);
+            await _foodRepository.AddFoodV2Servings(foodV2ServingsEnumerable);
         }
 
-        return food;
+        if (food != null && !food.Servings.Any())
+        {
+            await _foodRepository.AddFoodV2Servings(foodV2ServingsEnumerable);
+        }
+
+        foodV2.Servings = foodV2ServingsEnumerable;
+        return foodV2;
+
     }
 
     public async Task<EdamamNutrients?> GetFoodDetails(string foodId, float servingSizeInGrams)
@@ -260,7 +260,7 @@ public sealed class FoodService : IFoodService
         return await _foodRepository.GetUserFoods(userId, date);
     }
     
-    public async Task<IEnumerable<UserFoodV2>> GetRecentUserFoods(Guid userId)
+    public async Task<IEnumerable<UserFoodV2>> GetRecentUserFoods(Guid userId, DateTime date)
     {
         var allFoods = await _foodRepository.GetAllUserFoodsV2(userId);
         var seen = new List<long>();
@@ -272,6 +272,12 @@ public sealed class FoodService : IFoodService
             {
                 continue;
             }
+
+            if (allFood.Created.Date != date.Date)
+            {
+                allFood.ServingAmount = 0;
+            }
+            
             recentFoods.Add(allFood);
             seen.Add(allFood.FoodV2Id);
         }
@@ -456,6 +462,62 @@ public sealed class FoodService : IFoodService
     public async Task<IEnumerable<UserFoodV2>> GetAllUserFoodsV2ByDate(Guid userId, DateTime date)
     {
         return await _foodRepository.GetAllUserFoodsV2ByDate(userId, date);
+    }
+    
+    public async Task<float> QuickAddUserFoodV2(Guid userId, long foodId, DateTime date)
+    {
+        var food = await GetFoodById(foodId);
+        var userFoodV2 = (await GetAllUserFoodsV2ByDate(userId, date)).FirstOrDefault(e => e.FoodV2Id == foodId);
+
+        if (userFoodV2 == null)
+        {
+            var newFood = new UserFoodV2()
+            {
+                UserId = userId,
+                FoodV2Id = foodId,
+                Created = date,
+                ServingId = food.Servings.FirstOrDefault()?.Id ?? 0,
+                Updated = date,
+                ServingAmount = 1
+            };
+            
+            await _foodRepository.AddUserFoodV2(newFood);
+
+            return 1;
+        }
+        userFoodV2.Updated = date;
+        userFoodV2.ServingAmount += 1;
+        await _foodRepository.UpdateUserFoodV2(userFoodV2);
+
+        return userFoodV2.ServingAmount;
+    }
+    
+    public async Task<float> QuickRemoveUserFoodV2(Guid userId, long foodId, DateTime date)
+    {
+        var food = await GetFoodById(foodId);
+        var userFoodV2 = (await GetAllUserFoodsV2ByDate(userId, date)).FirstOrDefault(e => e.FoodV2Id == foodId);
+
+        if (userFoodV2 == null)
+        {
+            var newFood = new UserFoodV2()
+            {
+                UserId = userId,
+                FoodV2Id = foodId,
+                Created = date,
+                ServingId = food.Servings.FirstOrDefault()?.Id ?? 0,
+                Updated = date,
+                ServingAmount = 0
+            };
+            
+            await _foodRepository.AddUserFoodV2(newFood);
+
+            return 1;
+        }
+        userFoodV2.Updated = date;
+        userFoodV2.ServingAmount = userFoodV2.ServingAmount < 1 ? 0 : userFoodV2.ServingAmount - 1;
+        await _foodRepository.UpdateUserFoodV2(userFoodV2);
+
+        return userFoodV2.ServingAmount;
     }
 
     public async Task<long> AddUserFoodV2(UserFoodV2 userFoodV2, DateTime date)
