@@ -8,12 +8,14 @@ public sealed class DashboardService: IDashboardService
     private readonly IBodyService _bodyService;
     private readonly IWorkoutService _workoutService;
     private readonly IFoodService _foodService;
+    private readonly ISupplementService _supplementService;
     
-    public DashboardService(IBodyService bodyService, IWorkoutService workoutService, IFoodService foodService)
+    public DashboardService(IBodyService bodyService, IWorkoutService workoutService, IFoodService foodService, ISupplementService supplementService)
     {
         _bodyService = bodyService;
         _workoutService = workoutService;
         _foodService = foodService;
+        _supplementService = supplementService;
     }
     
     public async Task<Dashboard> GetUserDashboard(Guid userId, DateTime date)
@@ -25,6 +27,8 @@ public sealed class DashboardService: IDashboardService
         var userWorkouts = (await _workoutService.GetUserWorkoutsCompleted(userId)).ToArray();
         var goalMacros = await _foodService.GetUserMacros(userId);
         var userMacros = await _foodService.GetUserCurrentMacosV2(userId, date);
+        var supplements = (await _supplementService.GetUserSupplements(userId)).ToArray();
+        var supplementActivity = (await _supplementService.GetUserSupplementActivitiesByDate(userId, date)).ToArray();
 
         return new Dashboard()
         {
@@ -39,7 +43,11 @@ public sealed class DashboardService: IDashboardService
             DoWorkout = userWorkouts.LastOrDefault()?.Created.Date != date.Date,
             WorkoutAdded = userWorkouts.Any(e => e.Created.Date == date.Date),
             TrackMacros = true,
-            MacrosAdded = (Math.Abs((goalMacros?.Calories ?? 0) - userMacros.Calories) / (goalMacros?.Calories ?? 1)) < 0.1
+            MacrosAdded = (Math.Abs((goalMacros?.Calories ?? 0) - userMacros.Calories) / (goalMacros?.Calories ?? 1)) < 0.1,
+            AddSupplements = !supplements.Any(),
+            SupplementsAdded = supplements.Any(e => e.Created.Date == date.Date),
+            TrackSupplements = supplements.Any(),
+            SupplementsTracked = supplements.Length <= supplementActivity.Length
         };
     }
 }

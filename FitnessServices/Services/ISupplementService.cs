@@ -11,4 +11,5 @@ public interface ISupplementService
     Task<UserSupplementActivity?> GetUserSupplementActivity(Guid userId, long userSupplementId, string date,
         SupplementTimes time);
     Task ToggleUserSupplementActivity(UpdateUserSupplementActivity updateUserSupplementActivity);
+    Task<IEnumerable<UserSupplementActivity>> GetUserSupplementActivitiesByDate(Guid userId, DateTime date);
 }
