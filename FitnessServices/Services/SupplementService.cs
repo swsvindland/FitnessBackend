@@ -28,6 +28,7 @@ public sealed class SupplementService: ISupplementService
             SupplementId = e.SupplementId,
             Supplement = e.Supplement,
             UserId = e.UserId,
+            Created = e.Created,
             Times = e.Times.Split(","),
         });
     }
@@ -88,5 +89,10 @@ public sealed class SupplementService: ISupplementService
         {
             await _supplementRepository.RemoveUserSupplementActivity(entity);
         }
+    }
+    
+    public async Task<IEnumerable<UserSupplementActivity>> GetUserSupplementActivitiesByDate(Guid userId, DateTime date)
+    {
+        return await _supplementRepository.GetUserSupplementActivitiesByDate(userId, date);
     }
 }

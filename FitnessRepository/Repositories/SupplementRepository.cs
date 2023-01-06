@@ -75,4 +75,13 @@ public sealed class SupplementRepository : ISupplementRepository
             .Include(e => e.UserSupplement)
             .FirstOrDefaultAsync();
     }
+    
+    public async Task<IEnumerable<UserSupplementActivity>> GetUserSupplementActivitiesByDate(Guid userId, DateTime date)
+    {
+        return await _context.UserSupplementActivity
+            .Where(e => e.UserId == userId)
+            .Where(e => e.Updated.Date == date.Date)
+            .Include(e => e.UserSupplement)
+            .ToListAsync();
+    }
 }

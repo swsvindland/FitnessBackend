@@ -7,33 +7,47 @@ public sealed class DashboardService: IDashboardService
 {
     private readonly IBodyService _bodyService;
     private readonly IWorkoutService _workoutService;
+    private readonly IFoodService _foodService;
+    private readonly ISupplementService _supplementService;
     
-    public DashboardService(IBodyService bodyService, IWorkoutService workoutService)
+    public DashboardService(IBodyService bodyService, IWorkoutService workoutService, IFoodService foodService, ISupplementService supplementService)
     {
         _bodyService = bodyService;
         _workoutService = workoutService;
+        _foodService = foodService;
+        _supplementService = supplementService;
     }
     
     public async Task<Dashboard> GetUserDashboard(Guid userId, DateTime date)
     {
-        var userHeights = await _bodyService.GetAllUserHeights(userId);
-        var userWeights = await _bodyService.GetAllUserWeights(userId);
-        var userBodies = await _bodyService.GetAllUserBodies(userId);
-        var userBloodPressure = await _bodyService.GetAllUserBloodPressures(userId);
-        var userWorkouts = await _workoutService.GetUserWorkoutsCompleted(userId);
+        var userHeights = (await _bodyService.GetAllUserHeights(userId)).ToArray();
+        var userWeights = (await _bodyService.GetAllUserWeights(userId)).ToArray();
+        var userBodies = (await _bodyService.GetAllUserBodies(userId)).ToArray();
+        var userBloodPressure = (await _bodyService.GetAllUserBloodPressures(userId)).ToArray();
+        var userWorkouts = (await _workoutService.GetUserWorkoutsCompleted(userId)).ToArray();
+        var goalMacros = await _foodService.GetUserMacros(userId);
+        var userMacros = await _foodService.GetUserCurrentMacosV2(userId, date);
+        var supplements = (await _supplementService.GetUserSupplements(userId)).ToArray();
+        var supplementActivity = (await _supplementService.GetUserSupplementActivitiesByDate(userId, date)).ToArray();
 
         return new Dashboard()
         {
             AddHeight = !userHeights.Any(),
-            HeightAdded = userHeights.Where(e => e.Created.Date == date.Date).Any(),
+            HeightAdded = userHeights.Any(e => e.Created.Date == date.Date),
             AddWeight = userWeights.LastOrDefault()?.Created.Date != date.Date,
-            WeightAdded = userWeights.Where(e => e.Created.Date == date.Date).Any(),
+            WeightAdded = userWeights.Any(e => e.Created.Date == date.Date),
             AddBloodPressure = (userBloodPressure.LastOrDefault()?.Created ?? DateTime.Now) < date.AddDays(-6),
-            BloodPressureAdded = userBloodPressure.Where(e => e.Created.Date == date.Date).Any(),
+            BloodPressureAdded = userBloodPressure.Any(e => e.Created.Date == date.Date),
             AddBodyMeasurements = (userBodies.LastOrDefault()?.Created ?? DateTime.Now) < date.AddDays(-6),
-            BodyMeasurementsAdded = userBodies.Where(e => e.Created.Date == date.Date).Any(),
+            BodyMeasurementsAdded = userBodies.Any(e => e.Created.Date == date.Date),
             DoWorkout = userWorkouts.LastOrDefault()?.Created.Date != date.Date,
-            WorkoutAdded = userWorkouts.Where(e => e.Created.Date == date.Date).Any()
+            WorkoutAdded = userWorkouts.Any(e => e.Created.Date == date.Date),
+            TrackMacros = true,
+            MacrosAdded = (Math.Abs((goalMacros?.Calories ?? 0) - userMacros.Calories) / (goalMacros?.Calories ?? 1)) < 0.1,
+            AddSupplements = !supplements.Any(),
+            SupplementsAdded = supplements.Any(e => e.Created.Date == date.Date),
+            TrackSupplements = supplements.Any(),
+            SupplementsTracked = supplements.Length <= supplementActivity.Length
         };
     }
 }
