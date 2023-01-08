@@ -249,4 +249,17 @@ public sealed class UserController
 
         return new OkObjectResult(true);
     }
+    
+    // Will run every 5 minutes, keeping functions warm, and db warm
+    [FunctionName("KeepWarm")]
+    public async Task KeepWarm([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, ILogger log)
+    {
+        if (myTimer.IsPastDue)
+        {
+            log.LogInformation("Timer is running late!");
+        }
+        log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+
+        await _userService.GetUsers();
+    }
 }

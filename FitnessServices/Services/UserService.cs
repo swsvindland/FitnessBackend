@@ -192,6 +192,11 @@ public sealed class UserService: IUserService
     {
         return await _userRepository.GetUserById(userId);
     }
+    
+    public async Task<IEnumerable<Users>> GetUsers()
+    {
+        return await _userRepository.GetUsers();
+    }
 
     public async Task<Users?> GetUserByEmail(string email)
     {
