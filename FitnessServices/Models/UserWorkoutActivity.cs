@@ -7,7 +7,8 @@ public sealed class UserWorkoutActivityModel
     public Guid UserId { get; set; }
     public long WorkoutExerciseId { get; set; }
     public int Set { get; set; }
-    public int Reps { get; set; }
-    public float Weight { get; set; }
+    public int? Reps { get; set; }
+    public int? Time { get; set; }
+    public float? Weight { get; set; }
     public bool? Saved { get; set; }
 }

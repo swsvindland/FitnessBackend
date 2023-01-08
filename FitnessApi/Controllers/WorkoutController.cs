@@ -56,6 +56,23 @@ public sealed class WorkoutController
 
         return new OkObjectResult(workouts);
     }
+    
+    [FunctionName("GetCardioWorkouts")]
+    public async Task<IActionResult> GetCardioWorkouts(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var workouts = await _workoutService.GetCardioWorkouts();
+
+        return new OkObjectResult(workouts);
+    }
 
     [FunctionName("GetWorkout")]
     public async Task<IActionResult> GetWorkout(
@@ -292,6 +309,25 @@ public sealed class WorkoutController
         var userId = Guid.Parse(req.Query["userId"]);
 
         var nextWorkout = await _workoutService.GetUserNextWorkout(userId);
+
+        return new OkObjectResult(nextWorkout);
+    }
+    
+    [FunctionName("GetNextCardioWorkout")]
+    public async Task<IActionResult> GetNextCardioWorkout(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userId = Guid.Parse(req.Query["userId"]);
+
+        var nextWorkout = await _workoutService.GetUserNextCardioWorkout(userId);
 
         return new OkObjectResult(nextWorkout);
     }

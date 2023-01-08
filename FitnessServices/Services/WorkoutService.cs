@@ -30,6 +30,11 @@ public sealed class WorkoutService : IWorkoutService
         return await _workoutRepository.GetWorkouts();
     }
     
+    public async Task<IEnumerable<Workout>> GetCardioWorkouts()
+    {
+        return await _workoutRepository.GetCardioWorkouts();
+    }
+    
     public async Task<IEnumerable<Workout>> GetWorkoutsByUserId(Guid userId)
     {
         return await _workoutRepository.GetWorkoutsByUserId(userId);
@@ -57,8 +62,17 @@ public sealed class WorkoutService : IWorkoutService
 
     public async Task BuyWorkout(Guid userId, long workoutId)
     {
+        var workout = await _workoutRepository.GetWorkout(workoutId);
+
         // should set all to inactive as workoutId is not added
-        await SetActiveWorkout(userId, workoutId);
+        if (workout?.Type == WorkoutType.Cardio)
+        {
+            await SetActiveCardioWorkout(userId, workoutId);
+        }
+        else
+        {
+            await SetActiveWorkout(userId, workoutId);
+        }
         
         await _workoutRepository.AddUserWorkout(new UserWorkout()
         {
@@ -71,7 +85,22 @@ public sealed class WorkoutService : IWorkoutService
 
     public async Task SetActiveWorkout(Guid userId, long workoutId)
     {
-        var userWorkouts = await _workoutRepository.GetUserWorkouts(userId);
+        var userWorkouts = (await _workoutRepository.GetUserWorkouts(userId))
+            .Where(e => e.Workout?.Type is WorkoutType.Unknown or WorkoutType.Resistance);
+        var enumerable = userWorkouts as UserWorkout[] ?? userWorkouts.ToArray();
+
+        foreach (var userWorkout in enumerable)
+        {
+            userWorkout.Active = userWorkout.WorkoutId == workoutId;
+        }
+
+        await _workoutRepository.UpdateUserWorkouts(enumerable);
+    }
+    
+    public async Task SetActiveCardioWorkout(Guid userId, long workoutId)
+    {
+        var userWorkouts = (await _workoutRepository.GetUserWorkouts(userId))
+            .Where(e => e.Workout?.Type is WorkoutType.Cardio);
         var enumerable = userWorkouts as UserWorkout[] ?? userWorkouts.ToArray();
 
         foreach (var userWorkout in enumerable)
@@ -109,6 +138,7 @@ public sealed class WorkoutService : IWorkoutService
                 WorkoutExerciseId = workoutActivity.WorkoutExerciseId,
                 Set = workoutActivity.Set,
                 Reps = workoutActivity.Reps,
+                Time = workout.Time,
                 Weight = workoutActivity.Weight,
                 Created = DateTime.UtcNow,
                 Saved = true
@@ -120,7 +150,7 @@ public sealed class WorkoutService : IWorkoutService
         var userExerciseOneRepMax = await GetUserOneRepMaxesByExerciseId(userId, workout.ExerciseId);
 
         var recommendedWeight =
-            (int) Math.Floor(userExerciseOneRepMax?.Estimate * REPS_TO_PERCENT[workout.MaxReps - 1] ?? 0);
+            (int) Math.Floor(userExerciseOneRepMax?.Estimate * REPS_TO_PERCENT[(workout.MaxReps ?? 1) - 1] ?? 0);
         var recommendedWeightByFive = (int) Math.Round(recommendedWeight / 5.0) * 5;
 
         if (set == 0)
@@ -130,6 +160,7 @@ public sealed class WorkoutService : IWorkoutService
                 WorkoutExerciseId = workoutExerciseId,
                 Set = set,
                 Reps = workout.MaxReps,
+                Time = workout.Time,
                 Weight = recommendedWeightByFive + 5,
                 Created = DateTime.UtcNow,
                 Saved = false
@@ -146,6 +177,7 @@ public sealed class WorkoutService : IWorkoutService
                 WorkoutExerciseId = workoutExerciseId,
                 Set = set,
                 Reps = workout.MaxReps,
+                Time = workout.Time,
                 Weight = recommendedWeightByFive,
                 Created = DateTime.UtcNow,
                 Saved = false
@@ -158,6 +190,7 @@ public sealed class WorkoutService : IWorkoutService
             WorkoutExerciseId = workoutExerciseId,
             Set = set,
             Reps = prevWorkoutActivity.Reps,
+            Time = workout.Time,
             Weight = prevWorkoutActivity.Weight,
             Created = DateTime.UtcNow,
             Saved = false
@@ -169,7 +202,7 @@ public sealed class WorkoutService : IWorkoutService
         var workoutExercise =
             await _workoutRepository.GetWorkoutExercise(userWorkoutActivity.WorkoutExerciseId);
         var estimatedOneRepMax =
-            (int) Math.Floor(userWorkoutActivity.Weight * (1.0 + (userWorkoutActivity.Reps / 30.0)));
+            (int) Math.Floor((userWorkoutActivity.Weight ?? 0) * (1.0 + ((userWorkoutActivity.Reps ?? 0) / 30.0)));
 
         if (workoutExercise == null)
         {
@@ -247,7 +280,25 @@ public sealed class WorkoutService : IWorkoutService
         {
             return null;
         }
+
+        return await GetNextWorkout(userId, currentWorkout, workoutsCompleted);
+    }
+    
+    public async Task<UserNextWorkout?> GetUserNextCardioWorkout(Guid userId)
+    {
+        var currentWorkout = await _workoutRepository.GetActiveUserCardioWorkouts(userId);
+        var workoutsCompleted = await _workoutRepository.GetUserWorkoutsCompleted(userId);
         
+        if (currentWorkout == null)
+        {
+            return null;
+        }
+
+        return await GetNextWorkout(userId, currentWorkout, workoutsCompleted);
+    }
+
+    private async Task<UserNextWorkout?> GetNextWorkout(Guid userId, UserWorkout currentWorkout, IEnumerable<UserWorkoutsCompleted> workoutsCompleted)
+    {
         var workout = await _workoutRepository.GetWorkout(currentWorkout.WorkoutId);
 
         var workoutsCompletedInCurrentWorkout = workoutsCompleted.Where(x => x.WorkoutId == currentWorkout?.WorkoutId);
@@ -286,7 +337,6 @@ public sealed class WorkoutService : IWorkoutService
             WorkoutCompleted = false
         };
     }
-
     public async Task RestartWorkout(Guid userId, long workoutId)
     {
         var workoutExercises = await _workoutRepository.GetWorkoutExercises(workoutId);

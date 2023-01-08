@@ -6,5 +6,6 @@ public sealed class UserWorkout
     public DateTime Created { get; set; }
     public Guid UserId { get; set; }
     public long WorkoutId { get; set; }
+    public Workout? Workout { get; set; }
     public bool Active { get; set; }
 }
