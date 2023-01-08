@@ -7,6 +7,7 @@ public interface IWorkoutService
 {
     Task<IEnumerable<Exercise>> GetExercises();
     Task<IEnumerable<Workout>> GetWorkouts();
+    Task<IEnumerable<Workout>> GetCardioWorkouts();
     Task<IEnumerable<Workout>> GetWorkoutsByUserId(Guid userId);
     Task<Workout?> GetWorkout(long workoutId);
     Task<IEnumerable<WorkoutExercise>> GetWorkoutExercises(long workoutId, int day);
@@ -22,6 +23,7 @@ public interface IWorkoutService
     Task UserCompleteWorkout(UserWorkoutsCompleted userWorkoutsCompleted);
     Task<IEnumerable<UserWorkoutsCompleted>> GetUserWorkoutsCompleted(Guid userId);
     Task<UserNextWorkout?> GetUserNextWorkout(Guid userId);
+    Task<UserNextWorkout?> GetUserNextCardioWorkout(Guid userId);
     Task RestartWorkout(Guid userId, long workoutId);
     Task<long> AddWorkout(Workout workout);
     Task<long> EditWorkout(Workout workout);

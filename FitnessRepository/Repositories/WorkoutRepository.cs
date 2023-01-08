@@ -19,7 +19,22 @@ public sealed class WorkoutRepository : IWorkoutRepository
 
     public async Task<IEnumerable<Workout>> GetWorkouts()
     {
-        return await _context.Workout.Where(e => e.UserId == null).ToListAsync();
+        return await _context.Workout
+            .Where(e => e.UserId == null)
+            .Where(e => e.Type == WorkoutType.Unknown || e.Type == WorkoutType.Resistance)
+            .Include(e => e.WorkoutExercise)
+            .ThenInclude(e => e.Exercise)
+            .ToListAsync();
+    }
+    
+    public async Task<IEnumerable<Workout>> GetCardioWorkouts()
+    {
+        return await _context.Workout
+            .Where(e => e.UserId == null)
+            .Where(e => e.Type == WorkoutType.Cardio)
+            .Include(e => e.WorkoutExercise)
+            .ThenInclude(e => e.Exercise)
+            .ToListAsync();
     }
     
     public async Task<IEnumerable<Workout>> GetWorkoutsByUserId(Guid userId)
@@ -65,12 +80,30 @@ public sealed class WorkoutRepository : IWorkoutRepository
 
     public async Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId)
     {
-        return await _context.UserWorkout.Where(e => e.UserId == userId).ToListAsync();
+        return await _context.UserWorkout
+            .Include(e => e.Workout)
+            .Where(e => e.UserId == userId)
+            .ToListAsync();
     }
 
     public async Task<UserWorkout?> GetActiveUserWorkouts(Guid userId)
     {
-        return await _context.UserWorkout.Where(e => e.UserId == userId).Where(e => e.Active).FirstOrDefaultAsync();
+        return await _context.UserWorkout
+            .Where(e => e.UserId == userId)
+            .Where(e => e.Active)
+            .Include(e => e.Workout)
+            .Where(e => e.Workout.Type == WorkoutType.Unknown || e.Workout.Type == WorkoutType.Resistance)
+            .FirstOrDefaultAsync();
+    }
+    
+    public async Task<UserWorkout?> GetActiveUserCardioWorkouts(Guid userId)
+    {
+        return await _context.UserWorkout
+            .Where(e => e.UserId == userId)
+            .Where(e => e.Active)
+            .Include(e => e.Workout)
+            .Where(e => e.Workout.Type == WorkoutType.Cardio)
+            .FirstOrDefaultAsync();
     }
 
     public async Task AddUserWorkout(UserWorkout workout)
