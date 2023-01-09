@@ -15,4 +15,8 @@ public interface IBodyRepository
     Task DeleteUserBloodPressure(UserBloodPressure userBloodPressure);
     Task AddUserHeight(UserHeight userHeight);
     Task<IEnumerable<UserHeight>> GetUserHeights(Guid userId);
+    Task<IEnumerable<ProgressPhoto>> GetProgressPhotos(Guid userId);
+    Task<long> AddProgressPhoto(ProgressPhoto progressPhoto);
+    Task<long> UpdateProgressPhoto(ProgressPhoto progressPhoto);
+    Task DeleteProgressPhoto(long id);
 }

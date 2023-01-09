@@ -198,4 +198,43 @@ public sealed class BodyController
 
         return new OkObjectResult(true);
     }
+    
+    [FunctionName("UploadProgressPhoto")]
+    public async Task<IActionResult> UploadProgressPhoto(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req, ILogger log) {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        var connection = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+        var containerName = Environment.GetEnvironmentVariable("ContainerName");
+
+        var userId = Guid.Parse(req.Query["userId"]);
+        var date = DateTime.Parse(req.Query["date"]);
+        var file = req.Form.Files["File"];
+
+        var filePath = await _bodyService.UploadProgressPhoto(userId, date, file, connection, containerName);
+
+        return new OkObjectResult(filePath);
+    }
+    
+    [FunctionName("GetProgressPhotos")]
+    public async Task<IActionResult> GetProgressPhotos(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log) {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        var userId = Guid.Parse(req.Query["userId"]);
+
+        var filePath = await _bodyService.GetProgressPhotos(userId);
+
+        return new OkObjectResult(filePath);
+    }
 }

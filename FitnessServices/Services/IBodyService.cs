@@ -1,5 +1,6 @@
 using FitnessRepository.Models;
 using FitnessServices.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace FitnessServices.Services;
 
@@ -17,4 +18,9 @@ public interface IBodyService
     Task AddUserHeight(UserHeight userHeight);
     Task<IEnumerable<UserHeight>> GetAllUserHeights(Guid userId);
     Task<IEnumerable<UserBodyFat>> GenerateBodyFats(Guid userId);
+
+    Task<string> UploadProgressPhoto(Guid userId, DateTime date, IFormFile file, string connection,
+        string containerName);
+
+    Task<IEnumerable<ProgressPhoto>> GetProgressPhotos(Guid userId);
 }

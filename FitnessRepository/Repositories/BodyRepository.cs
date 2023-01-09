@@ -86,5 +86,38 @@ public sealed class BodyRepository: IBodyRepository
     {
         return await _context.UserHeight.Where(e => e.UserId == userId).OrderBy(e => e.Created).ToListAsync();
     }
-        
+    
+    public async Task<IEnumerable<ProgressPhoto>> GetProgressPhotos(Guid userId)
+    {
+        return await _context.ProgressPhoto
+            .Where(e => e.UserId == userId)
+            .OrderBy(e => e.Created)
+            .ToListAsync();
+    }
+
+    public async Task<long> AddProgressPhoto(ProgressPhoto progressPhoto)
+    {
+        _context.ProgressPhoto.Add(progressPhoto);
+
+        await _context.SaveChangesAsync();
+
+        return progressPhoto.Id;
+    }
+    
+    public async Task<long> UpdateProgressPhoto(ProgressPhoto progressPhoto)
+    {
+        _context.ProgressPhoto.Update(progressPhoto);
+
+        await _context.SaveChangesAsync();
+
+        return progressPhoto.Id;
+    }
+    
+    public async Task DeleteProgressPhoto(long id)
+    {
+        var progressPhoto = await _context.ProgressPhoto.FirstOrDefaultAsync(e => e.Id == id);
+        _context.ProgressPhoto.Remove(progressPhoto);
+
+        await _context.SaveChangesAsync();
+    }
 }

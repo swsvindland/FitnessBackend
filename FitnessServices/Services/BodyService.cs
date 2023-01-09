@@ -1,6 +1,9 @@
-﻿using FitnessRepository.Models;
+﻿using Azure.Storage.Blobs;
+using FitnessRepository.Models;
 using FitnessRepository.Repositories;
 using FitnessServices.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FitnessServices.Services;
 
@@ -133,5 +136,33 @@ public sealed class BodyService: IBodyService
         }
 
         return userBodyFats;
+    }
+
+    public async Task<string> UploadProgressPhoto(Guid userId, DateTime date, IFormFile file, string connection, string containerName)
+    {
+        var fileName = Guid.NewGuid();
+        var fileExtension = Path.GetExtension(file.FileName);
+        Stream myBlob = new MemoryStream();
+        myBlob = file.OpenReadStream();
+        var blobClient = new BlobContainerClient(connection, containerName);
+        var blob = blobClient.GetBlobClient(fileName + fileExtension);
+        await blob.UploadAsync(myBlob, true);
+
+        var progressPhoto = new ProgressPhoto()
+        {
+            FileId = fileName,
+            Filename = fileName + fileExtension,
+            UserId = userId,
+            Created = date
+        };
+
+        await _bodyRepository.AddProgressPhoto(progressPhoto);
+        
+        return fileName + fileExtension;
+    }
+
+    public async Task<IEnumerable<ProgressPhoto>> GetProgressPhotos(Guid userId)
+    {
+            return await _bodyRepository.GetProgressPhotos(userId);
     }
 }
