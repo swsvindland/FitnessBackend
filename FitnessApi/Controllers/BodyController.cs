@@ -209,7 +209,7 @@ public sealed class BodyController
             return new UnauthorizedResult();
         }
         
-        var connection = Environment.GetEnvironmentVariable("AzureWebJobsStorage");
+        var connection = Environment.GetEnvironmentVariable("FileUploadStorage");
         var containerName = Environment.GetEnvironmentVariable("ContainerName");
 
         var userId = Guid.Parse(req.Query["userId"]);
