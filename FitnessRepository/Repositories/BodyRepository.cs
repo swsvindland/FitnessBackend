@@ -91,7 +91,7 @@ public sealed class BodyRepository: IBodyRepository
     {
         return await _context.ProgressPhoto
             .Where(e => e.UserId == userId)
-            .OrderBy(e => e.Created)
+            .OrderByDescending(e => e.Created)
             .ToListAsync();
     }
 

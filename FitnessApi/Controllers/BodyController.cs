@@ -214,7 +214,7 @@ public sealed class BodyController
 
         var userId = Guid.Parse(req.Query["userId"]);
         var date = DateTime.Parse(req.Query["date"]);
-        var file = req.Form.Files["File"];
+        var file = req.Form.Files["file"];
 
         var filePath = await _bodyService.UploadProgressPhoto(userId, date, file, connection, containerName);
 
