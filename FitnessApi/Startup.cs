@@ -19,7 +19,7 @@ namespace FitnessApi
         {
             var configuration = builder.Services.BuildServiceProvider().GetService<IConfiguration>();
 
-            builder.Services.AddHttpClient<IFoodApi, FoodApi.FoodApi>();
+            builder.Services.AddHttpClient<IFatSecretApi, FatSecretApi>();
 
             builder.Services.AddMvcCore().AddJsonOptions(opt =>
             {
@@ -41,7 +41,6 @@ namespace FitnessApi
 
             // add external api calls
             builder.Services.AddScoped<IFatSecretApi, FatSecretApi>();
-            builder.Services.AddScoped<IFoodApi, FoodApi.FoodApi>();
 
             // add service functions
             builder.Services.AddScoped<IUserService, UserService>();
