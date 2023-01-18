@@ -35,8 +35,28 @@ public sealed class FoodRepository : IFoodRepository
     {
         return await _context.FoodV2
             .Include(e => e.Servings)
-            .AsNoTracking()
             .ToListAsync();
+    }
+    
+    public async Task<IEnumerable<FoodV2>> RefreshAllFoodsV2()
+    {
+        var foods = await _context.FoodV2
+            .Include(e => e.Servings)
+            .ToListAsync();
+
+        foreach (var food in foods)
+        {
+            food.Updated = DateTime.UtcNow;
+            foreach (var serving in food.Servings)
+            {
+                serving.Updated = DateTime.UtcNow;
+            }
+        }
+        
+        _context.UpdateRange(foods);
+        await _context.SaveChangesAsync();
+
+        return foods.AsReadOnly();
     }
 
     public async Task<FoodV2?> GetFoodV2ById(long id)

@@ -344,7 +344,7 @@ public sealed class FoodController
     public async Task MaliciousComplianceHTTP([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        await _foodService.RefreshCashedFoodDb();
+        await _foodService.RefreshCashedFoodDb(log);
     }
     
     // Will run every day at 4:30am, refreshing food db, in compliance with https://platform.fatsecret.com/api/Default.aspx?screen=tou 1.5
@@ -357,6 +357,6 @@ public sealed class FoodController
         }
         log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
         
-        await _foodService.RefreshCashedFoodDb();
+        await _foodService.RefreshCashedFoodDb(log);
     }
 }

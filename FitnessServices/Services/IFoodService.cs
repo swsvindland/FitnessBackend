@@ -1,6 +1,7 @@
 using FitnessRepository.Models;
 using FitnessServices.Models;
 using FoodApi.Models;
+using Microsoft.Extensions.Logging;
 
 namespace FitnessServices.Services;
 
@@ -20,7 +21,7 @@ public interface IFoodService
     Task UpdateUserFoodV2(UserFoodV2 userFood);
     Task DeleteUserFoodV2(long userFoodId);
     Task<Macros> GetUserCurrentMacosV2(Guid userId, DateTime date);
-    Task RefreshCashedFoodDb();
+    Task RefreshCashedFoodDb(ILogger logger);
     Task<FoodV2> GetFoodByBarcode(string barcode);
     Task<IEnumerable<UserFoodV2>> GetRecentUserFoods(Guid userId, DateTime date);
 }

@@ -8,6 +8,7 @@ public interface IFoodRepository
     Task AddUserCustomMacros(UserCustomMacros userCustomMacros);
     Task UpdateUserCustomMacros(UserCustomMacros userCustomMacros);
     Task<IEnumerable<FoodV2>> GetAllFoodsV2();
+    Task<IEnumerable<FoodV2>> RefreshAllFoodsV2();
     Task<FoodV2?> GetFoodV2ById(long id);
     Task<long> AddFoodV2(FoodV2 food);
     Task<long> UpdateFoodV2(FoodV2 food);

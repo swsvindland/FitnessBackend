@@ -3,6 +3,7 @@ using FitnessRepository.Repositories;
 using FitnessServices.Models;
 using FoodApi;
 using FoodApi.Models;
+using Microsoft.Extensions.Logging;
 
 namespace FitnessServices.Services;
 
@@ -351,24 +352,18 @@ public sealed class FoodService : IFoodService
         return macros;
     }
 
-    public async Task RefreshCashedFoodDb()
+    public async Task RefreshCashedFoodDb(ILogger logger)
     {
-        var foods = await _foodRepository.GetAllFoodsV2();
-        
-        var updatedFoods = new List<FoodV2>();
-        var updatedServings = new List<FoodV2Servings>();
-
+        var foods = await _foodRepository.RefreshAllFoodsV2();
         foreach (var food in foods)
         {
             var updatedFood = await _fatSecretApi.GetFood(food.Id);
             var (foodV2, servings) = MapFatSecretFoodToFoodV2(updatedFood);
-            
-            updatedFoods.Add(foodV2);
-            updatedServings.AddRange(servings);
+
+            if (foodV2.Servings.Count() == food.Servings.Count()) continue;
+            logger.LogInformation("Updating food {foodId} {foodName}", food.Id, food.Name);
+            await _foodRepository.UpdateFoodV2(foodV2);
         }
-        
-        await _foodRepository.UpdateFoodsV2(updatedFoods);
-        await _foodRepository.UpdateFoodV2Servings(updatedServings);
     }
 
     public async Task<FoodV2> GetFoodByBarcode(string barcode)
