@@ -1,7 +1,7 @@
 # PPL 2
 - Full Gym
 
-Pull, Push, Legs is the most popular workout split. It is 12 weeks long, with 6 workouts per week in that order. Each workout should take around 40 minutes. This is a great workout for intermediate lifters to advance lifters.  
+Pull, Push, Legs is the most popular workout split. It is 12 weeks long, with 6 workouts per week in that order. Each workout should take around 40 minutes. This is a great workout for intermediate lifters to advance lifters. This is high volume, low weight variant, so expect many sets with high reps.  
 
 
 ## Monday
