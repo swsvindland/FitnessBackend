@@ -16,6 +16,8 @@ public interface IBodyService
     Task DeleteUserBody(UserBody userBody);
     Task<IEnumerable<UserBloodPressure>> GetAllUserBloodPressures(Guid userId);
     Task AddUserBloodPressure(UserBloodPressure userBloodPressure);
+    Task UpdateUserBloodPressure(UserBloodPressure userBloodPressure);
+    Task DeleteUserBloodPressure(long id);
     Task DeleteUserBloodPressure(UserBloodPressure userBloodPressure);
     Task AddUserHeight(UserHeight userHeight);
     Task<IEnumerable<UserHeight>> GetAllUserHeights(Guid userId);

@@ -83,6 +83,21 @@ public sealed class BodyRepository: IBodyRepository
         await _context.SaveChangesAsync();
     }
     
+    public async Task UpdateUserBloodPressure(UserBloodPressure userBloodPressure)
+    {
+        _context.UserBloodPressure.Update(userBloodPressure);
+
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task DeleteUserBloodPressure(long id)
+    {
+        var userBloodPressure = await _context.UserBloodPressure.FirstOrDefaultAsync(e => e.Id == id);
+        _context.UserBloodPressure.Remove(userBloodPressure);
+
+        await _context.SaveChangesAsync();
+    }
+    
     public async Task DeleteUserBloodPressure(UserBloodPressure userBloodPressure)
     {
         _context.UserBloodPressure.Remove(userBloodPressure);

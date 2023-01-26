@@ -3,7 +3,6 @@ using FitnessRepository.Models;
 using FitnessRepository.Repositories;
 using FitnessServices.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace FitnessServices.Services;
 
@@ -66,6 +65,16 @@ public sealed class BodyService: IBodyService
     public async Task AddUserBloodPressure(UserBloodPressure userBloodPressure)
     {
         await _bodyRepository.AddUserBloodPressure(userBloodPressure);
+    }
+    
+    public async Task UpdateUserBloodPressure(UserBloodPressure userBloodPressure)
+    {
+        await _bodyRepository.UpdateUserBloodPressure(userBloodPressure);
+    }
+    
+    public async Task DeleteUserBloodPressure(long id)
+    {
+        await _bodyRepository.DeleteUserBloodPressure(id);
     }
     
     public async Task DeleteUserBloodPressure(UserBloodPressure userBloodPressure)
