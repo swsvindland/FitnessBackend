@@ -6,7 +6,9 @@ public interface IBodyRepository
 {
     Task<IEnumerable<UserWeight>> GetAllUserWeights(Guid userId);
     Task AddUserWeight(UserWeight userWeight);
+    Task UpdateUserWeight(UserWeight userWeight);
     Task DeleteUserWeight(UserWeight userWeight);
+    Task DeleteUserWeight(long id);
     Task<IEnumerable<UserBody>> GetAllUserBodies(Guid userId);
     Task AddUserBody(UserBody userBody);
     Task DeleteUserBody(UserBody userBody);

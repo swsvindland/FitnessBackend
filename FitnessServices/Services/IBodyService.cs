@@ -8,6 +8,8 @@ public interface IBodyService
 {
     Task<IEnumerable<UserWeight>> GetAllUserWeights(Guid userId);
     Task AddUserWeight(UserWeight userWeight);
+    Task UpdateUserWeight(UserWeight userWeight);
+    Task DeleteUserWeight(long id);
     Task DeleteUserWeight(UserWeight userWeight);
     Task<IEnumerable<UserBody>> GetAllUserBodies(Guid userId);
     Task AddUserBody(UserBody userBody);

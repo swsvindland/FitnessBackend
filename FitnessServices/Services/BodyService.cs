@@ -28,6 +28,16 @@ public sealed class BodyService: IBodyService
         await _bodyRepository.AddUserWeight(userWeight);
     }
     
+    public async Task UpdateUserWeight(UserWeight userWeight)
+    {
+        await _bodyRepository.UpdateUserWeight(userWeight);
+    }
+    
+    public async Task DeleteUserWeight(long id)
+    {
+        await _bodyRepository.DeleteUserWeight(id);
+    }
+    
     public async Task DeleteUserWeight(UserWeight userWeight)
     {
         await _bodyRepository.DeleteUserWeight(userWeight);

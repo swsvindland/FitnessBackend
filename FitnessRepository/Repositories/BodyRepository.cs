@@ -26,6 +26,21 @@ public sealed class BodyRepository: IBodyRepository
         await _context.SaveChangesAsync();
     }
     
+    public async Task UpdateUserWeight(UserWeight userWeight)
+    {
+        _context.UserWeight.Update(userWeight);
+
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task DeleteUserWeight(long id)
+    {
+        var userWeight = await _context.UserWeight.FirstOrDefaultAsync(e => e.Id == id);
+        _context.UserWeight.Remove(userWeight);
+
+        await _context.SaveChangesAsync();
+    }
+    
     public async Task DeleteUserWeight(UserWeight userWeight)
     {
         _context.UserWeight.Remove(userWeight);

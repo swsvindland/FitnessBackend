@@ -66,6 +66,50 @@ public sealed class BodyController
 
         return new OkObjectResult(true);
     }
+    
+    [FunctionName("UpdateUserWeight")]
+    public async Task<IActionResult> UpdateUserWeight(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<UserWeight>(requestBody);
+
+        await _bodyService.UpdateUserWeight(data);
+
+        return new OkObjectResult(true);
+    }
+    
+    [FunctionName("DeleteUserWeight")]
+    public async Task<IActionResult> DeleteUserWeight(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        var id = long.Parse(req.Query["id"]);
+
+        await _bodyService.DeleteUserWeight(id);
+
+        return new OkObjectResult(true);
+    }
 
     [FunctionName("GetUserBodies")]
     public async Task<IActionResult> GetUserBodies(
