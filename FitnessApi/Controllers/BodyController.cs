@@ -154,6 +154,50 @@ public sealed class BodyController
 
         return new OkObjectResult(true);
     }
+    
+    [FunctionName("UpdateUserBody")]
+    public async Task<IActionResult> UpdateUserBody(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<UserBody>(requestBody);
+
+        await _bodyService.UpdateUserBody(data);
+
+        return new OkObjectResult(true);
+    }
+    
+    [FunctionName("DeleteUserBody")]
+    public async Task<IActionResult> DeleteUserBody(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        var id = long.Parse(req.Query["id"]);
+
+        await _bodyService.DeleteUserBody(id);
+
+        return new OkObjectResult(true);
+    }
 
     [FunctionName("GetUserBloodPressures")]
     public async Task<IActionResult> GetUserBloodPressures(

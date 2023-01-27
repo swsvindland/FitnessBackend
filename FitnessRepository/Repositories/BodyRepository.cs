@@ -62,6 +62,21 @@ public sealed class BodyRepository: IBodyRepository
         await _context.SaveChangesAsync();
     }
     
+    public async Task UpdateUserBody(UserBody userBody)
+    {
+        _context.UserBody.Update(userBody);
+
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task DeleteUserBody(long id)
+    {
+        var userBody = await _context.UserBody.FirstOrDefaultAsync(e => e.Id == id);
+        _context.UserBody.Remove(userBody);
+
+        await _context.SaveChangesAsync();
+    }
+    
     public async Task DeleteUserBody(UserBody userBody)
     {
         _context.UserBody.Remove(userBody);

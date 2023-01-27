@@ -13,6 +13,8 @@ public interface IBodyService
     Task DeleteUserWeight(UserWeight userWeight);
     Task<IEnumerable<UserBody>> GetAllUserBodies(Guid userId);
     Task AddUserBody(UserBody userBody);
+    Task UpdateUserBody(UserBody userBody);
+    Task DeleteUserBody(long id);
     Task DeleteUserBody(UserBody userBody);
     Task<IEnumerable<UserBloodPressure>> GetAllUserBloodPressures(Guid userId);
     Task AddUserBloodPressure(UserBloodPressure userBloodPressure);

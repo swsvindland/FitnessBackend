@@ -52,6 +52,16 @@ public sealed class BodyService: IBodyService
         await _bodyRepository.AddUserBody(userBody);
     }
     
+    public async Task UpdateUserBody(UserBody userBody)
+    {
+        await _bodyRepository.UpdateUserBody(userBody);
+    }
+    
+    public async Task DeleteUserBody(long id)
+    {
+        await _bodyRepository.DeleteUserBody(id);
+    }
+    
     public async Task DeleteUserBody(UserBody userBody)
     {
         await _bodyRepository.DeleteUserBody(userBody);
