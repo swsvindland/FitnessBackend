@@ -8,9 +8,9 @@ public sealed class WorkoutService : IWorkoutService
 {
     private readonly IWorkoutRepository _workoutRepository;
 
-    private List<double> REPS_TO_PERCENT = new List<double>
+    private readonly List<double> _repsToPercent = new()
     {
-        1.0, 0.94, .91, .88, .86, .83, .81, .79, .77, .75, .73, .71, .69, .67, .65, .63, .61, .59, .57, .55, .53, .51,
+        1.05, 1.0, 0.94, .91, .88, .86, .83, .81, .79, .77, .75, .73, .71, .69, .67, .65, .63, .61, .59, .57, .55, .53, .51,
         .49, .47, .45, .43, .41, .39, .37, .35, .33, .31, .29, .27, .25, .23, .21, .19, .17, .15, .13, .11, .09, .07,
         .05, .03, .01
     };
@@ -58,21 +58,44 @@ public sealed class WorkoutService : IWorkoutService
     public async Task<UserWorkoutExercise?> GetUserWorkoutExercise(Guid userId, long workoutExerciseId, int week, int day)
     {
         var workoutExercise = await _workoutRepository.GetWorkoutExercise(workoutExerciseId);
+        var workoutActivities = await _workoutRepository.GetUserWorkoutActivities(userId, workoutExerciseId, week, day);
         
         if (workoutExercise == null)
         {
             return null;
         }
         
+        var completedActivities = workoutActivities.ToDictionary(e => e.Set, e=> e);
         var activities = new List<UserWorkoutActivityModel>();
 
         for (var i = 0; i < workoutExercise.Sets; ++i)
         {
-            var activity = await GetUserWorkoutActivity(userId, workoutExerciseId, i, week, day);
-
-            if (activity != null)
+            if (completedActivities.ContainsKey(i))
             {
-                activities.Add(activity);
+                activities.Add(new UserWorkoutActivityModel()
+                {
+                    Created = completedActivities[i].Created,
+                    Id = completedActivities[i].Id,
+                    Set = completedActivities[i].Set,
+                    Reps = completedActivities[i].Reps,
+                    Weight = completedActivities[i].Weight,
+                    Time = completedActivities[i].Time,
+                    Saved = true,
+                    UserId = userId,
+                    WorkoutExerciseId = workoutExerciseId
+                });
+            }
+            else
+            {
+                var prevIndex = i - 1;
+                var prevActivity = prevIndex >= 0 ? activities[i - 1] : null;
+                
+                var activity = await GetUserWorkoutActivityV2(userId, workoutExercise, prevActivity, i);
+
+                if (activity != null)
+                {
+                    activities.Add(activity);
+                }
             }
         }
         
@@ -149,6 +172,56 @@ public sealed class WorkoutService : IWorkoutService
     {
         return await _workoutRepository.GetUserWorkoutActivities(userId, workoutExerciseId);
     }
+    
+    public async Task<UserWorkoutActivityModel?> GetUserWorkoutActivityV2(Guid userId, WorkoutExercise workoutExercise, UserWorkoutActivityModel? prevWorkoutActivity,
+        int set)
+    {
+        var userExerciseOneRepMax = await GetUserOneRepMaxesByExerciseId(userId, workoutExercise.ExerciseId);
+
+        var recommendedWeight =
+            (int) Math.Floor(userExerciseOneRepMax?.Estimate * _repsToPercent[(workoutExercise.MaxReps ?? 1) - 1] ?? 0);
+        var recommendedWeightByFive = (int) Math.Round(recommendedWeight / 5.0) * 5;
+
+        if (set == 0)
+            return new UserWorkoutActivityModel()
+            {
+                UserId = userId,
+                WorkoutExerciseId = workoutExercise.Id,
+                Set = set,
+                Reps = workoutExercise.MaxReps,
+                Time = workoutExercise.Time,
+                Weight = recommendedWeightByFive + 5,
+                Created = DateTime.UtcNow,
+                Saved = false
+            };
+        
+        if (prevWorkoutActivity == null)
+        {
+            return new UserWorkoutActivityModel()
+            {
+                UserId = userId,
+                WorkoutExerciseId = workoutExercise.Id,
+                Set = set,
+                Reps = workoutExercise.MaxReps,
+                Time = workoutExercise.Time,
+                Weight = recommendedWeightByFive,
+                Created = DateTime.UtcNow,
+                Saved = false
+            };
+        }
+
+        return new UserWorkoutActivityModel()
+        {
+            UserId = userId,
+            WorkoutExerciseId = workoutExercise.Id,
+            Set = set,
+            Reps = prevWorkoutActivity.Reps,
+            Time = workoutExercise.Time,
+            Weight = prevWorkoutActivity.Weight,
+            Created = DateTime.UtcNow,
+            Saved = false
+        };
+    }
 
     public async Task<UserWorkoutActivityModel?> GetUserWorkoutActivity(Guid userId, long workoutExerciseId,
         int set, int week, int day)
@@ -183,7 +256,7 @@ public sealed class WorkoutService : IWorkoutService
         var userExerciseOneRepMax = await GetUserOneRepMaxesByExerciseId(userId, workout.ExerciseId);
 
         var recommendedWeight =
-            (int) Math.Floor(userExerciseOneRepMax?.Estimate * REPS_TO_PERCENT[(workout.MaxReps ?? 1) - 1] ?? 0);
+            (int) Math.Floor(userExerciseOneRepMax?.Estimate * _repsToPercent[(workout.MaxReps ?? 1) - 1] ?? 0);
         var recommendedWeightByFive = (int) Math.Round(recommendedWeight / 5.0) * 5;
 
         if (set == 0)
@@ -273,7 +346,7 @@ public sealed class WorkoutService : IWorkoutService
             await _workoutRepository.UpdateUserWorkoutActivity(activity);
         }
         
-        if (userWorkoutActivity.Time != null)
+        if (userWorkoutActivity.Time == null)
         {
             await _workoutRepository.AddUserOneRepMax(estimatedOneRepMaxModel);
         }

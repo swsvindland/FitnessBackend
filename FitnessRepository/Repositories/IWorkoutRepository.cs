@@ -19,6 +19,9 @@ public interface IWorkoutRepository
     Task UpdateUserWorkout(UserWorkout workout);
     Task UpdateUserWorkouts(IEnumerable<UserWorkout> workouts);
     Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId, long workoutExerciseId);
+
+    Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId,
+        long workoutExerciseId, int week, int day);
     Task DeleteUserWorkoutActivities(IEnumerable<UserWorkoutActivity> activities);
     Task<UserWorkoutActivity?> GetUserWorkoutActivity(Guid userId, long workoutExerciseId, int set, int week,
         int day);

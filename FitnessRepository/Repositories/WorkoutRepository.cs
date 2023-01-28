@@ -136,6 +136,17 @@ public sealed class WorkoutRepository : IWorkoutRepository
             .ToListAsync();
     }
     
+    public async Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId,
+        long workoutExerciseId, int week, int day)
+    {
+        return await _context.UserWorkoutActivity
+            .Where(e => e.UserId == userId)
+            .Where(e => e.WorkoutExerciseId == workoutExerciseId)
+            .Where(e => e.Week == week)
+            .Where(e => e.Day == day)
+            .ToListAsync();
+    }
+    
     public async Task DeleteUserWorkoutActivities(IEnumerable<UserWorkoutActivity> activities)
     {
         _context.UserWorkoutActivity.RemoveRange(activities);
