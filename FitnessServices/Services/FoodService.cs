@@ -87,10 +87,30 @@ public sealed class FoodService : IFoodService
 
         if (user == null) return new List<Macros>();
 
-        var userWeights = await _bodyService.GetAllUserWeights(userId);
+        var userWeights = (await _bodyService.GetAllUserWeights(userId)).ToArray();
         var bodyFat = await _bodyService.GenerateBodyFats(user.Id);
         var macros = new List<Macros>();
         var currentBodyFat = bodyFat?.LastOrDefault()?.BodyFat ?? 10;
+
+        if (!userWeights.Any())
+        {
+            return new[]
+            {
+                new Macros()
+                {
+                    Calories = 2000,
+                    CaloriesHigh = 2500,
+                    Carbs = 250,
+                    CarbsHigh = 300,
+                    Fat = 60,
+                    FatHigh = 70,
+                    Protein = 100,
+                    ProteinHigh = 120,
+                    Fiber = 20,
+                    FiberHigh = 50
+                }
+            };
+        }
 
 
         foreach (var userWeight in userWeights)
@@ -120,12 +140,12 @@ public sealed class FoodService : IFoodService
                 Calories = (float) calories,
                 Protein = (float) protein,
                 Fat = (float) fat,
-                Carbs = carbsHigh > carbs ? (float)carbs : (float)carbsHigh,
+                Carbs = carbsHigh > carbs ? (float)carbs + (float) fiber : (float)carbsHigh + (float) fiberHigh,
                 Fiber = (float) fiber,
                 CaloriesHigh = (float) calories + 300,
                 ProteinHigh = (float) proteinHigh,
                 FatHigh = (float) fatHigh,
-                CarbsHigh = carbsHigh < carbs ? (float)carbs : (float)carbsHigh,
+                CarbsHigh = carbsHigh < carbs ? (float)carbs + (float) fiber : (float)carbsHigh + (float) fiberHigh,
                 FiberHigh = (float) fiberHigh,
             });
         }
