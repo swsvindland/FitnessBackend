@@ -55,6 +55,29 @@ public sealed class WorkoutService : IWorkoutService
         return await _workoutRepository.GetWorkoutExercises(workoutId);
     }
     
+    public async Task<UserWorkoutExercise> GetUserWorkoutExercise(Guid userId, long workoutExerciseId, int week, int day)
+    {
+        var workoutExercise = await _workoutRepository.GetWorkoutExercise(workoutExerciseId);
+        var activities = new List<UserWorkoutActivityModel>();
+
+        for (var i = 0; i < workoutExercise.Sets; ++i)
+        {
+            var activity = await GetUserWorkoutActivity(userId, workoutExerciseId, i, week, day);
+            activities.Add(activity);
+        }
+        
+        return new UserWorkoutExercise()
+        {
+            ExerciseId = workoutExercise.ExerciseId,
+            Exercise = workoutExercise.Exercise,
+            Sets = workoutExercise.Sets,
+            MinReps = workoutExercise.MinReps,
+            MaxReps = workoutExercise.MaxReps,
+            Time = workoutExercise.Time,
+            UserWorkoutActivities = activities
+        };
+    }
+    
     public async Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId)
     {
         return await _workoutRepository.GetUserWorkouts(userId);
@@ -227,7 +250,8 @@ public sealed class WorkoutService : IWorkoutService
             Set = userWorkoutActivity.Set,
             Weight = userWorkoutActivity.Weight,
             Week = userWorkoutActivity.Week,
-            Day = userWorkoutActivity.Day
+            Day = userWorkoutActivity.Day,
+            Time = userWorkoutActivity.Time
         };
 
         if (userWorkoutActivity.Id == null)
@@ -238,8 +262,11 @@ public sealed class WorkoutService : IWorkoutService
         {
             await _workoutRepository.UpdateUserWorkoutActivity(activity);
         }
-
-        await _workoutRepository.AddUserOneRepMax(estimatedOneRepMaxModel);
+        
+        if (userWorkoutActivity.Time != null)
+        {
+            await _workoutRepository.AddUserOneRepMax(estimatedOneRepMaxModel);
+        }
     }
 
     public async Task<IEnumerable<UserOneRepMaxEstimates>> GetUserOneRepMaxes(Guid userId)

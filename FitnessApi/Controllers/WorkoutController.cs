@@ -190,6 +190,28 @@ public sealed class WorkoutController
 
         return new OkObjectResult(true);
     }
+    
+    [FunctionName("GetUserWorkoutExercise")]
+    public async Task<IActionResult> GetUserWorkoutExercise(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userId = Guid.Parse(req.Query["userId"]);
+        var workoutExerciseId = long.Parse(req.Query["workoutExerciseId"]);
+        var week = int.Parse(req.Query["week"]);
+        var day = int.Parse(req.Query["day"]);
+        
+        var activity = await _workoutService.GetUserWorkoutExercise(userId, workoutExerciseId, week, day);
+
+        return new OkObjectResult(activity);
+    }
 
     [FunctionName("GetUserWorkoutActivities")]
     public async Task<IActionResult> GetUserWorkoutActivities(
