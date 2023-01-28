@@ -55,15 +55,25 @@ public sealed class WorkoutService : IWorkoutService
         return await _workoutRepository.GetWorkoutExercises(workoutId);
     }
     
-    public async Task<UserWorkoutExercise> GetUserWorkoutExercise(Guid userId, long workoutExerciseId, int week, int day)
+    public async Task<UserWorkoutExercise?> GetUserWorkoutExercise(Guid userId, long workoutExerciseId, int week, int day)
     {
         var workoutExercise = await _workoutRepository.GetWorkoutExercise(workoutExerciseId);
+        
+        if (workoutExercise == null)
+        {
+            return null;
+        }
+        
         var activities = new List<UserWorkoutActivityModel>();
 
         for (var i = 0; i < workoutExercise.Sets; ++i)
         {
             var activity = await GetUserWorkoutActivity(userId, workoutExerciseId, i, week, day);
-            activities.Add(activity);
+
+            if (activity != null)
+            {
+                activities.Add(activity);
+            }
         }
         
         return new UserWorkoutExercise()

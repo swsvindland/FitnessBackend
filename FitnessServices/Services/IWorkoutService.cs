@@ -15,7 +15,7 @@ public interface IWorkoutService
     Task<IEnumerable<UserWorkout>> GetUserWorkouts(Guid userId);
     Task BuyWorkout(Guid userId, long workoutId);
     Task SetActiveWorkout(Guid userId, long workoutId);
-    Task<UserWorkoutExercise> GetUserWorkoutExercise(Guid userId, long workoutExerciseId, int week, int day);
+    Task<UserWorkoutExercise?> GetUserWorkoutExercise(Guid userId, long workoutExerciseId, int week, int day);
     Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId, long workoutExerciseId);
     Task<UserWorkoutActivityModel?> GetUserWorkoutActivity(Guid userId, long workoutExerciseId, int set, int week,
         int day);
