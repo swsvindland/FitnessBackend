@@ -11,8 +11,8 @@ public interface IFoodService
     Task<IEnumerable<Macros>> GenerateMacros(Guid userId);
     Task AddUserCustomMacros(Guid userId, Macros macros);
     Task<IEnumerable<string>?> AutocompleteFood(string query);
-    Task<IEnumerable<FatSecretSearchItem>> SearchFood(string query, int page);
-    Task<FoodV2> GetFoodById(long foodId);
+    Task<IEnumerable<FatSecretSearchItem>?> SearchFood(string query, int page);
+    Task<FoodV2?> GetFoodById(long foodId);
     Task<UserFoodV2?> GetUserFoodV2(long userFoodId);
     Task<IEnumerable<UserFoodV2>> GetAllUserFoodsV2ByDate(Guid userId, DateTime date);
     Task<float> QuickAddUserFoodV2(Guid userId, long foodId, DateTime date);
@@ -22,6 +22,6 @@ public interface IFoodService
     Task DeleteUserFoodV2(long userFoodId);
     Task<Macros> GetUserCurrentMacosV2(Guid userId, DateTime date);
     Task RefreshCashedFoodDb(ILogger logger);
-    Task<FoodV2> GetFoodByBarcode(string barcode);
+    Task<FoodV2?> GetFoodByBarcode(string barcode);
     Task<IEnumerable<UserFoodV2>> GetRecentUserFoods(Guid userId, DateTime date);
 }

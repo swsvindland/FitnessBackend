@@ -341,7 +341,7 @@ public sealed class FoodController
     }
 
     [FunctionName("MaliciousComplianceHTTP")]
-    public async Task MaliciousComplianceHTTP([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+    public async Task MaliciousComplianceHttp([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         await _foodService.RefreshCashedFoodDb(log);
@@ -355,7 +355,7 @@ public sealed class FoodController
         {
             log.LogInformation("Timer is running late!");
         }
-        log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
+        log.LogInformation("C# Timer trigger function executed at: {Now}", DateTime.Now);
         
         await _foodService.RefreshCashedFoodDb(log);
     }

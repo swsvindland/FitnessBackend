@@ -23,11 +23,6 @@ public sealed class FoodService : IFoodService
         _foodRepository = foodRepository;
     }
 
-    private static float GramToFluidOunce(float gram)
-    {
-        return gram * 0.035274f;
-    }
-
     public async Task AddUserCustomMacros(Guid userId, Macros macros)
     {
         var userCustomMacros = new UserCustomMacros()
@@ -90,7 +85,7 @@ public sealed class FoodService : IFoodService
         var userWeights = (await _bodyService.GetAllUserWeights(userId)).ToArray();
         var bodyFat = await _bodyService.GenerateBodyFats(user.Id);
         var macros = new List<Macros>();
-        var currentBodyFat = bodyFat?.LastOrDefault()?.BodyFat ?? 10;
+        var currentBodyFat = bodyFat.LastOrDefault()?.BodyFat ?? 10;
 
         if (!userWeights.Any())
         {
@@ -115,7 +110,7 @@ public sealed class FoodService : IFoodService
 
         foreach (var userWeight in userWeights)
         {
-            var calories = 0.0;
+            float calories;
 
             if (user.Sex == Sex.Male)
             {
@@ -128,27 +123,27 @@ public sealed class FoodService : IFoodService
 
             calories -= 250;
             var caloriesHigh = calories + 500;
-            var protein = userWeight.Weight * 0.7;
-            var proteinHigh = userWeight.Weight * 1.2;
-            var fat = userWeight.Weight * 0.35;
-            var fatHigh = userWeight.Weight * 0.45;
+            var protein = userWeight.Weight * 0.7f;
+            var proteinHigh = userWeight.Weight * 1.2f;
+            var fat = userWeight.Weight * 0.35f;
+            var fatHigh = userWeight.Weight * 0.45f;
             var carbs = (calories - protein * 4 - fat * 9) / 4;
             var carbsHigh = (calories + 300 - proteinHigh * 4 - fatHigh * 9) / 4;
-            var fiber = calories * 0.015;
-            var fiberHigh = calories * 0.025;
-            
+            var fiber = calories * 0.010f;
+            var fiberHigh = caloriesHigh * 0.020f;
+
             macros.Add(new Macros()
             {
-                Calories = (float) calories,
-                Protein = (float) protein,
-                Fat = (float) fat,
-                Carbs = carbsHigh > carbs ? (float)carbs + (float) fiber : (float)carbsHigh + (float) fiberHigh,
-                Fiber = (float) fiber,
-                CaloriesHigh = (float) calories + 300,
-                ProteinHigh = (float) proteinHigh,
-                FatHigh = (float) fatHigh,
-                CarbsHigh = carbsHigh < carbs ? (float)carbs + (float) fiber : (float)carbsHigh + (float) fiberHigh,
-                FiberHigh = (float) fiberHigh,
+                Calories = calories,
+                Protein = protein,
+                Fat = fat,
+                Carbs = carbsHigh > carbs ? carbs + fiber : carbsHigh + fiberHigh,
+                Fiber = fiber,
+                CaloriesHigh = caloriesHigh,
+                ProteinHigh = proteinHigh,
+                FatHigh = fatHigh,
+                CarbsHigh = carbsHigh < carbs ? carbs + fiber : carbsHigh + fiberHigh,
+                FiberHigh = fiberHigh,
             });
         }
 
@@ -159,66 +154,68 @@ public sealed class FoodService : IFoodService
     {
         return await _fatSecretApi.Autocomplete(query);
     }
-    
-    public async Task<IEnumerable<FatSecretSearchItem>> SearchFood(string query, int page)
+
+    public async Task<IEnumerable<FatSecretSearchItem>?> SearchFood(string query, int page)
     {
         return await _fatSecretApi.SearchFoods(query, page);
     }
 
-    private (FoodV2, IEnumerable<FoodV2Servings>) MapFatSecretFoodToFoodV2(FatSecretItem newFood)
+    private static (FoodV2, IEnumerable<FoodV2Servings>) MapFatSecretFoodToFoodV2(FatSecretItem newFood)
     {
         var foodV2 = new FoodV2()
-            {
-                Brand = newFood.BrandName,
-                Created = DateTime.UtcNow,
-                Updated = DateTime.UtcNow,
-                FoodType = newFood.FoodType,
-                Id = long.Parse(newFood.FoodId),
-                Name = newFood.FoodName
-            };
-            
-            var servings = newFood.Servings.Serving.Select(s => new FoodV2Servings()
-            {
-                Id = long.Parse(s.ServingId ?? "0"),
-                FoodV2Id = long.Parse(newFood.FoodId),
-                Created = DateTime.UtcNow,
-                Updated = DateTime.UtcNow,
-                Calories = float.Parse(s.Calories ?? "0"),
-                AddedSugar = float.Parse(s.AddedSugar ?? "0"),
-                Calcium = float.Parse(s.Calcium ?? "0"),
-                Carbohydrate = float.Parse(s.Carbohydrate ?? "0"),
-                Cholesterol = float.Parse(s.Cholesterol ?? "0"),
-                Fat = float.Parse(s.Fat ?? "0"),
-                Fiber = float.Parse(s.Fiber ?? "0"),
-                Iron = float.Parse(s.Iron ?? "0"),
-                MeasurementDescription = s.MeasurementDescription,
-                MetricServingAmount = float.Parse(s.MetricServingAmount ?? "0"),
-                MetricServingUnit = s.MetricServingUnit,
-                ServingDescription = s.ServingDescription,
-                NumberOfUnits = float.Parse(s.NumberOfUnits ?? "0"),
-                MonounsaturatedFat = float.Parse(s.MonounsaturatedFat ?? "0"),
-                PolyunsaturatedFat = float.Parse(s.PolyunsaturatedFat ?? "0"),
-                TransFat = float.Parse(s.TransFat ?? "0"),
-                Potassium = float.Parse(s.Potassium ?? "0"),
-                Protein = float.Parse(s.Protein ?? "0"),
-                SaturatedFat = float.Parse(s.SaturatedFat ?? "0"),
-                Sodium = float.Parse(s.Sodium ?? "0"),
-                Sugar = float.Parse(s.Sugar ?? "0"),
-                VitaminA = float.Parse(s.VitaminA ?? "0"),
-                VitaminC = float.Parse(s.VitaminC ?? "0"),
-                VitaminD = float.Parse(s.VitaminD ?? "0"),
-            }).ToList();
+        {
+            Brand = newFood.BrandName,
+            Created = DateTime.UtcNow,
+            Updated = DateTime.UtcNow,
+            FoodType = newFood.FoodType,
+            Id = long.Parse(newFood.FoodId),
+            Name = newFood.FoodName
+        };
 
-            return (foodV2, servings);
+        var servings = newFood.Servings.Serving.Select(s => new FoodV2Servings()
+        {
+            Id = long.Parse(s.ServingId ?? "0"),
+            FoodV2Id = long.Parse(newFood.FoodId),
+            Created = DateTime.UtcNow,
+            Updated = DateTime.UtcNow,
+            Calories = float.Parse(s.Calories ?? "0"),
+            AddedSugar = float.Parse(s.AddedSugar ?? "0"),
+            Calcium = float.Parse(s.Calcium ?? "0"),
+            Carbohydrate = float.Parse(s.Carbohydrate ?? "0"),
+            Cholesterol = float.Parse(s.Cholesterol ?? "0"),
+            Fat = float.Parse(s.Fat ?? "0"),
+            Fiber = float.Parse(s.Fiber ?? "0"),
+            Iron = float.Parse(s.Iron ?? "0"),
+            MeasurementDescription = s.MeasurementDescription,
+            MetricServingAmount = float.Parse(s.MetricServingAmount ?? "0"),
+            MetricServingUnit = s.MetricServingUnit,
+            ServingDescription = s.ServingDescription,
+            NumberOfUnits = float.Parse(s.NumberOfUnits ?? "0"),
+            MonounsaturatedFat = float.Parse(s.MonounsaturatedFat ?? "0"),
+            PolyunsaturatedFat = float.Parse(s.PolyunsaturatedFat ?? "0"),
+            TransFat = float.Parse(s.TransFat ?? "0"),
+            Potassium = float.Parse(s.Potassium ?? "0"),
+            Protein = float.Parse(s.Protein ?? "0"),
+            SaturatedFat = float.Parse(s.SaturatedFat ?? "0"),
+            Sodium = float.Parse(s.Sodium ?? "0"),
+            Sugar = float.Parse(s.Sugar ?? "0"),
+            VitaminA = float.Parse(s.VitaminA ?? "0"),
+            VitaminC = float.Parse(s.VitaminC ?? "0"),
+            VitaminD = float.Parse(s.VitaminD ?? "0"),
+        }).ToList();
+
+        return (foodV2, servings);
     }
-    
-    public async Task<FoodV2> GetFoodById(long foodId)
+
+    public async Task<FoodV2?> GetFoodById(long foodId)
     {
         var food = await _foodRepository.GetFoodV2ById(foodId);
 
         if (food != null && food.Servings.Any()) return food;
-        
+
         var newFood = await _fatSecretApi.GetFood(foodId);
+
+        if (newFood == null) return null;
 
         var (foodV2, servings) = MapFatSecretFoodToFoodV2(newFood);
         var foodV2ServingsEnumerable = servings as FoodV2Servings[] ?? servings.ToArray();
@@ -236,7 +233,6 @@ public sealed class FoodService : IFoodService
 
         foodV2.Servings = foodV2ServingsEnumerable;
         return foodV2;
-
     }
 
     public async Task<IEnumerable<UserFoodV2>> GetRecentUserFoods(Guid userId, DateTime date)
@@ -244,7 +240,7 @@ public sealed class FoodService : IFoodService
         var allFoods = await _foodRepository.GetAllUserFoodsV2(userId);
         var seen = new Dictionary<long, bool>();
         var recentFoods = new List<UserFoodV2>();
-        
+
         foreach (var allFood in allFoods)
         {
             if (seen.ContainsKey(allFood.FoodV2Id))
@@ -256,14 +252,14 @@ public sealed class FoodService : IFoodService
             {
                 allFood.ServingAmount = 0;
             }
-            
+
             recentFoods.Add(allFood);
             seen.TryAdd(allFood.FoodV2Id, true);
         }
-        
+
         return recentFoods.Take(20);
     }
-    
+
     public async Task<UserFoodV2?> GetUserFoodV2(long userFoodId)
     {
         return await _foodRepository.GetUserFoodV2(userFoodId);
@@ -273,7 +269,7 @@ public sealed class FoodService : IFoodService
     {
         return await _foodRepository.GetAllUserFoodsV2ByDate(userId, date);
     }
-    
+
     public async Task<float> QuickAddUserFoodV2(Guid userId, long foodId, DateTime date)
     {
         var food = await GetFoodById(foodId);
@@ -286,22 +282,23 @@ public sealed class FoodService : IFoodService
                 UserId = userId,
                 FoodV2Id = foodId,
                 Created = date,
-                ServingId = food.Servings.FirstOrDefault()?.Id ?? 0,
+                ServingId = food?.Servings.FirstOrDefault()?.Id ?? 0,
                 Updated = date,
                 ServingAmount = 1
             };
-            
+
             await _foodRepository.AddUserFoodV2(newFood);
 
             return 1;
         }
+
         userFoodV2.Updated = date;
         userFoodV2.ServingAmount += 1;
         await _foodRepository.UpdateUserFoodV2(userFoodV2);
 
         return userFoodV2.ServingAmount;
     }
-    
+
     public async Task<float> QuickRemoveUserFoodV2(Guid userId, long foodId, DateTime date)
     {
         var food = await GetFoodById(foodId);
@@ -314,15 +311,16 @@ public sealed class FoodService : IFoodService
                 UserId = userId,
                 FoodV2Id = foodId,
                 Created = date,
-                ServingId = food.Servings.FirstOrDefault()?.Id ?? 0,
+                ServingId = food?.Servings.FirstOrDefault()?.Id ?? 0,
                 Updated = date,
                 ServingAmount = 0
             };
-            
+
             await _foodRepository.AddUserFoodV2(newFood);
 
             return 1;
         }
+
         userFoodV2.Updated = date;
         userFoodV2.ServingAmount = userFoodV2.ServingAmount < 1 ? 0 : userFoodV2.ServingAmount - 1;
         await _foodRepository.UpdateUserFoodV2(userFoodV2);
@@ -347,7 +345,7 @@ public sealed class FoodService : IFoodService
     {
         await _foodRepository.DeleteUserFoodV2(userFoodId);
     }
-    
+
     public async Task<Macros> GetUserCurrentMacosV2(Guid userId, DateTime date)
     {
         var userFoods = await _foodRepository.GetAllUserFoodsV2ByDate(userId, date);
@@ -380,23 +378,23 @@ public sealed class FoodService : IFoodService
         foreach (var food in foods)
         {
             var updatedFood = await _fatSecretApi.GetFood(food.Id);
-            var (foodV2, servings) = MapFatSecretFoodToFoodV2(updatedFood);
+
+            if (updatedFood == null) continue;
+
+            var (foodV2, _) = MapFatSecretFoodToFoodV2(updatedFood);
 
             if (foodV2.Servings.Count() == food.Servings.Count()) continue;
-            logger.LogInformation("Updating food {foodId} {foodName}", food.Id, food.Name);
+            logger.LogInformation("Updating food {FoodId} {FoodName}", food.Id, food.Name);
             await _foodRepository.UpdateFoodV2(foodV2);
         }
     }
 
-    public async Task<FoodV2> GetFoodByBarcode(string barcode)
+    public async Task<FoodV2?> GetFoodByBarcode(string barcode)
     {
         var id = await _fatSecretApi.GetIdFromBarcode(barcode);
-        
-        if (id == null)
-        {
-            throw new Exception("Food not found");
-        }
 
-        return await GetFoodById(id);
+        if (id != null) return await GetFoodById(id.Value);
+
+        return null;
     }
 }

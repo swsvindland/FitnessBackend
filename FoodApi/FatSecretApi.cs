@@ -24,7 +24,7 @@ public sealed class FatSecretApi : IFatSecretApi
         };
     }
 
-    public async Task<string> AuthFatSecretApi()
+    private async Task<string> AuthFatSecretApi()
     {
         var client = new HttpClient();
         var byteArray = Encoding.ASCII.GetBytes($"{_clientId}:{_clientSecret}");
@@ -44,7 +44,7 @@ public sealed class FatSecretApi : IFatSecretApi
         return json?.AccessToken ?? string.Empty;
     }
 
-    public async Task<IEnumerable<FatSecretSearchItem>> SearchFoods(string query, int pageNumber)
+    public async Task<IEnumerable<FatSecretSearchItem>?> SearchFoods(string query, int pageNumber)
     {
         try
         {
@@ -57,7 +57,7 @@ public sealed class FatSecretApi : IFatSecretApi
                     $"https://platform.fatsecret.com/rest/server.api?method=foods.search&search_expression={query}&format=json&max_results={50}&page_number={pageNumber}",
                     null);
             var result = await response.Content.ReadFromJsonAsync<FatSecretSearch>(_jsonSerializerOptions);
-            return result.foods.food;
+            return result?.foods.food;
         }
         catch (Exception e)
         {
@@ -66,7 +66,7 @@ public sealed class FatSecretApi : IFatSecretApi
         }
     }
 
-    public async Task<FatSecretItem> GetFood(long foodId)
+    public async Task<FatSecretItem?> GetFood(long foodId)
     {
         try
         {
@@ -82,7 +82,7 @@ public sealed class FatSecretApi : IFatSecretApi
                         null);
 
                 var result = await response.Content.ReadFromJsonAsync<FatSecretGet>(_jsonSerializerOptions);
-                return result.food;
+                return result?.food;
             }
             catch (Exception e)
             {
@@ -93,6 +93,11 @@ public sealed class FatSecretApi : IFatSecretApi
 
                 var result =
                     await response.Content.ReadFromJsonAsync<FatSecretGetSingleServing>(_jsonSerializerOptions);
+
+                if (result == null)
+                {
+                    return null;
+                }
 
                 var item = new FatSecretItem()
                 {
@@ -120,7 +125,7 @@ public sealed class FatSecretApi : IFatSecretApi
         }
     }
     
-    public async Task<long> GetIdFromBarcode(string barcode)
+    public async Task<long?> GetIdFromBarcode(string barcode)
     {
         try
         {
@@ -133,7 +138,7 @@ public sealed class FatSecretApi : IFatSecretApi
                     $"https://platform.fatsecret.com/rest/server.api?method=food.find_id_for_barcode&barcode={barcode}&format=json",
                     null);
             var result = await response.Content.ReadFromJsonAsync<FatSecretBarcode>(_jsonSerializerOptions);
-            return long.Parse(result.FoodId.Value);
+            return long.TryParse(result?.FoodId.Value, out var id) ? id : null;
         }
         catch (Exception e)
         {
@@ -142,7 +147,7 @@ public sealed class FatSecretApi : IFatSecretApi
         }
     }
     
-    public async Task<IEnumerable<string>> Autocomplete(string query)
+    public async Task<IEnumerable<string>?> Autocomplete(string query)
     {
         try
         {
@@ -155,7 +160,7 @@ public sealed class FatSecretApi : IFatSecretApi
                     $"https://platform.fatsecret.com/rest/server.api?method=foods.autocomplete&expression={query}&format=json",
                     null);
             var result = await response.Content.ReadFromJsonAsync<FatSecretAutocomplete>(_jsonSerializerOptions);
-            return result.Suggestions.Suggestion;
+            return result?.Suggestions.Suggestion;
         }
         catch (Exception e)
         {
