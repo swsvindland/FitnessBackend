@@ -348,7 +348,11 @@ public sealed class BodyController
         var date = DateTime.Parse(req.Query["date"]);
         var file = req.Form.Files["file"];
 
-        var filePath = await _bodyService.UploadProgressPhoto(userId, date, file, connection, containerName);
+        if (connection == null) throw new Exception("Missing connection string");
+        if (containerName == null) throw new Exception("Missing container name");
+        if (file == null) return null;
+
+            var filePath = await _bodyService.UploadProgressPhoto(userId, date, file, connection, containerName);
 
         return new OkObjectResult(filePath);
     }

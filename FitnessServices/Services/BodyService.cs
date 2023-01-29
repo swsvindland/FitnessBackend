@@ -36,12 +36,7 @@ public sealed class BodyService: IBodyService
     {
         await _bodyRepository.DeleteUserWeight(id);
     }
-    
-    public async Task DeleteUserWeight(UserWeight userWeight)
-    {
-        await _bodyRepository.DeleteUserWeight(userWeight);
-    }
-    
+
     public async Task<IEnumerable<UserBody>> GetAllUserBodies(Guid userId)
     {
         return await _bodyRepository.GetAllUserBodies(userId);
@@ -61,12 +56,7 @@ public sealed class BodyService: IBodyService
     {
         await _bodyRepository.DeleteUserBody(id);
     }
-    
-    public async Task DeleteUserBody(UserBody userBody)
-    {
-        await _bodyRepository.DeleteUserBody(userBody);
-    }
-    
+
     public async Task<IEnumerable<UserBloodPressure>> GetAllUserBloodPressures(Guid userId)
     {
         return await _bodyRepository.GetAllUserBloodPressures(userId);
@@ -87,11 +77,6 @@ public sealed class BodyService: IBodyService
         await _bodyRepository.DeleteUserBloodPressure(id);
     }
     
-    public async Task DeleteUserBloodPressure(UserBloodPressure userBloodPressure)
-    {
-        await _bodyRepository.DeleteUserBloodPressure(userBloodPressure);
-    }
-
     public async Task AddUserHeight(UserHeight userHeight)
     {
         userHeight.Created = DateTime.UtcNow;

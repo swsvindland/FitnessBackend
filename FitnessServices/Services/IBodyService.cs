@@ -10,17 +10,14 @@ public interface IBodyService
     Task AddUserWeight(UserWeight userWeight);
     Task UpdateUserWeight(UserWeight userWeight);
     Task DeleteUserWeight(long id);
-    Task DeleteUserWeight(UserWeight userWeight);
     Task<IEnumerable<UserBody>> GetAllUserBodies(Guid userId);
     Task AddUserBody(UserBody userBody);
     Task UpdateUserBody(UserBody userBody);
     Task DeleteUserBody(long id);
-    Task DeleteUserBody(UserBody userBody);
     Task<IEnumerable<UserBloodPressure>> GetAllUserBloodPressures(Guid userId);
     Task AddUserBloodPressure(UserBloodPressure userBloodPressure);
     Task UpdateUserBloodPressure(UserBloodPressure userBloodPressure);
     Task DeleteUserBloodPressure(long id);
-    Task DeleteUserBloodPressure(UserBloodPressure userBloodPressure);
     Task AddUserHeight(UserHeight userHeight);
     Task<IEnumerable<UserHeight>> GetAllUserHeights(Guid userId);
     Task<IEnumerable<UserBodyFat>> GenerateBodyFats(Guid userId);
