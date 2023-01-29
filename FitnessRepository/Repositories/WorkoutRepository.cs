@@ -92,7 +92,7 @@ public sealed class WorkoutRepository : IWorkoutRepository
             .Where(e => e.UserId == userId)
             .Where(e => e.Active)
             .Include(e => e.Workout)
-            .Where(e => e.Workout.Type == WorkoutType.Unknown || e.Workout.Type == WorkoutType.Resistance)
+            .Where(e => e.Workout != null && (e.Workout.Type == WorkoutType.Unknown || e.Workout.Type == WorkoutType.Resistance))
             .FirstOrDefaultAsync();
     }
     
@@ -102,7 +102,7 @@ public sealed class WorkoutRepository : IWorkoutRepository
             .Where(e => e.UserId == userId)
             .Where(e => e.Active)
             .Include(e => e.Workout)
-            .Where(e => e.Workout.Type == WorkoutType.Cardio)
+            .Where(e => e.Workout != null && e.Workout.Type == WorkoutType.Cardio)
             .FirstOrDefaultAsync();
     }
 

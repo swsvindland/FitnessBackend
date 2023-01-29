@@ -29,6 +29,5 @@ public interface IWorkoutService
     Task<long> AddWorkout(Workout workout);
     Task<long> EditWorkout(Workout workout);
     Task DeleteWorkout(long workoutId);
-
-    Task<long> UpsertWorkoutExercise(WorkoutExercise workoutExercise);
+    Task<long> UpsertWorkoutExercise(UpdateWorkoutExercise workoutExercise);
 }

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using FitnessRepository.Models;
+using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -492,7 +493,7 @@ public sealed class WorkoutController
             requestBody = await streamReader.ReadToEndAsync();
         }
 
-        var data = JsonConvert.DeserializeObject<WorkoutExercise>(requestBody);
+        var data = JsonConvert.DeserializeObject<UpdateWorkoutExercise>(requestBody);
 
         if (data == null)
         {
