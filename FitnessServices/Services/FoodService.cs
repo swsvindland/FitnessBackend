@@ -119,13 +119,15 @@ public sealed class FoodService : IFoodService
 
             if (user.Sex == Sex.Male)
             {
-                calories = currentBodyFat > 15 ? userWeight.Weight * 11 : userWeight.Weight * 13 + 500;
+                calories = currentBodyFat > 15 ? userWeight.Weight * 11 : userWeight.Weight * 14;
             }
             else
             {
-                calories = currentBodyFat > 22 ? userWeight.Weight * 11 : userWeight.Weight * 13 + 500;
+                calories = currentBodyFat > 22 ? userWeight.Weight * 11 : userWeight.Weight * 14;
             }
 
+            calories -= 250;
+            var caloriesHigh = calories + 500;
             var protein = userWeight.Weight * 0.7;
             var proteinHigh = userWeight.Weight * 1.2;
             var fat = userWeight.Weight * 0.35;
@@ -240,12 +242,12 @@ public sealed class FoodService : IFoodService
     public async Task<IEnumerable<UserFoodV2>> GetRecentUserFoods(Guid userId, DateTime date)
     {
         var allFoods = await _foodRepository.GetAllUserFoodsV2(userId);
-        var seen = new List<long>();
+        var seen = new Dictionary<long, bool>();
         var recentFoods = new List<UserFoodV2>();
         
         foreach (var allFood in allFoods)
         {
-            if (seen.Contains(allFood.FoodV2Id))
+            if (seen.ContainsKey(allFood.FoodV2Id))
             {
                 continue;
             }
@@ -256,7 +258,7 @@ public sealed class FoodService : IFoodService
             }
             
             recentFoods.Add(allFood);
-            seen.Add(allFood.FoodV2Id);
+            seen.TryAdd(allFood.FoodV2Id, true);
         }
         
         return recentFoods.Take(20);

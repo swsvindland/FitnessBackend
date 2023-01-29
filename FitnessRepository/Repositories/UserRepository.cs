@@ -70,6 +70,7 @@ public sealed class UserRepository : IUserRepository
         _context.UserBloodPressure.RemoveRange(_context.UserBloodPressure.Where(e => e.UserId == userId));
         _context.UserCustomMacros.RemoveRange(_context.UserCustomMacros.Where(e => e.UserId == userId));
         _context.ProgressPhoto.RemoveRange(_context.ProgressPhoto.Where(e => e.UserId == userId));
+        _context.UserFoodV2.RemoveRange(_context.UserFoodV2.Where(e => e.UserId == userId));
 
         await _context.SaveChangesAsync();
     }
