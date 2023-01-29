@@ -17,11 +17,6 @@ public sealed class UserRepository : IUserRepository
         return await _context.Users.FirstOrDefaultAsync(e => e.Id == userId);
     }
 
-    public async Task<IEnumerable<Users>> GetUsers()
-    {
-        return await _context.Users.ToListAsync();
-    }
-
     public async Task<Users?> GetUserByEmail(string email)
     {
         return await _context.Users.FirstOrDefaultAsync(e => e.Email == email.ToLower());

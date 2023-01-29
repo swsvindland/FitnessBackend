@@ -9,8 +9,6 @@ public interface IUserService
     Task CheckIfPaidUntilValid(Guid userId);
     Task UpdatePaid(Guid userId, bool paid, DateTime? paidUntil);
     Task<Users?> GetUserById(Guid userId);
-    Task<IEnumerable<Users>> GetUsers();
-    public Task<Users?> GetUserByEmail(string email);
     Task CreateUser(string email, string password);
     Task<UserToken?> GetToken(Guid userId, string token);
     Task DeleteUser(Guid userId);

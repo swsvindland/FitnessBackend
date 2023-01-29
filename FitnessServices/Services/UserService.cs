@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 using FitnessRepository.Models;
 using FitnessRepository.Repositories;
@@ -48,17 +47,17 @@ public sealed class UserService: IUserService
         return (true, userToken);
     }
 
-    public string GenerateToken()
+    private static string GenerateToken()
     {
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
     }
     
-    public string GenerateSalt()
+    private static string GenerateSalt()
     {
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(8));
     }
     
-    public string HashPassword(string password, string salt)
+    private static string HashPassword(string password, string salt)
     {
         return Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: password,
@@ -123,10 +122,10 @@ public sealed class UserService: IUserService
     
     private static async Task SendForgotPasswordEmail(string email, string password)
     {
-        var apiKey = "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";
+        const string apiKey = "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";
         var client = new SendGridClient(apiKey);
         var from = new EmailAddress("sam@workout-track.com");
-        var subject = "Workout Track - Forgot Password";
+        const string subject = "Workout Track - Forgot Password";
         var to = new EmailAddress(email);
         var plainTextContent = $"Your new password is {password}. Remember to change it after you login. You can do so by clicking on the user icon in the top right, and then the change password button.";
         var htmlContent = $"<p>Your new password is <strong>{password}</strong>. Remember to change it after you login. You can do so by clicking on the user icon in the top right, and then the change password button.</p>";
@@ -159,6 +158,12 @@ public sealed class UserService: IUserService
     public async Task UpdateLastLogin(Guid userId)
     {
         var user = await GetUserById(userId);
+        
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+        
         user.LastLogin = DateTime.UtcNow;
         user.LoginCount++;
         await _userRepository.UpdateUser(user);
@@ -183,6 +188,12 @@ public sealed class UserService: IUserService
     public async Task UpdatePaid(Guid userId, bool paid, DateTime? paidUntil)
     {
         var user = await GetUserById(userId);
+        
+        if (user == null)
+        {
+            throw new Exception("User not found");
+        }
+        
         user.Paid = paid;
         user.PaidUntil = paidUntil;
         await _userRepository.UpdateUser(user);
@@ -192,13 +203,8 @@ public sealed class UserService: IUserService
     {
         return await _userRepository.GetUserById(userId);
     }
-    
-    public async Task<IEnumerable<Users>> GetUsers()
-    {
-        return await _userRepository.GetUsers();
-    }
 
-    public async Task<Users?> GetUserByEmail(string email)
+    private async Task<Users?> GetUserByEmail(string email)
     {
         return await _userRepository.GetUserByEmail(email);
     }
