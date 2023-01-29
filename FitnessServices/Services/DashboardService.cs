@@ -1,4 +1,3 @@
-using FitnessRepository.Models;
 using FitnessServices.Models;
 
 namespace FitnessServices.Services;
