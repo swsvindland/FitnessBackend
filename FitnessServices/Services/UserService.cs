@@ -1,8 +1,12 @@
-﻿using System.Security.Cryptography;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using FitnessRepository.Models;
 using FitnessRepository.Repositories;
+using FitnessServices.Models;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.IdentityModel.Tokens;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -46,10 +50,81 @@ public sealed class UserService: IUserService
         
         return (true, userToken);
     }
+    
+    public async Task<AuthResponse?> AuthByEmailPasswordV2(string email, string password)
+    {
+        var user = await GetUserByEmail(email);
+        if (user == null)
+        {
+            return null;
+        }
+        
+        var hashedPassword = HashPassword(password, user.Salt);
+        
+        if (user.Password != hashedPassword)
+        {
+            return null;
+        }
+
+        var token = GenerateJwt(email, user.Id);
+
+        return new AuthResponse()
+        {
+            UserId = user.Id,
+            Token = token
+        };
+    }
+    
+    public async Task<AuthResponse?> SsoAuth(string email, string token)
+    {
+        var user = await GetUserByEmail(email) ?? await CreateSsoUser(email);
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var jwtToken = tokenHandler.ReadJwtToken(token);
+        
+        if (jwtToken.Claims.FirstOrDefault(e => e.Type == "email")?.Value != email)
+        {
+            return null;
+        }
+        
+        return new AuthResponse()
+        {
+            UserId = user.Id,
+            Token = token
+        };
+    }
 
     private static string GenerateToken()
     {
         return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+    }
+    
+    private static string GenerateJwt(string email, Guid userId)
+    {
+        const string issuer = "https://workout-track.com";
+        const string audience = "https://workout-track.com";
+        var key = Encoding.ASCII.GetBytes("This is a secret key");
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[]
+            {
+                new Claim("Id", userId.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, email),
+                new Claim(JwtRegisteredClaimNames.Email, email),
+                new Claim(JwtRegisteredClaimNames.Jti,
+                Guid.NewGuid().ToString())
+             }),
+            Expires = DateTime.UtcNow.AddDays(90),
+            Issuer = issuer,
+            Audience = audience,
+            SigningCredentials = new SigningCredentials
+            (new SymmetricSecurityKey(key),
+            SecurityAlgorithms.HmacSha512Signature)
+        };
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+        var stringToken = tokenHandler.WriteToken(token);
+        return stringToken;
     }
     
     private static string GenerateSalt()
@@ -153,6 +228,25 @@ public sealed class UserService: IUserService
         };
 
         await _userRepository.AddUser(user);
+    }
+    
+    private async Task<Users> CreateSsoUser(string email)
+    {
+        var user = new Users()
+        {
+            Id = Guid.NewGuid(),
+            Email = email,
+            LastLogin = DateTime.UtcNow,
+            Created = DateTime.UtcNow,
+            Sex = Sex.Unknown,
+            UserRole = UserRole.User,
+            Unit = UserUnits.Imperial,
+            Paid = false,
+        };
+
+        await _userRepository.AddUser(user);
+
+        return user;
     }
     
     public async Task UpdateLastLogin(Guid userId)

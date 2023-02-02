@@ -52,6 +52,64 @@ public sealed class UserController
         return new OkObjectResult(auth.Item2);
     }
     
+    [FunctionName("AuthV2")]
+    public async Task<IActionResult> AuthV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req,
+        ILogger log)
+    {
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<Auth>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+
+        var auth = await _userService.AuthByEmailPasswordV2(data.Email, data.Password);
+
+        if (auth == null)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        return new OkObjectResult(auth);
+    }
+    
+    [FunctionName("SsoAuthV2")]
+    public async Task<IActionResult> SsoAuthV2(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req,
+        ILogger log)
+    {
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<SsoAuth>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+
+        var auth = await _userService.SsoAuth(data.Email, data.Token);
+
+        if (auth == null)
+        {
+            return new UnauthorizedResult();
+        }
+        
+        return new OkObjectResult(auth);
+    }
+    
     [FunctionName("ChangePassword")]
     public async Task<IActionResult> ChangePassword(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
