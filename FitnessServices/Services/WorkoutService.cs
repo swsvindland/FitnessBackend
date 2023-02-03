@@ -509,6 +509,7 @@ public sealed class WorkoutService : IWorkoutService
                 MaxReps = workoutExercise.MaxReps,
                 Time = workoutExercise.Time,
                 Order = workoutExercise.Order,
+                RestTime = workoutExercise.RestTime,
             };
             return await _workoutRepository.UpdateWorkoutExercise(updateWorkoutExercise);
         }
@@ -525,6 +526,7 @@ public sealed class WorkoutService : IWorkoutService
             MaxReps = workoutExercise.MaxReps,
             Time = workoutExercise.Time,
             Order = workoutExercise.Order,
+            RestTime = workoutExercise.RestTime,
         };
         
         return await _workoutRepository.AddWorkoutExercise(newWorkoutExercise);

@@ -14,4 +14,5 @@ public sealed class WorkoutExercise
     public int? MaxReps { get; set; }
     public int? Time { get; set; }
     public int? Order { get; set; }
+    public int? RestTime { get; set; }
 }
