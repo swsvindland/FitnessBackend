@@ -59,9 +59,9 @@ public sealed class UserService: IUserService
             return null;
         }
         
-        var hashedPassword = HashPassword(password, user.Salt);
+        var hashedPassword = HashPassword(password, user?.Salt ?? string.Empty);
         
-        if (user.Password != hashedPassword)
+        if (user?.Password != hashedPassword)
         {
             return null;
         }
@@ -82,7 +82,7 @@ public sealed class UserService: IUserService
         var tokenHandler = new JwtSecurityTokenHandler();
         var jwtToken = tokenHandler.ReadJwtToken(token);
         
-        if (jwtToken.Claims.FirstOrDefault(e => e.Type == "email")?.Value != email)
+        if (!string.Equals(jwtToken.Claims.FirstOrDefault(e => e.Type == "email")?.Value, email, StringComparison.CurrentCultureIgnoreCase))
         {
             return null;
         }

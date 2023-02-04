@@ -220,16 +220,20 @@ public sealed class FoodService : IFoodService
         var (foodV2, servings) = MapFatSecretFoodToFoodV2(newFood);
         var foodV2ServingsEnumerable = servings as FoodV2Servings[] ?? servings.ToArray();
 
+        // disable warning because we don't care about the result of the async call
+        // we just wanna cache the food to the db, but we don't wanna wait for it
+        #pragma warning disable CS4014
         if (food == null)
         {
-            await _foodRepository.AddFoodV2(foodV2);
-            await _foodRepository.AddFoodV2Servings(foodV2ServingsEnumerable);
+            _foodRepository.AddFoodV2(foodV2);
+            _foodRepository.AddFoodV2Servings(foodV2ServingsEnumerable);
         }
 
         if (food != null && !food.Servings.Any())
         {
-            await _foodRepository.AddFoodV2Servings(foodV2ServingsEnumerable);
+            _foodRepository.AddFoodV2Servings(foodV2ServingsEnumerable);
         }
+        #pragma warning restore CS4014
 
         foodV2.Servings = foodV2ServingsEnumerable;
         return foodV2;
