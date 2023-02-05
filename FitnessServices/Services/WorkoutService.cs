@@ -107,6 +107,7 @@ public sealed class WorkoutService : IWorkoutService
             MinReps = workoutExercise.MinReps,
             MaxReps = workoutExercise.MaxReps,
             Time = workoutExercise.Time,
+            RestTime = workoutExercise.RestTime,
             UserWorkoutActivities = activities
         };
     }
