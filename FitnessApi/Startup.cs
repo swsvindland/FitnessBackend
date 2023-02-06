@@ -44,7 +44,6 @@ namespace FitnessApi
 
             // add service functions
             builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ISupplementService, SupplementService>();
             builder.Services.AddScoped<IBodyService, BodyService>();
             builder.Services.AddScoped<IFoodService, FoodService>();
