@@ -16,26 +16,17 @@ namespace FitnessApi.Controllers
     public sealed class SupplementsController
     {
         private readonly ISupplementService _supplementService;
-        private readonly IAuthService _authService;
 
-        public SupplementsController(ISupplementService supplementService, IAuthService authService)
+        public SupplementsController(ISupplementService supplementService)
         {
             _supplementService = supplementService;
-            _authService = authService;
         }
 
         [FunctionName("GetAllSupplements")]
         public async Task<IActionResult> GetAllSupplements(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+            [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
-            var authed = await _authService.CheckAuth(req);
-        
-            if (authed == false)
-            {
-                return new UnauthorizedResult();
-            }
-            
             var supplements = await _supplementService.GetAllSupplements();
 
             return new OkObjectResult(supplements);
@@ -43,16 +34,9 @@ namespace FitnessApi.Controllers
 
         [FunctionName("GetUserSupplements")]
         public async Task<IActionResult> GetUserSupplements(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+            [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
-            var authed = await _authService.CheckAuth(req);
-        
-            if (authed == false)
-            {
-                return new UnauthorizedResult();
-            }
-            
             var userId = Guid.Parse(req.Query["userId"]);
 
             var userSupplements = await _supplementService.GetUserSupplements(userId);
@@ -62,16 +46,9 @@ namespace FitnessApi.Controllers
 
         [FunctionName("UpdateUserSupplements")]
         public async Task<IActionResult> UpdateUserSupplements(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+            [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
             HttpRequest req, ILogger log)
         {
-            var authed = await _authService.CheckAuth(req);
-        
-            if (authed == false)
-            {
-                return new UnauthorizedResult();
-            }
-            
             string requestBody;
             using (var streamReader = new StreamReader(req.Body))
             {
@@ -87,16 +64,9 @@ namespace FitnessApi.Controllers
 
         [FunctionName("GetUserSupplementActivity")]
         public async Task<IActionResult> GetUserSupplementActivity(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+            [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
-            var authed = await _authService.CheckAuth(req);
-        
-            if (authed == false)
-            {
-                return new UnauthorizedResult();
-            }
-            
             var userId = Guid.Parse(req.Query["userId"]);
             var userSupplementId = long.Parse(req.Query["userSupplementId"]);
             var date = req.Query["date"];
@@ -110,16 +80,9 @@ namespace FitnessApi.Controllers
 
         [FunctionName("ToggleUserSupplementActivity")]
         public async Task<IActionResult> ToggleUserSupplementActivity(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+            [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
             HttpRequest req, ILogger log)
         {
-            var authed = await _authService.CheckAuth(req);
-        
-            if (authed == false)
-            {
-                return new UnauthorizedResult();
-            }
-            
             string requestBody;
             using (var streamReader = new StreamReader(req.Body))
             {
