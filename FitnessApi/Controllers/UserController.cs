@@ -157,7 +157,7 @@ public sealed class UserController
     
     [FunctionName("UpdateUserSex")]
     public async Task<IActionResult> UpdateUserSex(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
         HttpRequest req, ILogger log)
     { 
         string requestBody;
@@ -182,7 +182,7 @@ public sealed class UserController
     
     [FunctionName("UpdateUserPaid")]
     public async Task<IActionResult> UpdateUserPaid(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
+        [HttpTrigger(AuthorizationLevel.User, "put", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -207,7 +207,7 @@ public sealed class UserController
     
     [FunctionName("UpdateUserUnits")]
     public async Task<IActionResult> UpdateUserUnits(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -232,7 +232,7 @@ public sealed class UserController
     
     [FunctionName("DeleteUser")]
     public async Task<IActionResult> DeleteUser(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
+        [HttpTrigger(AuthorizationLevel.User, "delete", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);

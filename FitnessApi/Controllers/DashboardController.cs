@@ -20,7 +20,7 @@ public sealed class DashboardController
 
     [FunctionName("GetUserDashboard")]
     public async Task<IActionResult> GetUser(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);

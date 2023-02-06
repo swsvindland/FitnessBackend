@@ -24,7 +24,7 @@ namespace FitnessApi.Controllers
 
         [FunctionName("GetAllSupplements")]
         public async Task<IActionResult> GetAllSupplements(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+            [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
             var supplements = await _supplementService.GetAllSupplements();
@@ -34,7 +34,7 @@ namespace FitnessApi.Controllers
 
         [FunctionName("GetUserSupplements")]
         public async Task<IActionResult> GetUserSupplements(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+            [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
             var userId = Guid.Parse(req.Query["userId"]);
@@ -46,7 +46,7 @@ namespace FitnessApi.Controllers
 
         [FunctionName("UpdateUserSupplements")]
         public async Task<IActionResult> UpdateUserSupplements(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+            [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
             HttpRequest req, ILogger log)
         {
             string requestBody;
@@ -64,7 +64,7 @@ namespace FitnessApi.Controllers
 
         [FunctionName("GetUserSupplementActivity")]
         public async Task<IActionResult> GetUserSupplementActivity(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+            [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
             var userId = Guid.Parse(req.Query["userId"]);
@@ -80,7 +80,7 @@ namespace FitnessApi.Controllers
 
         [FunctionName("ToggleUserSupplementActivity")]
         public async Task<IActionResult> ToggleUserSupplementActivity(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+            [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
             HttpRequest req, ILogger log)
         {
             string requestBody;

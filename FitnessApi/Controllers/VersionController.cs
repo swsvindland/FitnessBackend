@@ -17,7 +17,7 @@ public sealed class VersionController
 
     [FunctionName("MinVersion")]
     public IActionResult MinVersion(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
         HttpRequest req,
         ILogger log)
     {
