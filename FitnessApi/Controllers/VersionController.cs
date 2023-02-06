@@ -10,18 +10,27 @@ namespace FitnessApi.Controllers;
 
 public sealed class VersionController
 {
+    private readonly IAuthService _authService;
 
-    public VersionController()
+    public VersionController(IAuthService authService)
     {
+        _authService = authService;
     }
 
     [FunctionName("MinVersion")]
-    public IActionResult MinVersion(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+    public async Task<IActionResult> MinVersion(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req,
         ILogger log)
     {
-        const int minVersion = 33;
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        const int minVersion = 31;
 
         return new OkObjectResult(minVersion);
     }

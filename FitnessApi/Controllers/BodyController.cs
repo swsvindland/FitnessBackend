@@ -15,17 +15,26 @@ namespace FitnessApi.Controllers;
 public sealed class BodyController
 {
     private readonly IBodyService _bodyService;
+    private readonly IAuthService _authService;
 
-    public BodyController(IBodyService bodyService)
+    public BodyController(IBodyService bodyService, IAuthService authService)
     {
         _bodyService = bodyService;
+        _authService = authService;
     }
 
     [FunctionName("GetUserWeights")]
     public async Task<IActionResult> GetUserWeights(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GetAllUserWeights(userId);
@@ -35,9 +44,16 @@ public sealed class BodyController
 
     [FunctionName("AddUserWeight")]
     public async Task<IActionResult> AddUserWeight(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -53,9 +69,16 @@ public sealed class BodyController
     
     [FunctionName("UpdateUserWeight")]
     public async Task<IActionResult> UpdateUserWeight(
-        [HttpTrigger(AuthorizationLevel.User, "put", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -71,9 +94,16 @@ public sealed class BodyController
     
     [FunctionName("DeleteUserWeight")]
     public async Task<IActionResult> DeleteUserWeight(
-        [HttpTrigger(AuthorizationLevel.User, "delete", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var id = long.Parse(req.Query["id"]);
 
         await _bodyService.DeleteUserWeight(id);
@@ -83,9 +113,16 @@ public sealed class BodyController
 
     [FunctionName("GetUserBodies")]
     public async Task<IActionResult> GetUserBodies(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GetAllUserBodies(userId);
@@ -95,9 +132,16 @@ public sealed class BodyController
 
     [FunctionName("AddUserBody")]
     public async Task<IActionResult> AddUserBody(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -113,9 +157,16 @@ public sealed class BodyController
     
     [FunctionName("UpdateUserBody")]
     public async Task<IActionResult> UpdateUserBody(
-        [HttpTrigger(AuthorizationLevel.User, "put", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -131,9 +182,16 @@ public sealed class BodyController
     
     [FunctionName("DeleteUserBody")]
     public async Task<IActionResult> DeleteUserBody(
-        [HttpTrigger(AuthorizationLevel.User, "delete", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var id = long.Parse(req.Query["id"]);
 
         await _bodyService.DeleteUserBody(id);
@@ -143,9 +201,16 @@ public sealed class BodyController
 
     [FunctionName("GetUserBloodPressures")]
     public async Task<IActionResult> GetUserBloodPressures(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GetAllUserBloodPressures(userId);
@@ -155,9 +220,16 @@ public sealed class BodyController
 
     [FunctionName("GetUserBodyFat")]
     public async Task<IActionResult> GetUserBodyFat(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var userId = Guid.Parse(req.Query["userId"]);
 
         var user = await _bodyService.GenerateBodyFats(userId);
@@ -167,9 +239,16 @@ public sealed class BodyController
 
     [FunctionName("AddUserBloodPressure")]
     public async Task<IActionResult> AddUserBloodPressure(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -185,9 +264,16 @@ public sealed class BodyController
     
     [FunctionName("UpdateUserBloodPressure")]
     public async Task<IActionResult> UpdateUserBloodPressure(
-        [HttpTrigger(AuthorizationLevel.User, "put", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -203,9 +289,16 @@ public sealed class BodyController
     
     [FunctionName("DeleteUserBloodPressure")]
     public async Task<IActionResult> DeleteUserBloodPressure(
-        [HttpTrigger(AuthorizationLevel.User, "delete", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var id = long.Parse(req.Query["id"]);
 
         await _bodyService.DeleteUserBloodPressure(id);
@@ -215,9 +308,16 @@ public sealed class BodyController
 
     [FunctionName("AddUserHeight")]
     public async Task<IActionResult> AddUserHeight(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -233,8 +333,14 @@ public sealed class BodyController
     
     [FunctionName("UploadProgressPhoto")]
     public async Task<IActionResult> UploadProgressPhoto(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)] HttpRequest req, ILogger log) 
-    {
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req, ILogger log) {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var connection = Environment.GetEnvironmentVariable("FileUploadStorage");
         var containerName = Environment.GetEnvironmentVariable("ContainerName");
 
@@ -253,7 +359,14 @@ public sealed class BodyController
     
     [FunctionName("GetProgressPhotos")]
     public async Task<IActionResult> GetProgressPhotos(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)] HttpRequest req, ILogger log) {
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log) {
+        var authed = await _authService.CheckAuth(req);
+        
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+        
         var userId = Guid.Parse(req.Query["userId"]);
 
         var filePath = await _bodyService.GetProgressPhotos(userId);
