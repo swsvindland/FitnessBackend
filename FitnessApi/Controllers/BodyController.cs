@@ -23,7 +23,7 @@ public sealed class BodyController
 
     [FunctionName("GetUserWeights")]
     public async Task<IActionResult> GetUserWeights(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
@@ -35,7 +35,7 @@ public sealed class BodyController
 
     [FunctionName("AddUserWeight")]
     public async Task<IActionResult> AddUserWeight(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -53,7 +53,7 @@ public sealed class BodyController
     
     [FunctionName("UpdateUserWeight")]
     public async Task<IActionResult> UpdateUserWeight(
-        [HttpTrigger(AuthorizationLevel.User, "put", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -71,7 +71,7 @@ public sealed class BodyController
     
     [FunctionName("DeleteUserWeight")]
     public async Task<IActionResult> DeleteUserWeight(
-        [HttpTrigger(AuthorizationLevel.User, "delete", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
         HttpRequest req, ILogger log)
     {
         var id = long.Parse(req.Query["id"]);
@@ -83,7 +83,7 @@ public sealed class BodyController
 
     [FunctionName("GetUserBodies")]
     public async Task<IActionResult> GetUserBodies(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
@@ -95,7 +95,7 @@ public sealed class BodyController
 
     [FunctionName("AddUserBody")]
     public async Task<IActionResult> AddUserBody(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -113,7 +113,7 @@ public sealed class BodyController
     
     [FunctionName("UpdateUserBody")]
     public async Task<IActionResult> UpdateUserBody(
-        [HttpTrigger(AuthorizationLevel.User, "put", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -131,7 +131,7 @@ public sealed class BodyController
     
     [FunctionName("DeleteUserBody")]
     public async Task<IActionResult> DeleteUserBody(
-        [HttpTrigger(AuthorizationLevel.User, "delete", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
         HttpRequest req, ILogger log)
     {
         var id = long.Parse(req.Query["id"]);
@@ -143,7 +143,7 @@ public sealed class BodyController
 
     [FunctionName("GetUserBloodPressures")]
     public async Task<IActionResult> GetUserBloodPressures(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
@@ -155,7 +155,7 @@ public sealed class BodyController
 
     [FunctionName("GetUserBodyFat")]
     public async Task<IActionResult> GetUserBodyFat(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
@@ -167,7 +167,7 @@ public sealed class BodyController
 
     [FunctionName("AddUserBloodPressure")]
     public async Task<IActionResult> AddUserBloodPressure(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -185,7 +185,7 @@ public sealed class BodyController
     
     [FunctionName("UpdateUserBloodPressure")]
     public async Task<IActionResult> UpdateUserBloodPressure(
-        [HttpTrigger(AuthorizationLevel.User, "put", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -203,7 +203,7 @@ public sealed class BodyController
     
     [FunctionName("DeleteUserBloodPressure")]
     public async Task<IActionResult> DeleteUserBloodPressure(
-        [HttpTrigger(AuthorizationLevel.User, "delete", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
         HttpRequest req, ILogger log)
     {
         var id = long.Parse(req.Query["id"]);
@@ -215,7 +215,7 @@ public sealed class BodyController
 
     [FunctionName("AddUserHeight")]
     public async Task<IActionResult> AddUserHeight(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -233,7 +233,7 @@ public sealed class BodyController
     
     [FunctionName("UploadProgressPhoto")]
     public async Task<IActionResult> UploadProgressPhoto(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)] HttpRequest req, ILogger log) 
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req, ILogger log) 
     {
         var connection = Environment.GetEnvironmentVariable("FileUploadStorage");
         var containerName = Environment.GetEnvironmentVariable("ContainerName");
@@ -253,7 +253,7 @@ public sealed class BodyController
     
     [FunctionName("GetProgressPhotos")]
     public async Task<IActionResult> GetProgressPhotos(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)] HttpRequest req, ILogger log) {
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req, ILogger log) {
         var userId = Guid.Parse(req.Query["userId"]);
 
         var filePath = await _bodyService.GetProgressPhotos(userId);

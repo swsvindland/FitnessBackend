@@ -24,7 +24,7 @@ public sealed class FoodController
 
     [FunctionName("GetMacros")]
     public async Task<IActionResult> GetMacros(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
@@ -36,7 +36,7 @@ public sealed class FoodController
     
     [FunctionName("AddCustomMacros")]
     public async Task<IActionResult> AddCustomMacros(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -57,7 +57,7 @@ public sealed class FoodController
 
     [FunctionName("AutocompleteFood")]
     public async Task<IActionResult> AutocompleteFood(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var query = req.Query["query"];
@@ -69,7 +69,7 @@ public sealed class FoodController
 
     [FunctionName("GetRecentUserFoods")]
     public async Task<IActionResult> GetRecentUserFoods(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
@@ -82,7 +82,7 @@ public sealed class FoodController
 
     [FunctionName("SearchFood")]
     public async Task<IActionResult> SearchFood(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var query = req.Query["query"];
@@ -95,7 +95,7 @@ public sealed class FoodController
     
     [FunctionName("GetFoodV2")]
     public async Task<IActionResult> GetFoodV2(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var foodId = long.Parse(req.Query["foodId"]);
@@ -107,7 +107,7 @@ public sealed class FoodController
     
     [FunctionName("GetUserFoodV2")]
     public async Task<IActionResult> GetUserFoodV2(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userFoodId = long.Parse(req.Query["userFoodId"]);
@@ -119,7 +119,7 @@ public sealed class FoodController
     
     [FunctionName("GetAllUserFoodV2")]
     public async Task<IActionResult> GetAllUserFoodV2(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
@@ -132,7 +132,7 @@ public sealed class FoodController
     
     [FunctionName("AddUserFoodV2")]
     public async Task<IActionResult> AddUserFoodV2(
-        [HttpTrigger(AuthorizationLevel.User, "post", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -152,7 +152,7 @@ public sealed class FoodController
     
     [FunctionName("UpdateUserFoodV2")]
     public async Task<IActionResult> UpdateUserFoodV2(
-        [HttpTrigger(AuthorizationLevel.User, "put", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
         HttpRequest req, ILogger log)
     {
         string requestBody;
@@ -170,7 +170,7 @@ public sealed class FoodController
     
     [FunctionName("QuickAddUserFoodV2")]
     public async Task<IActionResult> QuickAddUserFoodV2(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
@@ -184,7 +184,7 @@ public sealed class FoodController
     
     [FunctionName("QuickRemoveUserFoodV2")]
     public async Task<IActionResult> QuickRemoveUserFoodV2(
-        [HttpTrigger(AuthorizationLevel.User, "get", Route = null)]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
         var userId = Guid.Parse(req.Query["userId"]);
