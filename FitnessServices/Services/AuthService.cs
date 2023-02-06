@@ -3,14 +3,40 @@ using Microsoft.AspNetCore.Http;
 
 namespace FitnessServices.Services;
 
-public static class AuthService
+public sealed class AuthService : IAuthService
 {
-    public static bool CheckAuthV2(HttpRequest req)
+    private readonly IUserService _userService;
+
+    public AuthService(IUserService userService)
+    {
+        _userService = userService;
+    }
+
+    public async Task<bool> CheckAuth(HttpRequest req)
     {
         var userId = Guid.Parse(req.Query["userId"]);
-        var auth = req.Headers["Authorization"].ToString();
+        var token = req.Query["token"].ToString();
+
+        if (userId == Guid.Empty || string.IsNullOrEmpty(token))
+        {
+            return false;
+        }
+
+        var currentToken = await _userService.GetToken(userId, token);
+
+        if (currentToken == null)
+        {
+            return await CheckAuthV2(req);
+        }
+
+        return currentToken.Token == token;
+    }
+
+    private async Task<bool> CheckAuthV2(HttpRequest req)
+    {
+        var userId = Guid.Parse(req.Query["userId"]);
+        var token = req.Query["token"].ToString();
         var tokenHandler = new JwtSecurityTokenHandler();
-        var token = auth.Split(' ').ElementAt(1);
 
         if (userId == Guid.Empty || string.IsNullOrEmpty(token))
         {
@@ -18,12 +44,11 @@ public static class AuthService
         }
 
         var jwtToken = tokenHandler.ReadJwtToken(token);
+        var user = await _userService.GetUserById(userId);
 
-        if (jwtToken.Issuer is "https://workout-track.com" or "google.com" or "apple.com")
-        {
-            return true;
-        }
-
-        return false;
+        return string.Equals(
+            jwtToken.Issuer != "https://workout-track.com"
+                ? jwtToken.Claims.FirstOrDefault(e => e.Type == "email")?.Value
+                : jwtToken.Subject, user?.Email, StringComparison.CurrentCultureIgnoreCase);
     }
 }
