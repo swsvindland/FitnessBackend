@@ -277,4 +277,40 @@ public sealed class WorkoutRepository : IWorkoutRepository
         await _context.SaveChangesAsync();
         return workoutExercise.Id;
     }
+    
+    public async Task<UserWorkoutSubstitution?> GetUserWorkoutSubstitution(Guid userId, long workoutExerciseId)
+    {
+        return await _context.UserWorkoutSubstitution
+            .Where(e => e.UserId == userId)
+            .Where(e => e.WorkoutExerciseId == workoutExerciseId)
+            .Include(e => e.Exercise)
+            .FirstOrDefaultAsync();
+    }
+    
+    public async Task<long> AddUserWorkoutSubstitution(UserWorkoutSubstitution userWorkoutSubstitution)
+    {
+        _context.UserWorkoutSubstitution.Add(userWorkoutSubstitution);
+    
+        await _context.SaveChangesAsync();
+
+        return userWorkoutSubstitution.Id;
+    }
+    
+    public async Task UpdateUserWorkoutSubstitution(UserWorkoutSubstitution userWorkoutSubstitution)
+    {
+        _context.UserWorkoutSubstitution.Update(userWorkoutSubstitution);
+    
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task DeleteUserWorkoutSubstitution(long id)
+    {
+        var entity = await _context.UserWorkoutSubstitution.FirstOrDefaultAsync(e => e.Id == id);
+
+        if (entity == null) return;
+        
+        _context.UserWorkoutSubstitution.Remove(entity);
+    
+        await _context.SaveChangesAsync();
+    }
 }

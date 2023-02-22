@@ -31,4 +31,5 @@ public sealed class FitnessContext: DbContext
     public DbSet<FoodV2Servings> FoodV2Servings { get; set; }
     public DbSet<UserFoodV2> UserFoodV2 { get; set; }
     public DbSet<ProgressPhoto> ProgressPhoto { get; set; }
+    public DbSet<UserWorkoutSubstitution> UserWorkoutSubstitution { get; set; }
 }

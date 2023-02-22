@@ -504,4 +504,103 @@ public sealed class WorkoutController
 
         return new OkObjectResult(workoutExerciseId);
     }
+    
+    [FunctionName("GetUserWorkoutSubstitution")]
+    public async Task<IActionResult> GetUserWorkoutSubstitution(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userId = Guid.Parse(req.Query["userId"]);
+        var workoutExerciseId = long.Parse(req.Query["workoutExerciseId"]);
+
+        var userWorkoutSubstitution = await _workoutService.GetUserWorkoutSubstitution(userId, workoutExerciseId);
+
+        return new OkObjectResult(userWorkoutSubstitution);
+    }
+    
+    [FunctionName("AddUserWorkoutSubstitution")]
+    public async Task<IActionResult> AddUserWorkoutSubstitution(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<UserWorkoutSubstitution>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+
+        var id = await _workoutService.AddUserWorkoutSubstitution(data);
+
+        return new OkObjectResult(id);
+    }
+    
+    [FunctionName("UpdateUserWorkoutSubstitution")]
+    public async Task<IActionResult> UpdateUserWorkoutSubstitution(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        string requestBody;
+        using (var streamReader = new StreamReader(req.Body))
+        {
+            requestBody = await streamReader.ReadToEndAsync();
+        }
+
+        var data = JsonConvert.DeserializeObject<UserWorkoutSubstitution>(requestBody);
+
+        if (data == null)
+        {
+            return new BadRequestResult();
+        }
+
+        await _workoutService.UpdateUserWorkoutSubstitution(data);
+
+        return new OkObjectResult(true);
+    }
+
+    [FunctionName("DeleteUserWorkoutSubstitution")]
+    public async Task<IActionResult> DeleteUserWorkoutSubstitution(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = await _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var id = long.Parse(req.Query["id"]);
+
+        await _workoutService.DeleteUserWorkoutSubstitution(id);
+
+        return new OkObjectResult(true);
+    }
 }

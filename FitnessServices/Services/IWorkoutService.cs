@@ -30,4 +30,8 @@ public interface IWorkoutService
     Task<long> EditWorkout(Workout workout);
     Task DeleteWorkout(long workoutId);
     Task<long> UpsertWorkoutExercise(UpdateWorkoutExercise workoutExercise);
+    Task<UserWorkoutSubstitution?> GetUserWorkoutSubstitution(Guid userId, long workoutExerciseId);
+    Task<long> AddUserWorkoutSubstitution(UserWorkoutSubstitution userWorkoutSubstitution);
+    Task UpdateUserWorkoutSubstitution(UserWorkoutSubstitution userWorkoutSubstitution);
+    Task DeleteUserWorkoutSubstitution(long id);
 }

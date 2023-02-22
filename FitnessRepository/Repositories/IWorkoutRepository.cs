@@ -43,4 +43,8 @@ public interface IWorkoutRepository
     Task<long> AddWorkoutExercise(WorkoutExercise workoutExercise);
 
     Task<long> UpdateWorkoutExercise(WorkoutExercise workoutExercise);
+    Task<UserWorkoutSubstitution?> GetUserWorkoutSubstitution(Guid userId, long workoutExerciseId);
+    Task<long> AddUserWorkoutSubstitution(UserWorkoutSubstitution userWorkoutSubstitution);
+    Task UpdateUserWorkoutSubstitution(UserWorkoutSubstitution userWorkoutSubstitution);
+    Task DeleteUserWorkoutSubstitution(long id);
 }
