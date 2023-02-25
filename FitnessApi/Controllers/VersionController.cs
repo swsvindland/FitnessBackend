@@ -18,7 +18,7 @@ public sealed class VersionController
     }
 
     [FunctionName("MinVersion")]
-    public async Task<IActionResult> MinVersion(
+    public IActionResult MinVersion(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req,
         ILogger log)

@@ -33,28 +33,12 @@ public sealed class UserRepository : IUserRepository
         _context.Users.Update(user);
         await _context.SaveChangesAsync();
     }
-    
-    public async Task AddToken(UserToken token)
-    {
-        _context.UserToken.Add(token);
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task<UserToken?> GetToken(Guid userId, string token)
-    {
-        return await _context.UserToken
-            .OrderBy(e => e.Created)
-            .Where(e => e.Token == token)
-            .Where(e => e.UserId == userId)
-            .FirstOrDefaultAsync();
-    }
 
     public async Task DeleteUser(Guid userId)
     {
         _context.UserWorkoutsCompleted.RemoveRange(_context.UserWorkoutsCompleted.Where(e => e.UserId == userId));
         _context.UserWorkoutActivity.RemoveRange(_context.UserWorkoutActivity.Where(e => e.UserId == userId));
         _context.UserWorkout.RemoveRange(_context.UserWorkout.Where(e => e.UserId == userId));
-        _context.UserToken.RemoveRange(_context.UserToken.Where(e => e.UserId == userId));
         _context.Users.RemoveRange(_context.Users.Where(e => e.Id == userId));
         _context.UserWeight.RemoveRange(_context.UserWeight.Where(e => e.UserId == userId));
         _context.UserSupplements.RemoveRange(_context.UserSupplements.Where(e => e.UserId == userId));
@@ -66,7 +50,8 @@ public sealed class UserRepository : IUserRepository
         _context.UserCustomMacros.RemoveRange(_context.UserCustomMacros.Where(e => e.UserId == userId));
         _context.ProgressPhoto.RemoveRange(_context.ProgressPhoto.Where(e => e.UserId == userId));
         _context.UserFoodV2.RemoveRange(_context.UserFoodV2.Where(e => e.UserId == userId));
-
+        _context.UserWorkoutSubstitution.RemoveRange(_context.UserWorkoutSubstitution.Where(e => e.UserId == userId));
+        
         await _context.SaveChangesAsync();
     }
 }

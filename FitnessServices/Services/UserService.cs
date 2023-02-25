@@ -21,36 +21,6 @@ public sealed class UserService: IUserService
         _userRepository = userRepository;
     }
 
-    public async Task<(bool, UserToken?)> AuthByEmailPassword(string email, string password)
-    {
-        var user = await GetUserByEmail(email);
-        if (user == null)
-        {
-            return (false, null);
-        }
-        
-        var hashedPassword = HashPassword(password, user.Salt);
-        
-        if (user.Password != hashedPassword)
-        {
-            return (false, null);
-        }
-
-        var token = GenerateToken();
-
-        var userToken = new UserToken()
-        {
-            UserId = user.Id,
-            Token = token,
-            Created = DateTime.UtcNow,
-            Expires = DateTime.UtcNow.AddDays(90)
-        };
-
-        await _userRepository.AddToken(userToken);
-        
-        return (true, userToken);
-    }
-    
     public async Task<AuthResponse?> AuthByEmailPasswordV2(string email, string password)
     {
         var user = await GetUserByEmail(email);
@@ -303,11 +273,6 @@ public sealed class UserService: IUserService
         return await _userRepository.GetUserByEmail(email);
     }
     
-    public async Task<UserToken?> GetToken(Guid userId, string token)
-    {
-        return await _userRepository.GetToken(userId, token);
-    }
-
     public async Task DeleteUser(Guid userId)
     {
         await _userRepository.DeleteUser(userId);

@@ -234,29 +234,6 @@ public sealed class WorkoutController
         return new OkObjectResult(activity);
     }
 
-    [FunctionName("GetUserWorkoutActivity")]
-    public async Task<IActionResult> GetUserWorkoutActivity(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
-    {
-        var authed = _authService.CheckAuth(req);
-
-        if (authed == false)
-        {
-            return new UnauthorizedResult();
-        }
-
-        var userId = Guid.Parse(req.Query["userId"]);
-        var workoutExerciseId = long.Parse(req.Query["workoutExerciseId"]);
-        var set = int.Parse(req.Query["set"]);
-        var week = int.Parse(req.Query["week"]);
-        var day = int.Parse(req.Query["day"]);
-
-        var activity = await _workoutService.GetUserWorkoutActivity(userId, workoutExerciseId, set, week, day);
-
-        return new OkObjectResult(activity);
-    }
-
     [FunctionName("AddUserWorkoutActivity")]
     public async Task<IActionResult> AddUserWorkoutActivity(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]

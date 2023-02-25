@@ -5,7 +5,6 @@ namespace FitnessServices.Services;
 
 public interface IUserService
 {
-    Task<(bool, UserToken?)> AuthByEmailPassword(string email, string password);
     Task<AuthResponse?> AuthByEmailPasswordV2(string email, string password);
     Task<AuthResponse?> SsoAuth(string email, string token);
     Task UpdateLastLogin(Guid userId);
@@ -13,7 +12,6 @@ public interface IUserService
     Task UpdatePaid(Guid userId, bool paid, DateTime? paidUntil);
     Task<Users?> GetUserById(Guid userId);
     Task CreateUser(string email, string password);
-    Task<UserToken?> GetToken(Guid userId, string token);
     Task DeleteUser(Guid userId);
     Task UpdateUserSex(Guid userId, Sex sex);
     Task UpdateUserUnits(Guid userId, UserUnits unit);

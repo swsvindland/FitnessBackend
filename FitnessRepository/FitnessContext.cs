@@ -25,7 +25,6 @@ public sealed class FitnessContext: DbContext
     public DbSet<UserWorkoutActivity> UserWorkoutActivity { get; set; }
     public DbSet<UserOneRepMaxEstimates> UserOneRepMaxEstimates { get; set; }
     public DbSet<UserWorkoutsCompleted> UserWorkoutsCompleted { get; set; }
-    public DbSet<UserToken> UserToken { get; set; }
     public DbSet<UserCustomMacros> UserCustomMacros { get; set; }
     public DbSet<FoodV2> FoodV2 { get; set; }
     public DbSet<FoodV2Servings> FoodV2Servings { get; set; }
