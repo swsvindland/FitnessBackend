@@ -1,5 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Principal;
+using System.Text;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FitnessServices.Services;
 
@@ -12,23 +15,39 @@ public sealed class AuthService : IAuthService
         _userService = userService;
     }
 
-    public async Task<bool> CheckAuth(HttpRequest req)
+    public bool CheckAuth(HttpRequest req)
     {
         var userId = Guid.Parse(req.Query["userId"]);
         var token = req.Headers["Authorization"].ToString().Split().LastOrDefault();
-        var tokenHandler = new JwtSecurityTokenHandler();
 
         if (userId == Guid.Empty || string.IsNullOrEmpty(token))
         {
             return false;
         }
-
-        var jwtToken = tokenHandler.ReadJwtToken(token);
-        var user = await _userService.GetUserById(userId);
         
-        return string.Equals(
-            jwtToken.Issuer != "https://workout-track.com"
-                ? jwtToken.Claims.FirstOrDefault(e => e.Type == "email")?.Value
-                : jwtToken.Subject, user?.Email, StringComparison.CurrentCultureIgnoreCase);
+        return ValidateToken(token);
+    }
+    
+    private static bool ValidateToken(string authToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var validationParameters = GetValidationParameters();
+
+        SecurityToken validatedToken;
+        IPrincipal principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
+        return true;
+    }
+
+    private static TokenValidationParameters GetValidationParameters()
+    {
+        return new TokenValidationParameters()
+        {
+            ValidateLifetime = false, // Because there is no expiration in the generated token
+            ValidateAudience = false, // Because there is no audiance in the generated token
+            ValidateIssuer = false,   // Because there is no issuer in the generated token
+            ValidIssuer = "Sample",
+            ValidAudience = "Sample",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is a secret key")) // The same key as the one that generate the token
+        };
     }
 }

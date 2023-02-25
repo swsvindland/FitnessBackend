@@ -4,5 +4,5 @@ namespace FitnessServices.Services;
 
 public interface IAuthService
 {
-    Task<bool> CheckAuth(HttpRequest req);
+    bool CheckAuth(HttpRequest req);
 }

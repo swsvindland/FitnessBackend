@@ -90,7 +90,7 @@ public sealed class UserService: IUserService
         return new AuthResponse()
         {
             UserId = user.Id,
-            Token = token
+            Token = GenerateJwt(email, user.Id)
         };
     }
 

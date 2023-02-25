@@ -29,7 +29,7 @@ namespace FitnessApi.Controllers
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
-            var authed = await _authService.CheckAuth(req);
+            var authed = _authService.CheckAuth(req);
         
             if (authed == false)
             {
@@ -46,7 +46,7 @@ namespace FitnessApi.Controllers
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
-            var authed = await _authService.CheckAuth(req);
+            var authed = _authService.CheckAuth(req);
         
             if (authed == false)
             {
@@ -65,7 +65,7 @@ namespace FitnessApi.Controllers
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
             HttpRequest req, ILogger log)
         {
-            var authed = await _authService.CheckAuth(req);
+            var authed = _authService.CheckAuth(req);
         
             if (authed == false)
             {
@@ -90,7 +90,7 @@ namespace FitnessApi.Controllers
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
             HttpRequest req, ILogger log)
         {
-            var authed = await _authService.CheckAuth(req);
+            var authed = _authService.CheckAuth(req);
         
             if (authed == false)
             {
@@ -113,7 +113,7 @@ namespace FitnessApi.Controllers
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
             HttpRequest req, ILogger log)
         {
-            var authed = await _authService.CheckAuth(req);
+            var authed = _authService.CheckAuth(req);
         
             if (authed == false)
             {

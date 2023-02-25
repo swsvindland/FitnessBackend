@@ -23,7 +23,7 @@ public sealed class VersionController
         HttpRequest req,
         ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {

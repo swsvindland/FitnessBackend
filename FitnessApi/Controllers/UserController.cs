@@ -23,35 +23,6 @@ public sealed class UserController
         _authService = authService;
     }
 
-    [FunctionName("Auth")]
-    public async Task<IActionResult> Auth(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth")]
-        HttpRequest req,
-        ILogger log)
-    {
-        string requestBody;
-        using (var streamReader = new StreamReader(req.Body))
-        {
-            requestBody = await streamReader.ReadToEndAsync();
-        }
-
-        var data = JsonConvert.DeserializeObject<Auth>(requestBody);
-
-        if (data == null)
-        {
-            return new BadRequestResult();
-        }
-
-        var auth = await _userService.AuthByEmailPassword(data.Email, data.Password);
-
-        if (auth.Item1 == false)
-        {
-            return new UnauthorizedResult();
-        }
-        
-        return new OkObjectResult(auth.Item2);
-    }
-    
     [FunctionName("AuthV2")]
     public async Task<IActionResult> AuthV2(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
@@ -154,7 +125,7 @@ public sealed class UserController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
         
         if (authed == false)
         {
@@ -198,7 +169,7 @@ public sealed class UserController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
         
         if (authed == false)
         {
@@ -230,7 +201,7 @@ public sealed class UserController
         [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
         
         if (authed == false)
         {
@@ -262,7 +233,7 @@ public sealed class UserController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
         
         if (authed == false)
         {
@@ -294,7 +265,7 @@ public sealed class UserController
         [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
         
         if (authed == false)
         {

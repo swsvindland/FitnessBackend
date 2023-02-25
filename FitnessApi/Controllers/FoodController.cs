@@ -29,7 +29,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {
@@ -48,7 +48,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {
@@ -76,7 +76,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {
@@ -95,7 +95,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {
@@ -115,7 +115,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
         
         if (authed == false)
         {
@@ -135,7 +135,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
         
         if (authed == false)
         {
@@ -154,7 +154,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
         
         if (authed == false)
         {
@@ -173,7 +173,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
         
         if (authed == false)
         {
@@ -193,7 +193,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {
@@ -220,7 +220,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {
@@ -245,7 +245,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {
@@ -266,7 +266,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {
@@ -287,7 +287,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {
@@ -306,7 +306,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {
@@ -326,7 +326,7 @@ public sealed class FoodController
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
-        var authed = await _authService.CheckAuth(req);
+        var authed = _authService.CheckAuth(req);
 
         if (authed == false)
         {
