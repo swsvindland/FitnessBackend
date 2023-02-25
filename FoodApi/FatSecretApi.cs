@@ -24,7 +24,7 @@ public sealed class FatSecretApi : IFatSecretApi
         };
     }
 
-    private async Task<string> AuthFatSecretApi()
+    public async Task<FatSecretAuth?> AuthFatSecretApi()
     {
         var client = new HttpClient();
         var byteArray = Encoding.ASCII.GetBytes($"{_clientId}:{_clientSecret}");
@@ -40,15 +40,14 @@ public sealed class FatSecretApi : IFatSecretApi
         var content = new FormUrlEncodedContent(values);
         var response = await client.PostAsync("https://oauth.fatsecret.com/connect/token", content);
 
-        var json = await response.Content.ReadFromJsonAsync<FatSecretAuth>(_jsonSerializerOptions);
-        return json?.AccessToken ?? string.Empty;
+        return await response.Content.ReadFromJsonAsync<FatSecretAuth>(_jsonSerializerOptions);
     }
 
-    public async Task<IEnumerable<FatSecretSearchItem>?> SearchFoods(string query, int pageNumber)
+    public async Task<IEnumerable<FatSecretSearchItem>?> SearchFoods(string query, int pageNumber, string? oldToken)
     {
         try
         {
-            var token = await AuthFatSecretApi();
+            var token = !string.IsNullOrEmpty(oldToken) ? oldToken : (await AuthFatSecretApi())?.AccessToken;
             _client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
@@ -66,11 +65,11 @@ public sealed class FatSecretApi : IFatSecretApi
         }
     }
 
-    public async Task<FatSecretItem?> GetFood(long foodId)
+    public async Task<FatSecretItem?> GetFood(long foodId, string? oldToken)
     {
         try
         {
-            var token = await AuthFatSecretApi();
+            var token = !string.IsNullOrEmpty(oldToken) ? oldToken : (await AuthFatSecretApi())?.AccessToken;
             _client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
@@ -125,11 +124,11 @@ public sealed class FatSecretApi : IFatSecretApi
         }
     }
     
-    public async Task<long?> GetIdFromBarcode(string barcode)
+    public async Task<long?> GetIdFromBarcode(string barcode, string? oldToken)
     {
         try
         {
-            var token = await AuthFatSecretApi();
+            var token = !string.IsNullOrEmpty(oldToken) ? oldToken : (await AuthFatSecretApi())?.AccessToken;
             _client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
@@ -147,11 +146,11 @@ public sealed class FatSecretApi : IFatSecretApi
         }
     }
     
-    public async Task<IEnumerable<string>?> Autocomplete(string query)
+    public async Task<IEnumerable<string>?> Autocomplete(string query, string? oldToken)
     {
         try
         {
-            var token = await AuthFatSecretApi();
+            var token = !string.IsNullOrEmpty(oldToken) ? oldToken : (await AuthFatSecretApi())?.AccessToken;
             _client.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 

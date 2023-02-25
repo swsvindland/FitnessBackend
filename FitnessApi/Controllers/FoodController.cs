@@ -84,8 +84,9 @@ public sealed class FoodController
         }
 
         var query = req.Query["query"];
+        var oldToken = req.Query["oldToken"];
 
-        var user = await _foodService.AutocompleteFood(query);
+        var user = await _foodService.AutocompleteFood(query, oldToken);
 
         return new OkObjectResult(user);
     }
@@ -124,8 +125,9 @@ public sealed class FoodController
 
         var query = req.Query["query"];
         var page = int.Parse(req.Query["page"]);
+        var oldToken = req.Query["oldToken"];
 
-        var foods = await _foodService.SearchFood(query, page);
+        var foods = await _foodService.SearchFood(query, page, oldToken);
 
         return new OkObjectResult(foods);
     }
@@ -143,8 +145,9 @@ public sealed class FoodController
         }
 
         var foodId = long.Parse(req.Query["foodId"]);
+        var oldToken = req.Query["oldToken"];
 
-        var foods = await _foodService.GetFoodById(foodId);
+        var foods = await _foodService.GetFoodById(foodId, oldToken);
 
         return new OkObjectResult(foods);
     }
@@ -255,8 +258,9 @@ public sealed class FoodController
         var userId = Guid.Parse(req.Query["userId"]);
         var foodId = long.Parse(req.Query["foodId"]);
         var date = DateTime.Parse(req.Query["date"]);
+        var oldToken = req.Query["oldToken"];
 
-        var amount = await _foodService.QuickAddUserFoodV2(userId, foodId, date);
+        var amount = await _foodService.QuickAddUserFoodV2(userId, foodId, date, oldToken);
 
         return new OkObjectResult(amount);
     }
@@ -276,8 +280,9 @@ public sealed class FoodController
         var userId = Guid.Parse(req.Query["userId"]);
         var foodId = long.Parse(req.Query["foodId"]);
         var date = DateTime.Parse(req.Query["date"]);
+        var oldToken = req.Query["oldToken"];
 
-        var amount = await _foodService.QuickRemoveUserFoodV2(userId, foodId, date);
+        var amount = await _foodService.QuickRemoveUserFoodV2(userId, foodId, date, oldToken);
 
         return new OkObjectResult(amount);
     }
@@ -334,10 +339,27 @@ public sealed class FoodController
         }
 
         var barcode = req.Query["barcode"];
+        var oldToken = req.Query["oldToken"];
 
-        var user = await _foodService.GetFoodByBarcode(barcode);
+        var user = await _foodService.GetFoodByBarcode(barcode, oldToken);
 
         return new OkObjectResult(user);
+    }
+    
+    [FunctionName("FoodApiAuth")]
+    public async Task<IActionResult> FoodApiAuth([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var token = await _foodService.AuthFatSecretApi();
+
+        return new OkObjectResult(token);
     }
 
     [FunctionName("MaliciousComplianceHTTP")]

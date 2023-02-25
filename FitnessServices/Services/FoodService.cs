@@ -150,14 +150,14 @@ public sealed class FoodService : IFoodService
         return macros;
     }
 
-    public async Task<IEnumerable<string>?> AutocompleteFood(string query)
+    public async Task<IEnumerable<string>?> AutocompleteFood(string query, string? oldToken)
     {
-        return await _fatSecretApi.Autocomplete(query);
+        return await _fatSecretApi.Autocomplete(query, oldToken);
     }
 
-    public async Task<IEnumerable<FatSecretSearchItem>?> SearchFood(string query, int page)
+    public async Task<IEnumerable<FatSecretSearchItem>?> SearchFood(string query, int page, string? oldToken)
     {
-        return await _fatSecretApi.SearchFoods(query, page);
+        return await _fatSecretApi.SearchFoods(query, page, oldToken);
     }
 
     private static (FoodV2, IEnumerable<FoodV2Servings>) MapFatSecretFoodToFoodV2(FatSecretItem newFood)
@@ -207,13 +207,13 @@ public sealed class FoodService : IFoodService
         return (foodV2, servings);
     }
 
-    public async Task<FoodV2?> GetFoodById(long foodId)
+    public async Task<FoodV2?> GetFoodById(long foodId, string? oldToken)
     {
         var food = await _foodRepository.GetFoodV2ById(foodId);
 
         if (food != null && food.Servings.Any()) return food;
 
-        var newFood = await _fatSecretApi.GetFood(foodId);
+        var newFood = await _fatSecretApi.GetFood(foodId, oldToken);
 
         if (newFood == null) return null;
 
@@ -270,9 +270,9 @@ public sealed class FoodService : IFoodService
         return await _foodRepository.GetAllUserFoodsV2ByDate(userId, date);
     }
 
-    public async Task<float> QuickAddUserFoodV2(Guid userId, long foodId, DateTime date)
+    public async Task<float> QuickAddUserFoodV2(Guid userId, long foodId, DateTime date, string? oldToken)
     {
-        var food = await GetFoodById(foodId);
+        var food = await GetFoodById(foodId, oldToken);
         var userFoodV2 = (await GetAllUserFoodsV2ByDate(userId, date)).FirstOrDefault(e => e.FoodV2Id == foodId);
 
         if (userFoodV2 == null)
@@ -299,9 +299,9 @@ public sealed class FoodService : IFoodService
         return userFoodV2.ServingAmount;
     }
 
-    public async Task<float> QuickRemoveUserFoodV2(Guid userId, long foodId, DateTime date)
+    public async Task<float> QuickRemoveUserFoodV2(Guid userId, long foodId, DateTime date, string? oldToken)
     {
-        var food = await GetFoodById(foodId);
+        var food = await GetFoodById(foodId, oldToken);
         var userFoodV2 = (await GetAllUserFoodsV2ByDate(userId, date)).FirstOrDefault(e => e.FoodV2Id == foodId);
 
         if (userFoodV2 == null)
@@ -377,7 +377,7 @@ public sealed class FoodService : IFoodService
         var foods = await _foodRepository.RefreshAllFoodsV2();
         foreach (var food in foods)
         {
-            var updatedFood = await _fatSecretApi.GetFood(food.Id);
+            var updatedFood = await _fatSecretApi.GetFood(food.Id, null);
 
             if (updatedFood == null) continue;
 
@@ -389,12 +389,17 @@ public sealed class FoodService : IFoodService
         }
     }
 
-    public async Task<FoodV2?> GetFoodByBarcode(string barcode)
+    public async Task<FoodV2?> GetFoodByBarcode(string barcode, string? oldToken)
     {
-        var id = await _fatSecretApi.GetIdFromBarcode(barcode);
+        var id = await _fatSecretApi.GetIdFromBarcode(barcode, oldToken);
 
-        if (id != null) return await GetFoodById(id.Value);
+        if (id != null) return await GetFoodById(id.Value, oldToken);
 
         return null;
+    }
+    
+    public async Task<FatSecretAuth?> AuthFatSecretApi()
+    {
+        return await _fatSecretApi.AuthFatSecretApi();
     }
 }
