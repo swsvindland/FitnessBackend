@@ -2,6 +2,7 @@ namespace FitnessServices.Models;
 
 public sealed class Dashboard
 {
+    public bool AddSex { get; set; }
     public bool AddWeight { get; set; }
     public bool WeightAdded { get; set; }
     public bool AddBodyMeasurements { get; set; }

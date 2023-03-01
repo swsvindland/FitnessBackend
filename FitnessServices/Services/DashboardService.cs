@@ -1,16 +1,19 @@
+using FitnessRepository.Models;
 using FitnessServices.Models;
 
 namespace FitnessServices.Services;
 
 public sealed class DashboardService: IDashboardService
 {
+    private readonly IUserService _userService;
     private readonly IBodyService _bodyService;
     private readonly IWorkoutService _workoutService;
     private readonly IFoodService _foodService;
     private readonly ISupplementService _supplementService;
     
-    public DashboardService(IBodyService bodyService, IWorkoutService workoutService, IFoodService foodService, ISupplementService supplementService)
+    public DashboardService(IUserService userService, IBodyService bodyService, IWorkoutService workoutService, IFoodService foodService, ISupplementService supplementService)
     {
+        _userService = userService;
         _bodyService = bodyService;
         _workoutService = workoutService;
         _foodService = foodService;
@@ -19,6 +22,7 @@ public sealed class DashboardService: IDashboardService
     
     public async Task<Dashboard> GetUserDashboard(Guid userId, DateTime date)
     {
+        var user = await _userService.GetUserById(userId);
         var userHeights = (await _bodyService.GetAllUserHeights(userId)).ToArray();
         var userWeights = (await _bodyService.GetAllUserWeights(userId)).ToArray();
         var userBodies = (await _bodyService.GetAllUserBodies(userId)).ToArray();
@@ -31,6 +35,7 @@ public sealed class DashboardService: IDashboardService
 
         return new Dashboard()
         {
+            AddSex = user?.Sex == Sex.Unknown,
             AddHeight = !userHeights.Any(),
             HeightAdded = userHeights.Any(e => e.Created.Date == date.Date),
             AddWeight = userWeights.LastOrDefault()?.Created.Date != date.Date,
