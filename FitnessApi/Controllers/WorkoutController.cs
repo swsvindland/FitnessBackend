@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using FitnessRepository.Models;
@@ -70,7 +71,7 @@ public sealed class WorkoutController
             return new UnauthorizedResult();
         }
 
-        var workouts = await _workoutService.GetCardioWorkouts();
+        var workouts = new List<Workout>();
 
         return new OkObjectResult(workouts);
     }
@@ -324,12 +325,8 @@ public sealed class WorkoutController
         {
             return new UnauthorizedResult();
         }
-
-        var userId = Guid.Parse(req.Query["userId"]);
-
-        var nextWorkout = await _workoutService.GetUserNextCardioWorkout(userId);
-
-        return new OkObjectResult(nextWorkout);
+        
+        return new OkObjectResult(null);
     }
 
     [FunctionName("RestartWorkout")]

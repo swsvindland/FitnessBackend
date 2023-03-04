@@ -30,12 +30,7 @@ public sealed class WorkoutService : IWorkoutService
     {
         return await _workoutRepository.GetWorkouts();
     }
-
-    public async Task<IEnumerable<Workout>> GetCardioWorkouts()
-    {
-        return await _workoutRepository.GetCardioWorkouts();
-    }
-
+    
     public async Task<IEnumerable<Workout>> GetWorkoutsByUserId(Guid userId)
     {
         return await _workoutRepository.GetWorkoutsByUserId(userId);
@@ -122,17 +117,7 @@ public sealed class WorkoutService : IWorkoutService
 
     public async Task BuyWorkout(Guid userId, long workoutId)
     {
-        var workout = await _workoutRepository.GetWorkout(workoutId);
-
-        // should set all to inactive as workoutId is not added
-        if (workout?.Type == WorkoutType.Cardio)
-        {
-            await SetActiveCardioWorkout(userId, workoutId);
-        }
-        else
-        {
-            await SetActiveWorkout(userId, workoutId);
-        }
+        await SetActiveWorkout(userId, workoutId);
 
         await _workoutRepository.AddUserWorkout(new UserWorkout()
         {
@@ -145,30 +130,14 @@ public sealed class WorkoutService : IWorkoutService
 
     public async Task SetActiveWorkout(Guid userId, long workoutId)
     {
-        var userWorkouts = (await _workoutRepository.GetUserWorkouts(userId))
-            .Where(e => e.Workout?.Type is WorkoutType.Unknown or WorkoutType.Resistance);
-        var enumerable = userWorkouts as UserWorkout[] ?? userWorkouts.ToArray();
+        var userWorkouts = (await _workoutRepository.GetUserWorkouts(userId)).ToArray();
 
-        foreach (var userWorkout in enumerable)
+        foreach (var userWorkout in userWorkouts)
         {
             userWorkout.Active = userWorkout.WorkoutId == workoutId;
         }
 
-        await _workoutRepository.UpdateUserWorkouts(enumerable);
-    }
-
-    private async Task SetActiveCardioWorkout(Guid userId, long workoutId)
-    {
-        var userWorkouts = (await _workoutRepository.GetUserWorkouts(userId))
-            .Where(e => e.Workout?.Type is WorkoutType.Cardio);
-        var enumerable = userWorkouts as UserWorkout[] ?? userWorkouts.ToArray();
-
-        foreach (var userWorkout in enumerable)
-        {
-            userWorkout.Active = userWorkout.WorkoutId == workoutId;
-        }
-
-        await _workoutRepository.UpdateUserWorkouts(enumerable);
+        await _workoutRepository.UpdateUserWorkouts(userWorkouts);
     }
 
     public async Task<IEnumerable<UserWorkoutActivity>> GetUserWorkoutActivities(Guid userId,
@@ -394,19 +363,6 @@ public sealed class WorkoutService : IWorkoutService
     {
         var currentWorkout = await _workoutRepository.GetActiveUserWorkouts(userId);
         var workoutsCompleted = (await _workoutRepository.GetUserWorkoutsCompleted(userId)).ToArray();
-
-        if (currentWorkout == null)
-        {
-            return null;
-        }
-
-        return await GetNextWorkout(userId, currentWorkout, workoutsCompleted);
-    }
-
-    public async Task<UserNextWorkout?> GetUserNextCardioWorkout(Guid userId)
-    {
-        var currentWorkout = await _workoutRepository.GetActiveUserCardioWorkouts(userId);
-        var workoutsCompleted = await _workoutRepository.GetUserWorkoutsCompleted(userId);
 
         if (currentWorkout == null)
         {

@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace FitnessRepository.Models;
 
 public sealed class Workout
@@ -13,7 +11,5 @@ public sealed class Workout
     public int Days { get; set; }
     public int Duration { get; set; }
     public bool Premium { get; set; }
-    [Column(TypeName = "varchar(255)")]
-    public WorkoutType Type { get; set; }
     public IEnumerable<WorkoutExercise> WorkoutExercise { get; set; }
 }
