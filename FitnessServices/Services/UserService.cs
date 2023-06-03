@@ -15,10 +15,12 @@ namespace FitnessServices.Services;
 public sealed class UserService: IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly RandomNumberGenerator _randomNumberGenerator;
 
     public UserService(IUserRepository userRepository)
     {
         _userRepository = userRepository;
+        _randomNumberGenerator = RandomNumberGenerator.Create();
     }
 
     public async Task<AuthResponse?> AuthByEmailPasswordV2(string email, string password)
@@ -153,11 +155,11 @@ public sealed class UserService: IUserService
         await _userRepository.UpdateUser(user);
     }
     
-    private static string GenerateRandomString(int length)
+    private string GenerateRandomString(int length)
     {
-        const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        return new string(Enumerable.Repeat(chars, length)
-            .Select(s => s[new Random().Next(s.Length)]).ToArray());
+        var buffer = new byte[length];
+        _randomNumberGenerator.GetBytes(buffer);
+        return Encoding.UTF8.GetString(buffer);
     }
     
     private static async Task SendForgotPasswordEmail(string email, string password)
