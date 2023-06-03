@@ -15,8 +15,8 @@ public sealed class FatSecretApi : IFatSecretApi
     public FatSecretApi(HttpClient client)
     {
         _client = client;
-        _clientId = "91ab797e9a424b0aa7f0eb6a6861bb59";
-        _clientSecret = "ea9adc557e6d41378c16615285e1c4d0";
+        _clientId = Environment.GetEnvironmentVariable("FAT_SECRET_KEY") ?? "";
+        _clientSecret = Environment.GetEnvironmentVariable("FAT_SECRET_SECRET") ?? "";
 
         _jsonSerializerOptions = new JsonSerializerOptions
         {

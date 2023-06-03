@@ -16,11 +16,13 @@ public sealed class UserService: IUserService
 {
     private readonly IUserRepository _userRepository;
     private readonly RandomNumberGenerator _randomNumberGenerator;
+    private readonly string _sendGridApiKey;
 
     public UserService(IUserRepository userRepository)
     {
         _userRepository = userRepository;
         _randomNumberGenerator = RandomNumberGenerator.Create();
+        _sendGridApiKey = Environment.GetEnvironmentVariable("SENDGRID_API_KEY") ?? string.Empty;
     }
 
     public async Task<AuthResponse?> AuthByEmailPasswordV2(string email, string password)
@@ -162,10 +164,9 @@ public sealed class UserService: IUserService
         return Encoding.UTF8.GetString(buffer);
     }
     
-    private static async Task SendForgotPasswordEmail(string email, string password)
+    private async Task SendForgotPasswordEmail(string email, string password)
     {
-        const string apiKey = "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";
-        var client = new SendGridClient(apiKey);
+        var client = new SendGridClient(_sendGridApiKey);
         var from = new EmailAddress("sam@workout-track.com");
         const string subject = "Workout Track - Forgot Password";
         var to = new EmailAddress(email);
