@@ -341,6 +341,7 @@ public sealed class BodyController
             return new UnauthorizedResult();
         }
         
+        
         var connection = Environment.GetEnvironmentVariable("FileUploadStorage");
         var containerName = Environment.GetEnvironmentVariable("ContainerName");
 
