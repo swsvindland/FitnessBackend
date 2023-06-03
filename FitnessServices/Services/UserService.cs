@@ -64,16 +64,11 @@ public sealed class UserService: IUserService
         };
     }
 
-    private static string GenerateToken()
-    {
-        return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-    }
-    
     private static string GenerateJwt(string email, Guid userId)
     {
         const string issuer = "https://workout-track.com";
         const string audience = "https://workout-track.com";
-        var key = Encoding.ASCII.GetBytes("This is a secret key");
+        var key = Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET") ?? "");
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[]

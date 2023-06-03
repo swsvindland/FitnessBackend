@@ -43,11 +43,11 @@ public sealed class AuthService : IAuthService
         return new TokenValidationParameters()
         {
             ValidateLifetime = false, // Because there is no expiration in the generated token
-            ValidateAudience = false, // Because there is no audiance in the generated token
+            ValidateAudience = false, // Because there is no audience in the generated token
             ValidateIssuer = false,   // Because there is no issuer in the generated token
             ValidIssuer = "Sample",
             ValidAudience = "Sample",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("This is a secret key")) // The same key as the one that generate the token
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET") ?? "")) // The same key as the one that generate the token
         };
     }
 }
