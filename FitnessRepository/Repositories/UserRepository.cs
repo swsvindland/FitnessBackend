@@ -14,7 +14,7 @@ public sealed class UserRepository : IUserRepository
 
     public async Task<Users?> GetUserById(Guid userId)
     {
-        return await _context.Users.FirstOrDefaultAsync(e => e.Id == userId);
+        return await _context.Users.FindAsync(userId);
     }
 
     public async Task<Users?> GetUserByEmail(string email)
@@ -53,5 +53,19 @@ public sealed class UserRepository : IUserRepository
         _context.UserWorkoutSubstitution.RemoveRange(_context.UserWorkoutSubstitution.Where(e => e.UserId == userId));
         
         await _context.SaveChangesAsync();
+    }
+    
+    public async Task<bool> DeleteOldUsers()
+    {
+        var users = await _context.Users.Where(e => e.LastLogin < DateTime.Now.AddDays(-90)).ToListAsync();
+
+        var ids = users.Select(e => e.Id).ToArray();
+
+        for (var i = 0; i < ids.Length; ++i)
+        {
+            await DeleteUser(ids[i]);
+        }
+
+        return true;
     }
 }

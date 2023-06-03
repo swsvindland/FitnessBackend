@@ -272,6 +272,11 @@ public sealed class UserService: IUserService
     {
         return await _userRepository.GetUserByEmail(email);
     }
+
+    public async Task DeleteOldUsers()
+    {
+        await _userRepository.DeleteOldUsers();
+    }
     
     public async Task DeleteUser(Guid userId)
     {

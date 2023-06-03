@@ -9,4 +9,5 @@ public interface IUserRepository
     public Task AddUser(Users user);
     public Task UpdateUser(Users user);
     Task DeleteUser(Guid userId);
+    Task<bool> DeleteOldUsers();
 }

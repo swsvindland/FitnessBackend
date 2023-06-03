@@ -13,6 +13,7 @@ public interface IUserService
     Task<Users?> GetUserById(Guid userId);
     Task CreateUser(string email, string password);
     Task DeleteUser(Guid userId);
+    Task DeleteOldUsers();
     Task UpdateUserSex(Guid userId, Sex sex);
     Task UpdateUserUnits(Guid userId, UserUnits unit);
     Task ChangePassword(Guid userId, string oldPassword, string newPassword);

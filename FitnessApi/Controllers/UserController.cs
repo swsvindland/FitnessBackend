@@ -278,4 +278,24 @@ public sealed class UserController
 
         return new OkObjectResult(true);
     }
+    
+    [FunctionName("CleanOldUsersHttp")]
+    public async Task CleanOldUsersHttp([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        await _userService.DeleteOldUsers();
+    }
+    
+    // Will run every day at 4:30am, refreshing food db, in compliance with https://platform.fatsecret.com/api/Default.aspx?screen=tou 1.5
+    [FunctionName("CleanOldUsers")]
+    public async Task CleanOldUsers([TimerTrigger("0 0 1 * *")]TimerInfo myTimer, ILogger log)
+    {
+        if (myTimer.IsPastDue)
+        {
+            log.LogInformation("Timer is running late!");
+        }
+        log.LogInformation("C# Timer trigger function executed at: {Now}", DateTime.Now);
+        
+        await _userService.DeleteOldUsers();
+    }
 }
