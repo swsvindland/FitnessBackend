@@ -8,7 +8,7 @@ namespace FitnessServices.Services;
 public interface IFoodService
 {
     Task<Macros?> GetUserMacros(Guid userId);
-    Task<IEnumerable<Macros>> GenerateMacros(Guid userId);
+    Task<Macros> GenerateMacros(Guid userId);
     Task AddUserCustomMacros(Guid userId, Macros macros);
     Task<IEnumerable<string>?> AutocompleteFood(string query, string? oldToken);
     Task<IEnumerable<FatSecretSearchItem>?> SearchFood(string query, int page, string? oldToken);

@@ -7,6 +7,7 @@ namespace FitnessServices.Services;
 public interface IBodyService
 {
     Task<IEnumerable<UserWeight>> GetAllUserWeights(Guid userId);
+    Task<UserWeight?> GetCurrentUserWeight(Guid userId);
     Task AddUserWeight(UserWeight userWeight);
     Task UpdateUserWeight(UserWeight userWeight);
     Task DeleteUserWeight(long id);

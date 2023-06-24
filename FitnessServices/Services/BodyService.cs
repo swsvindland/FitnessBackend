@@ -22,6 +22,11 @@ public sealed class BodyService: IBodyService
         return await _bodyRepository.GetAllUserWeights(userId);
     }
     
+    public async Task<UserWeight?> GetCurrentUserWeight(Guid userId)
+    {
+        return await _bodyRepository.GetCurrentUserWeights(userId);
+    }
+    
     public async Task AddUserWeight(UserWeight userWeight)
     {
         await _bodyRepository.AddUserWeight(userWeight);

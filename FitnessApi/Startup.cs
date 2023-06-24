@@ -25,6 +25,8 @@ namespace FitnessApi
             {
                 opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
+            
+            builder.Services.AddMemoryCache();
 
             var serverVersion = new MySqlServerVersion(new Version(8, 0, 23));
             var connectionString = configuration.GetConnectionString("DefaultConnection");

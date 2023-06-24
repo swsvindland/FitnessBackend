@@ -58,7 +58,7 @@ public sealed class FoodService : IFoodService
 
         if (userCustomMacros == null)
         {
-            return (await GenerateMacros(userId)).LastOrDefault();
+            return await GenerateMacros(userId);
         }
 
         return new Macros()
@@ -76,78 +76,68 @@ public sealed class FoodService : IFoodService
         };
     }
 
-    public async Task<IEnumerable<Macros>> GenerateMacros(Guid userId)
+    public async Task<Macros> GenerateMacros(Guid userId)
     {
         var user = await _userService.GetUserById(userId);
-
-        if (user == null) return new List<Macros>();
-
-        var userWeights = (await _bodyService.GetAllUserWeights(userId)).ToArray();
-        var bodyFat = await _bodyService.GenerateBodyFats(user.Id);
-        var macros = new List<Macros>();
-        var currentBodyFat = bodyFat.LastOrDefault()?.BodyFat ?? 10;
-
-        if (!userWeights.Any())
+        var userWeight = await _bodyService.GetCurrentUserWeight(userId);
+        
+        if (user == null || userWeight == null)
         {
-            return new[]
+            return new Macros()
             {
-                new Macros()
-                {
-                    Calories = 2000,
-                    CaloriesHigh = 2500,
-                    Carbs = 250,
-                    CarbsHigh = 300,
-                    Fat = 60,
-                    FatHigh = 70,
-                    Protein = 100,
-                    ProteinHigh = 120,
-                    Fiber = 20,
-                    FiberHigh = 50
-                }
+                Calories = 2000,
+                CaloriesHigh = 2500,
+                Carbs = 250,
+                CarbsHigh = 300,
+                Fat = 60,
+                FatHigh = 70,
+                Protein = 100,
+                ProteinHigh = 120,
+                Fiber = 20,
+                FiberHigh = 50
             };
         }
+        
+        var bodyFat = await _bodyService.GenerateBodyFats(user.Id);
+        var currentBodyFat = bodyFat.LastOrDefault()?.BodyFat ?? 10;
 
+        float calories;
 
-        foreach (var userWeight in userWeights)
+        if (user.Sex == Sex.Male)
         {
-            float calories;
-
-            if (user.Sex == Sex.Male)
-            {
-                calories = currentBodyFat > 15 ? userWeight.Weight * 11 : userWeight.Weight * 14;
-            }
-            else
-            {
-                calories = currentBodyFat > 22 ? userWeight.Weight * 11 : userWeight.Weight * 14;
-            }
-
-            calories -= 250;
-            var caloriesHigh = calories + 500;
-            var protein = userWeight.Weight * 0.7f;
-            var proteinHigh = userWeight.Weight * 1.2f;
-            var fat = userWeight.Weight * 0.35f;
-            var fatHigh = userWeight.Weight * 0.45f;
-            var carbs = (calories - protein * 4 - fat * 9) / 4;
-            var carbsHigh = (calories + 300 - proteinHigh * 4 - fatHigh * 9) / 4;
-            var fiber = calories * 0.010f;
-            var fiberHigh = caloriesHigh * 0.020f;
-
-            macros.Add(new Macros()
-            {
-                Calories = calories,
-                Protein = protein,
-                Fat = fat,
-                Carbs = carbsHigh > carbs ? carbs + fiber : carbsHigh + fiberHigh,
-                Fiber = fiber,
-                CaloriesHigh = caloriesHigh,
-                ProteinHigh = proteinHigh,
-                FatHigh = fatHigh,
-                CarbsHigh = carbsHigh < carbs ? carbs + fiber : carbsHigh + fiberHigh,
-                FiberHigh = fiberHigh,
-            });
+            calories = currentBodyFat > 15 ? userWeight.Weight * 13 : userWeight.Weight * 16;
         }
+        else
+        {
+            calories = currentBodyFat > 22 ? userWeight.Weight * 13 : userWeight.Weight * 16;
+        }
+        
+        var error = calories * 0.05f;
 
-        return macros;
+        calories -= error;
+        var caloriesHigh = calories + error;
+        var protein = userWeight.Weight * 0.8f;
+        var proteinHigh = userWeight.Weight * 1.2f;
+        var fat = userWeight.Weight * 0.35f;
+        var fatHigh = fat + fat * 0.05f;
+        var carbs = (calories - protein * 4 - fat * 9) / 4;
+        var carbsHigh = carbs + carbs * 0.1f;
+        var fiber = calories * 0.010f;
+        var fiberHigh = caloriesHigh * 0.020f;
+
+        return new Macros()
+        {
+            Calories = calories,
+            Protein = protein,
+            Fat = fat,
+            Carbs = carbsHigh > carbs ? carbs + fiber : carbsHigh + fiberHigh,
+            Fiber = fiber,
+            CaloriesHigh = caloriesHigh,
+            ProteinHigh = proteinHigh,
+            FatHigh = fatHigh,
+            CarbsHigh = carbsHigh < carbs ? carbs + fiber : carbsHigh + fiberHigh,
+            FiberHigh = fiberHigh,
+        };
     }
 
     public async Task<IEnumerable<string>?> AutocompleteFood(string query, string? oldToken)
@@ -219,7 +209,7 @@ public sealed class FoodService : IFoodService
 
         var (foodV2, servings) = MapFatSecretFoodToFoodV2(newFood);
         var foodV2ServingsEnumerable = servings as FoodV2Servings[] ?? servings.ToArray();
-        
+
         if (food == null)
         {
             await _foodRepository.AddFoodV2(foodV2);
@@ -230,7 +220,7 @@ public sealed class FoodService : IFoodService
         {
             await _foodRepository.AddFoodV2Servings(foodV2ServingsEnumerable);
         }
-        
+
         foodV2.Servings = foodV2ServingsEnumerable;
         return foodV2;
     }
@@ -397,7 +387,7 @@ public sealed class FoodService : IFoodService
 
         return null;
     }
-    
+
     public async Task<FatSecretAuth?> AuthFatSecretApi()
     {
         return await _fatSecretApi.AuthFatSecretApi();

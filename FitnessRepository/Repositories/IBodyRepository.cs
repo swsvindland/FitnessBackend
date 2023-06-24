@@ -5,6 +5,7 @@ namespace FitnessRepository.Repositories;
 public interface IBodyRepository
 {
     Task<IEnumerable<UserWeight>> GetAllUserWeights(Guid userId);
+    Task<UserWeight?> GetCurrentUserWeights(Guid userId);
     Task AddUserWeight(UserWeight userWeight);
     Task UpdateUserWeight(UserWeight userWeight);
     Task DeleteUserWeight(UserWeight userWeight);

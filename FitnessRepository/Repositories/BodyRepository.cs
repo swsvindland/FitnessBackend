@@ -17,6 +17,11 @@ public sealed class BodyRepository: IBodyRepository
         return await _context.UserWeight.Where(e => e.UserId == userId).OrderBy(e => e.Created).ToListAsync();
     }
     
+    public async Task<UserWeight?> GetCurrentUserWeights(Guid userId)
+    {
+        return await _context.UserWeight.Where(e => e.UserId == userId).OrderBy(e => e.Created).FirstOrDefaultAsync();
+    }
+    
     public async Task AddUserWeight(UserWeight userWeight)
     {
         var updated = userWeight;
