@@ -25,13 +25,12 @@ public sealed class DashboardService: IDashboardService
         var user = await _userService.GetUserById(userId);
         var userHeights = (await _bodyService.GetAllUserHeights(userId)).ToArray();
         var userWeights = (await _bodyService.GetAllUserWeights(userId)).ToArray();
-        var userBodies = (await _bodyService.GetAllUserBodies(userId)).ToArray();
-        var userBloodPressure = (await _bodyService.GetAllUserBloodPressures(userId)).ToArray();
         var userWorkouts = (await _workoutService.GetUserWorkoutsCompleted(userId)).ToArray();
         var goalMacros = await _foodService.GetUserMacros(userId);
         var userMacros = await _foodService.GetUserCurrentMacosV2(userId, date);
         var supplements = (await _supplementService.GetUserSupplements(userId)).ToArray();
         var supplementActivity = (await _supplementService.GetUserSupplementActivitiesByDate(userId, date)).ToArray();
+        var checkIn = await _bodyService.GetLastUserCheckIn(userId);
 
         return new Dashboard()
         {
@@ -40,10 +39,6 @@ public sealed class DashboardService: IDashboardService
             HeightAdded = userHeights.Any(e => e.Created.Date == date.Date),
             AddWeight = userWeights.LastOrDefault()?.Created.Date != date.Date,
             WeightAdded = userWeights.Any(e => e.Created.Date == date.Date),
-            AddBloodPressure = (userBloodPressure.LastOrDefault()?.Created ?? DateTime.Now) < date.AddDays(-6),
-            BloodPressureAdded = userBloodPressure.Any(e => e.Created.Date == date.Date),
-            AddBodyMeasurements = (userBodies.LastOrDefault()?.Created ?? DateTime.Now) < date.AddDays(-6),
-            BodyMeasurementsAdded = userBodies.Any(e => e.Created.Date == date.Date),
             DoWorkout = userWorkouts.LastOrDefault()?.Created.Date != date.Date,
             WorkoutAdded = userWorkouts.Any(e => e.Created.Date == date.Date),
             TrackMacros = true,
@@ -51,7 +46,24 @@ public sealed class DashboardService: IDashboardService
             AddSupplements = supplements.Length == 0,
             SupplementsAdded = supplements.Any(e => e.Created.Date == date.Date),
             TrackSupplements = supplements.Any(),
-            SupplementsTracked = supplements.Length <= supplementActivity.Length
+            SupplementsTracked = supplements.Length <= supplementActivity.Length,
+            AddCheckIn = checkIn == null || checkIn.Created.Date < date.AddDays(-6),
+            CheckInAdded = checkIn?.Created.Date == date.Date
+        };
+    }
+    
+    public async Task<CheckIn> GetUserCheckIn(Guid userId, DateTime date)
+    {
+        var userBodies = (await _bodyService.GetAllUserBodies(userId)).ToArray();
+        var userBloodPressure = (await _bodyService.GetAllUserBloodPressures(userId)).ToArray();
+        var photos = (await _bodyService.GetProgressPhotos(userId)).ToArray();
+        
+
+        return new CheckIn()
+        {
+            BloodPressureAdded = userBloodPressure.Any(e => e.Created.Date == date.Date),
+            BodyMeasurementsAdded = userBodies.Any(e => e.Created.Date == date.Date),
+            ProgressPhotosAdded = photos.Any(e => e.Created.Date == date.Date)
         };
     }
 }

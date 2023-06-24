@@ -21,7 +21,7 @@ public sealed class DashboardController
     }
 
     [FunctionName("GetUserDashboard")]
-    public async Task<IActionResult> GetUser(
+    public async Task<IActionResult> GetUserDashboard(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
     {
@@ -38,5 +38,25 @@ public sealed class DashboardController
         var dashboard = await _dashboardService.GetUserDashboard(userId, date);
 
         return new OkObjectResult(dashboard);
+    }
+    
+    [FunctionName("GetUserCheckIn")]
+    public async Task<IActionResult> GetUserCheckIn(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req, ILogger log)
+    {
+        var authed = _authService.CheckAuth(req);
+
+        if (authed == false)
+        {
+            return new UnauthorizedResult();
+        }
+
+        var userId = Guid.Parse(req.Query["userId"]);
+        var date = DateTime.Parse(req.Query["date"]);
+
+        var checkIn = await _dashboardService.GetUserCheckIn(userId, date);
+
+        return new OkObjectResult(checkIn);
     }
 }

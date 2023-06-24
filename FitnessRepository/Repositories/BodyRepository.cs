@@ -170,4 +170,22 @@ public sealed class BodyRepository: IBodyRepository
 
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<IEnumerable<UserCheckIn>> GetUserCheckIns(Guid userId)
+    {
+        return await _context.UserCheckIn.Where(e => e.UserId == userId).ToListAsync();
+    }
+    
+    public async Task<UserCheckIn?> GetLastUserCheckIns(Guid userId)
+    {
+        return await _context.UserCheckIn.Where(e => e.UserId == userId).OrderBy(e => e.Created).FirstOrDefaultAsync();
+    }
+    
+    public async Task AddUserCheckIn(UserCheckIn userCheckIn)
+    {
+        userCheckIn.Created = DateTime.UtcNow;
+        _context.UserCheckIn.Add(userCheckIn);
+
+        await _context.SaveChangesAsync();
+    }
 }

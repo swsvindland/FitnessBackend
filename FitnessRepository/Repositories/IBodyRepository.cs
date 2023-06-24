@@ -26,4 +26,7 @@ public interface IBodyRepository
     Task<long> AddProgressPhoto(ProgressPhoto progressPhoto);
     Task<long> UpdateProgressPhoto(ProgressPhoto progressPhoto);
     Task DeleteProgressPhoto(long id);
+    Task<IEnumerable<UserCheckIn>> GetUserCheckIns(Guid userId);
+    Task<UserCheckIn?> GetLastUserCheckIns(Guid userId);
+    Task AddUserCheckIn(UserCheckIn userCheckIn);
 }

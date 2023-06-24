@@ -1,5 +1,4 @@
 using System.IdentityModel.Tokens.Jwt;
-using System.Security.Principal;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
@@ -8,13 +7,6 @@ namespace FitnessServices.Services;
 
 public sealed class AuthService : IAuthService
 {
-    private readonly IUserService _userService;
-
-    public AuthService(IUserService userService)
-    {
-        _userService = userService;
-    }
-
     public bool CheckAuth(HttpRequest req)
     {
         var userId = Guid.Parse(req.Query["userId"]);
@@ -33,9 +25,8 @@ public sealed class AuthService : IAuthService
         var tokenHandler = new JwtSecurityTokenHandler();
         var validationParameters = GetValidationParameters();
 
-        SecurityToken validatedToken;
-        IPrincipal principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
-        return true;
+        tokenHandler.ValidateToken(authToken, validationParameters, out var validatedToken);
+        return validatedToken != null;
     }
 
     private static TokenValidationParameters GetValidationParameters()
