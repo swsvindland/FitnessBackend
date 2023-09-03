@@ -63,6 +63,7 @@ public sealed class FoodService : IFoodService
 
         return new Macros()
         {
+            Id = userCustomMacros.Id,
             Calories = userCustomMacros.Calories,
             Carbs = userCustomMacros.Carbs,
             Fat = userCustomMacros.Fat,
