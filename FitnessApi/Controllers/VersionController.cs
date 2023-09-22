@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;

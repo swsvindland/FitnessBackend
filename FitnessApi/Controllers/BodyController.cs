@@ -374,23 +374,4 @@ public sealed class BodyController
 
         return new OkObjectResult(filePath);
     }
-    
-    [FunctionName("CompleteCheckIn")]
-    public async Task<IActionResult> CompleteCheckIn(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
-    {
-        var authed = _authService.CheckAuth(req);
-        
-        if (authed == false)
-        {
-            return new UnauthorizedResult();
-        }
-
-        var userId = Guid.Parse(req.Query["userId"]);
-
-        await _bodyService.AddUserCheckIn(userId);
-
-        return new OkObjectResult(true);
-    }
 }

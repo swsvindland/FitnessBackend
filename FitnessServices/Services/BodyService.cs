@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using Azure.Storage.Blobs;
+﻿using Azure.Storage.Blobs;
 using FitnessRepository.Models;
 using FitnessRepository.Repositories;
 using FitnessServices.Models;
@@ -189,26 +188,5 @@ public sealed class BodyService : IBodyService
     public async Task<IEnumerable<ProgressPhoto>> GetProgressPhotos(Guid userId)
     {
         return await _bodyRepository.GetProgressPhotos(userId);
-    }
-    
-    public async Task<IEnumerable<UserCheckIn>> GetUserCheckIns(Guid userId)
-    {
-        return await _bodyRepository.GetUserCheckIns(userId);
-    }
-    
-    public async Task<UserCheckIn?> GetLastUserCheckIn(Guid userId)
-    {
-        return await _bodyRepository.GetLastUserCheckIns(userId);
-    }
-    
-    public async Task AddUserCheckIn(Guid userId)
-    {
-        var userCheckIn = new UserCheckIn()
-        {
-            UserId = userId,
-            Created = DateTime.UtcNow
-        };
-        
-        await _bodyRepository.AddUserCheckIn(userCheckIn);
     }
 }

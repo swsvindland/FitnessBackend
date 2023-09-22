@@ -27,7 +27,4 @@ public interface IBodyService
         string containerName);
 
     Task<IEnumerable<ProgressPhoto>> GetProgressPhotos(Guid userId);
-    Task<IEnumerable<UserCheckIn>> GetUserCheckIns(Guid userId);
-    Task<UserCheckIn?> GetLastUserCheckIn(Guid userId);
-    Task AddUserCheckIn(Guid userId);
 }

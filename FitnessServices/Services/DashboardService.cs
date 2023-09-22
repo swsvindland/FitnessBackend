@@ -30,7 +30,6 @@ public sealed class DashboardService: IDashboardService
         var userMacros = await _foodService.GetUserCurrentMacosV2(userId, date);
         var supplements = (await _supplementService.GetUserSupplements(userId)).ToArray();
         var supplementActivity = (await _supplementService.GetUserSupplementActivitiesByDate(userId, date)).ToArray();
-        var checkIn = await _bodyService.GetLastUserCheckIn(userId);
 
         return new Dashboard()
         {
@@ -47,23 +46,6 @@ public sealed class DashboardService: IDashboardService
             SupplementsAdded = supplements.Any(e => e.Created.Date == date.Date),
             TrackSupplements = supplements.Any(),
             SupplementsTracked = supplements.Length <= supplementActivity.Length,
-            AddCheckIn = checkIn == null || checkIn.Created.Date < date.AddDays(-6),
-            CheckInAdded = checkIn?.Created.Date == date.Date
-        };
-    }
-    
-    public async Task<CheckIn> GetUserCheckIn(Guid userId, DateTime date)
-    {
-        var userBodies = (await _bodyService.GetAllUserBodies(userId)).ToArray();
-        var userBloodPressure = (await _bodyService.GetAllUserBloodPressures(userId)).ToArray();
-        var photos = (await _bodyService.GetProgressPhotos(userId)).ToArray();
-        
-
-        return new CheckIn()
-        {
-            BloodPressureAdded = userBloodPressure.Any(e => e.Created.Date == date.Date),
-            BodyMeasurementsAdded = userBodies.Any(e => e.Created.Date == date.Date),
-            ProgressPhotosAdded = photos.Any(e => e.Created.Date == date.Date)
         };
     }
 }
