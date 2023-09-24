@@ -101,7 +101,7 @@ public sealed class FoodService : IFoodService
         
         var bodyFat = await _bodyService.GenerateBodyFats(user.Id);
         var currentBodyFat = bodyFat.LastOrDefault()?.BodyFat ?? 10;
-        var isFat = user.Sex == Sex.Male ? currentBodyFat > 15 : currentBodyFat > 22;
+        var isFat = user.Sex == Sex.Male ? currentBodyFat > 12 : currentBodyFat > 18;
         
         var calories = isFat ? userWeight.Weight * 12 : userWeight.Weight * 15;
         
