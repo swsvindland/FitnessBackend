@@ -101,26 +101,21 @@ public sealed class FoodService : IFoodService
         
         var bodyFat = await _bodyService.GenerateBodyFats(user.Id);
         var currentBodyFat = bodyFat.LastOrDefault()?.BodyFat ?? 10;
-
-        float calories;
-
-        if (user.Sex == Sex.Male)
-        {
-            calories = currentBodyFat > 15 ? userWeight.Weight * 13 : userWeight.Weight * 16;
-        }
-        else
-        {
-            calories = currentBodyFat > 22 ? userWeight.Weight * 13 : userWeight.Weight * 16;
-        }
+        var isFat = user.Sex == Sex.Male ? currentBodyFat > 15 : currentBodyFat > 22;
+        
+        var calories = isFat ? userWeight.Weight * 12 : userWeight.Weight * 15;
         
         var error = calories * 0.05f;
 
         calories -= error;
         var caloriesHigh = calories + error;
-        var protein = userWeight.Weight * 0.8f;
-        var proteinHigh = userWeight.Weight * 1.2f;
+
+
+        var protein = isFat ? userWeight.Weight * 1f : userWeight.Weight * 0.75f;
+        var proteinHigh = isFat ? userWeight.Weight * 1.25f : userWeight.Weight * 1f;
+        
         var fat = userWeight.Weight * 0.35f;
-        var fatHigh = fat + fat * 0.05f;
+        var fatHigh = fat + fat * 0.45f;
         var carbs = (calories - protein * 4 - fat * 9) / 4;
         var carbsHigh = carbs + carbs * 0.1f;
         var fiber = calories * 0.010f;
