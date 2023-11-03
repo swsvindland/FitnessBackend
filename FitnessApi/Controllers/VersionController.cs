@@ -1,8 +1,7 @@
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
 namespace FitnessApi.Controllers;
@@ -10,17 +9,18 @@ namespace FitnessApi.Controllers;
 public sealed class VersionController
 {
     private readonly IAuthService _authService;
+    private readonly ILogger<VersionController> _logger;
 
-    public VersionController(IAuthService authService)
+    public VersionController(IAuthService authService, ILogger<VersionController> logger)
     {
         _authService = authService;
+        _logger = logger;
     }
 
-    [FunctionName("MinVersion")]
+    [Function("MinVersion")]
     public IActionResult MinVersion(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req,
-        ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 

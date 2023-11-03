@@ -2,9 +2,8 @@ using System;
 using System.Threading.Tasks;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
 namespace FitnessApi.Controllers;
@@ -13,17 +12,20 @@ public sealed class DashboardController
 {
     private readonly IDashboardService _dashboardService;
     private readonly IAuthService _authService;
+    private readonly ILogger<DashboardController> _logger;
 
-    public DashboardController(IDashboardService dashboardService, IAuthService authService)
+    public DashboardController(IDashboardService dashboardService, IAuthService authService,
+        ILogger<DashboardController> logger)
     {
         _dashboardService = dashboardService;
         _authService = authService;
+        _logger = logger;
     }
 
-    [FunctionName("GetUserDashboard")]
+    [Function("GetUserDashboard")]
     public async Task<IActionResult> GetUserDashboard(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 

@@ -6,8 +6,7 @@ using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -17,14 +16,16 @@ public sealed class FoodController
 {
     private readonly IFoodService _foodService;
     private readonly IAuthService _authService;
+    private readonly ILogger<FoodController> _logger;
 
-    public FoodController(IFoodService foodService, IAuthService authService)
+    public FoodController(IFoodService foodService, IAuthService authService, ILogger<FoodController> logger)
     {
         _foodService = foodService;
         _authService = authService;
+        _logger = logger;
     }
 
-    [FunctionName("GetMacros")]
+    [Function("GetMacros")]
     public async Task<IActionResult> GetMacros(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
         HttpRequest req, ILogger log)
@@ -42,11 +43,11 @@ public sealed class FoodController
 
         return new OkObjectResult(user);
     }
-    
-    [FunctionName("AddCustomMacros")]
+
+    [Function("AddCustomMacros")]
     public async Task<IActionResult> AddCustomMacros(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -54,7 +55,7 @@ public sealed class FoodController
         {
             return new UnauthorizedResult();
         }
-        
+
         string requestBody;
         using (var streamReader = new StreamReader(req.Body))
         {
@@ -62,7 +63,7 @@ public sealed class FoodController
         }
 
         var data = JsonConvert.DeserializeObject<Macros>(requestBody);
-        
+
         var userId = Guid.Parse(req.Query["userId"]);
 
         await _foodService.AddUserCustomMacros(userId, data);
@@ -71,10 +72,10 @@ public sealed class FoodController
     }
 
 
-    [FunctionName("AutocompleteFood")]
+    [Function("AutocompleteFood")]
     public async Task<IActionResult> AutocompleteFood(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -91,10 +92,10 @@ public sealed class FoodController
         return new OkObjectResult(user);
     }
 
-    [FunctionName("GetRecentUserFoods")]
+    [Function("GetRecentUserFoods")]
     public async Task<IActionResult> GetRecentUserFoods(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -111,13 +112,13 @@ public sealed class FoodController
         return new OkObjectResult(user);
     }
 
-    [FunctionName("SearchFood")]
+    [Function("SearchFood")]
     public async Task<IActionResult> SearchFood(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
@@ -131,14 +132,14 @@ public sealed class FoodController
 
         return new OkObjectResult(foods);
     }
-    
-    [FunctionName("GetFoodV2")]
+
+    [Function("GetFoodV2")]
     public async Task<IActionResult> GetFoodV2(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
@@ -151,14 +152,14 @@ public sealed class FoodController
 
         return new OkObjectResult(foods);
     }
-    
-    [FunctionName("GetUserFoodV2")]
+
+    [Function("GetUserFoodV2")]
     public async Task<IActionResult> GetUserFoodV2(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
@@ -170,14 +171,14 @@ public sealed class FoodController
 
         return new OkObjectResult(foods);
     }
-    
-    [FunctionName("GetAllUserFoodV2")]
+
+    [Function("GetAllUserFoodV2")]
     public async Task<IActionResult> GetAllUserFoodV2(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
-        
+
         if (authed == false)
         {
             return new UnauthorizedResult();
@@ -190,11 +191,11 @@ public sealed class FoodController
 
         return new OkObjectResult(foods);
     }
-    
-    [FunctionName("AddUserFoodV2")]
+
+    [Function("AddUserFoodV2")]
     public async Task<IActionResult> AddUserFoodV2(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -210,18 +211,18 @@ public sealed class FoodController
         }
 
         var data = JsonConvert.DeserializeObject<UserFoodV2>(requestBody);
-        
+
         var date = DateTime.Parse(req.Query["date"]);
 
         var id = await _foodService.AddUserFoodV2(data, date);
 
         return new OkObjectResult(id);
     }
-    
-    [FunctionName("UpdateUserFoodV2")]
+
+    [Function("UpdateUserFoodV2")]
     public async Task<IActionResult> UpdateUserFoodV2(
         [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -242,11 +243,11 @@ public sealed class FoodController
 
         return new OkObjectResult(true);
     }
-    
-    [FunctionName("QuickAddUserFoodV2")]
+
+    [Function("QuickAddUserFoodV2")]
     public async Task<IActionResult> QuickAddUserFoodV2(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -264,11 +265,11 @@ public sealed class FoodController
 
         return new OkObjectResult(amount);
     }
-    
-    [FunctionName("QuickRemoveUserFoodV2")]
+
+    [Function("QuickRemoveUserFoodV2")]
     public async Task<IActionResult> QuickRemoveUserFoodV2(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -286,11 +287,11 @@ public sealed class FoodController
 
         return new OkObjectResult(amount);
     }
-    
-    [FunctionName("DeleteUserFoodV2")]
+
+    [Function("DeleteUserFoodV2")]
     public async Task<IActionResult> DeleteUserFoodV2(
         [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -300,16 +301,16 @@ public sealed class FoodController
         }
 
         var userFoodId = long.Parse(req.Query["userFoodId"]);
-        
+
         await _foodService.DeleteUserFoodV2(userFoodId);
 
         return new OkObjectResult(true);
     }
-    
-    [FunctionName("GetCurrentUserMacrosV2")]
+
+    [Function("GetCurrentUserMacrosV2")]
     public async Task<IActionResult> GetCurrentUserMacrosV2(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -325,11 +326,11 @@ public sealed class FoodController
 
         return new OkObjectResult(user);
     }
-    
-    [FunctionName("SearchFoodByBarcode")]
+
+    [Function("SearchFoodByBarcode")]
     public async Task<IActionResult> SearchFoodByBarcode(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -345,10 +346,11 @@ public sealed class FoodController
 
         return new OkObjectResult(user);
     }
-    
-    [FunctionName("FoodApiAuth")]
-    public async Task<IActionResult> FoodApiAuth([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+
+    [Function("FoodApiAuth")]
+    public async Task<IActionResult> FoodApiAuth(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -362,23 +364,24 @@ public sealed class FoodController
         return new OkObjectResult(token);
     }
 
-    [FunctionName("MaliciousComplianceHTTP")]
-    public async Task MaliciousComplianceHttp([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+    [Function("MaliciousComplianceHTTP")]
+    public async Task MaliciousComplianceHttp(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
+        HttpRequest req)
     {
-        await _foodService.RefreshCashedFoodDb(log);
+        await _foodService.RefreshCashedFoodDb(_logger);
     }
-    
+
     // Will run every day at 4:30am, refreshing food db, in compliance with https://platform.fatsecret.com/api/Default.aspx?screen=tou 1.5
-    [FunctionName("MaliciousCompliance")]
-    public async Task MaliciousCompliance([TimerTrigger("0 30 4 * * *")]TimerInfo myTimer, ILogger log)
-    {
-        if (myTimer.IsPastDue)
-        {
-            log.LogInformation("Timer is running late!");
-        }
-        log.LogInformation("C# Timer trigger function executed at: {Now}", DateTime.Now);
-        
-        await _foodService.RefreshCashedFoodDb(log);
-    }
+    // [Function("MaliciousCompliance")]
+    // public async Task MaliciousCompliance([TimerTrigger("0 30 4 * * *")]TimerInfo myTimer)
+    // {
+    //     if (myTimer.IsPastDue)
+    //     {
+    //         log.LogInformation("Timer is running late!");
+    //     }
+    //     log.LogInformation("C# Timer trigger function executed at: {Now}", DateTime.Now);
+    //     
+    //     await _foodService.RefreshCashedFoodDb(log);
+    // }
 }

@@ -6,8 +6,7 @@ using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -17,17 +16,20 @@ public sealed class WorkoutController
 {
     private readonly IWorkoutService _workoutService;
     private readonly IAuthService _authService;
+    private readonly ILogger<WorkoutController> _logger;
 
-    public WorkoutController(IWorkoutService workoutService, IAuthService authService)
+    public WorkoutController(IWorkoutService workoutService, IAuthService authService,
+        ILogger<WorkoutController> logger)
     {
         _workoutService = workoutService;
         _authService = authService;
+        _logger = logger;
     }
 
-    [FunctionName("GetExercises")]
+    [Function("GetExercises")]
     public async Task<IActionResult> GetExercises(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -41,10 +43,10 @@ public sealed class WorkoutController
         return new OkObjectResult(exercises);
     }
 
-    [FunctionName("GetWorkouts")]
+    [Function("GetWorkouts")]
     public async Task<IActionResult> GetWorkouts(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -58,10 +60,10 @@ public sealed class WorkoutController
         return new OkObjectResult(workouts);
     }
 
-    [FunctionName("GetWorkout")]
+    [Function("GetWorkout")]
     public async Task<IActionResult> GetWorkout(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -77,10 +79,10 @@ public sealed class WorkoutController
         return new OkObjectResult(workouts);
     }
 
-    [FunctionName("GetWorkoutExercises")]
+    [Function("GetWorkoutExercises")]
     public async Task<IActionResult> GetWorkoutExercises(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -96,11 +98,11 @@ public sealed class WorkoutController
 
         return new OkObjectResult(workouts);
     }
-    
-    [FunctionName("GetAllWorkoutExercises")]
+
+    [Function("GetAllWorkoutExercises")]
     public async Task<IActionResult> GetAllWorkoutExercises(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -116,10 +118,10 @@ public sealed class WorkoutController
         return new OkObjectResult(workouts);
     }
 
-    [FunctionName("GetUserWorkouts")]
+    [Function("GetUserWorkouts")]
     public async Task<IActionResult> GetUserWorkouts(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -135,10 +137,10 @@ public sealed class WorkoutController
         return new OkObjectResult(workouts);
     }
 
-    [FunctionName("BuyWorkout")]
+    [Function("BuyWorkout")]
     public async Task<IActionResult> BuyWorkout(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -155,10 +157,10 @@ public sealed class WorkoutController
         return new OkObjectResult(true);
     }
 
-    [FunctionName("SetWorkoutActive")]
+    [Function("SetWorkoutActive")]
     public async Task<IActionResult> SetWorkoutActive(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -174,11 +176,11 @@ public sealed class WorkoutController
 
         return new OkObjectResult(true);
     }
-    
-    [FunctionName("GetUserWorkoutExercise")]
+
+    [Function("GetUserWorkoutExercise")]
     public async Task<IActionResult> GetUserWorkoutExercise(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -191,16 +193,16 @@ public sealed class WorkoutController
         var workoutExerciseId = long.Parse(req.Query["workoutExerciseId"]);
         var week = int.Parse(req.Query["week"]);
         var day = int.Parse(req.Query["day"]);
-        
+
         var activity = await _workoutService.GetUserWorkoutExercise(userId, workoutExerciseId, week, day);
 
         return new OkObjectResult(activity);
     }
 
-    [FunctionName("GetUserWorkoutActivities")]
+    [Function("GetUserWorkoutActivities")]
     public async Task<IActionResult> GetUserWorkoutActivities(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -217,10 +219,10 @@ public sealed class WorkoutController
         return new OkObjectResult(activity);
     }
 
-    [FunctionName("AddUserWorkoutActivity")]
+    [Function("AddUserWorkoutActivity")]
     public async Task<IActionResult> AddUserWorkoutActivity(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -247,10 +249,10 @@ public sealed class WorkoutController
         return new OkObjectResult(true);
     }
 
-    [FunctionName("AddUserWorkoutCompleted")]
+    [Function("AddUserWorkoutCompleted")]
     public async Task<IActionResult> AddUserWorkoutCompleted(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -277,10 +279,10 @@ public sealed class WorkoutController
         return new OkObjectResult(true);
     }
 
-    [FunctionName("GetNextWorkout")]
+    [Function("GetNextWorkout")]
     public async Task<IActionResult> GetNextWorkout(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -296,10 +298,10 @@ public sealed class WorkoutController
         return new OkObjectResult(nextWorkout);
     }
 
-    [FunctionName("RestartWorkout")]
+    [Function("RestartWorkout")]
     public async Task<IActionResult> RestartWorkout(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -315,11 +317,11 @@ public sealed class WorkoutController
 
         return new OkObjectResult(true);
     }
-    
-    [FunctionName("GetWorkoutsByUserId")]
+
+    [Function("GetWorkoutsByUserId")]
     public async Task<IActionResult> GetWorkoutsByUserId(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -335,10 +337,10 @@ public sealed class WorkoutController
         return new OkObjectResult(customWorkouts);
     }
 
-    [FunctionName("AddWorkout")]
+    [Function("AddWorkout")]
     public async Task<IActionResult> AddWorkout(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -365,10 +367,10 @@ public sealed class WorkoutController
         return new OkObjectResult(id);
     }
 
-    [FunctionName("EditWorkout")]
+    [Function("EditWorkout")]
     public async Task<IActionResult> EditWorkout(
         [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -395,10 +397,10 @@ public sealed class WorkoutController
         return new OkObjectResult(id);
     }
 
-    [FunctionName("DeleteWorkout")]
+    [Function("DeleteWorkout")]
     public async Task<IActionResult> DeleteUserCustomWorkout(
         [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -415,11 +417,10 @@ public sealed class WorkoutController
     }
 
 
-
-    [FunctionName("UpsertWorkoutExercises")]
+    [Function("UpsertWorkoutExercises")]
     public async Task<IActionResult> UpsertWorkoutExercises(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -445,11 +446,11 @@ public sealed class WorkoutController
 
         return new OkObjectResult(workoutExerciseId);
     }
-    
-    [FunctionName("GetUserWorkoutSubstitution")]
+
+    [Function("GetUserWorkoutSubstitution")]
     public async Task<IActionResult> GetUserWorkoutSubstitution(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -465,11 +466,11 @@ public sealed class WorkoutController
 
         return new OkObjectResult(userWorkoutSubstitution);
     }
-    
-    [FunctionName("AddUserWorkoutSubstitution")]
+
+    [Function("AddUserWorkoutSubstitution")]
     public async Task<IActionResult> AddUserWorkoutSubstitution(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -495,11 +496,11 @@ public sealed class WorkoutController
 
         return new OkObjectResult(id);
     }
-    
-    [FunctionName("UpdateUserWorkoutSubstitution")]
+
+    [Function("UpdateUserWorkoutSubstitution")]
     public async Task<IActionResult> UpdateUserWorkoutSubstitution(
         [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
@@ -526,10 +527,10 @@ public sealed class WorkoutController
         return new OkObjectResult(true);
     }
 
-    [FunctionName("DeleteUserWorkoutSubstitution")]
+    [Function("DeleteUserWorkoutSubstitution")]
     public async Task<IActionResult> DeleteUserWorkoutSubstitution(
         [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = null)]
-        HttpRequest req, ILogger log)
+        HttpRequest req)
     {
         var authed = _authService.CheckAuth(req);
 
