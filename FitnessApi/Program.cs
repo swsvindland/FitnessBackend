@@ -17,7 +17,7 @@ var host = new HostBuilder()
         services.AddHttpClient<IFatSecretApi, FatSecretApi>();
 
         var serverVersion = new MySqlServerVersion(new Version(8, 0, 23));
-        var connectionString = Environment.GetEnvironmentVariable("ConnectionString:DefaultConnection") ?? string.Empty;
+        var connectionString = Environment.GetEnvironmentVariable("DefaultConnection") ?? string.Empty;
         // init db
         services.AddDbContext<FitnessContext>(options => options.UseMySql(connectionString, serverVersion));
 
