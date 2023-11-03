@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using FitnessServices.Models;
 using FitnessServices.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -284,15 +281,15 @@ public sealed class UserController
     }
 
     // Will run every day at 4:30am, refreshing food db, in compliance with https://platform.fatsecret.com/api/Default.aspx?screen=tou 1.5
-    // [Function("CleanOldUsers")]
-    // public async Task CleanOldUsers([TimerTrigger("0 0 1 * *")]TimerInfo myTimer)
-    // {
-    //     if (myTimer.IsPastDue)
-    //     {
-    //         log.LogInformation("Timer is running late!");
-    //     }
-    //     log.LogInformation("C# Timer trigger function executed at: {Now}", DateTime.Now);
-    //     
-    //     await _userService.DeleteOldUsers();
-    // }
+    [Function("CleanOldUsers")]
+    public async Task CleanOldUsers([TimerTrigger("0 0 1 * *")]TimerInfo myTimer)
+    {
+        if (myTimer.IsPastDue)
+        {
+            _logger.LogInformation("Timer is running late!");
+        }
+        _logger.LogInformation("C# Timer trigger function executed at: {Now}", DateTime.Now);
+        
+        await _userService.DeleteOldUsers();
+    }
 }

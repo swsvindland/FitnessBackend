@@ -373,15 +373,15 @@ public sealed class FoodController
     }
 
     // Will run every day at 4:30am, refreshing food db, in compliance with https://platform.fatsecret.com/api/Default.aspx?screen=tou 1.5
-    // [Function("MaliciousCompliance")]
-    // public async Task MaliciousCompliance([TimerTrigger("0 30 4 * * *")]TimerInfo myTimer)
-    // {
-    //     if (myTimer.IsPastDue)
-    //     {
-    //         log.LogInformation("Timer is running late!");
-    //     }
-    //     log.LogInformation("C# Timer trigger function executed at: {Now}", DateTime.Now);
-    //     
-    //     await _foodService.RefreshCashedFoodDb(log);
-    // }
+    [Function("MaliciousCompliance")]
+    public async Task MaliciousCompliance([TimerTrigger("0 30 4 * * *")]TimerInfo myTimer)
+    {
+        if (myTimer.IsPastDue)
+        {
+            _logger.LogInformation("Timer is running late!");
+        }
+        _logger.LogInformation("C# Timer trigger function executed at: {Now}", DateTime.Now);
+        
+        await _foodService.RefreshCashedFoodDb(_logger);
+    }
 }
