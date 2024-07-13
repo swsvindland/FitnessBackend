@@ -59,11 +59,11 @@ public sealed class FoodRepository : IFoodRepository
         return foods.AsReadOnly();
     }
 
-    public async Task<Food?> GetFoodV2ById(long id)
+    public async Task<Food?> GetFoodV2ByExternalId(long externalId)
     {
         return await _context.FoodV2
             .Include(e => e.Servings)
-            .FirstOrDefaultAsync(e => e.ExternalId == id);
+            .FirstOrDefaultAsync(e => e.ExternalId == externalId);
     }
     
     public async Task<long> AddFoodV2(Food food)

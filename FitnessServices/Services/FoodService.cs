@@ -81,7 +81,7 @@ public sealed class FoodService : IFoodService
     {
         var user = await _userService.GetUserById(userId);
         var userWeight = await _bodyService.GetCurrentUserWeight(userId);
-        
+
         if (user == null || userWeight == null)
         {
             return new Macros()
@@ -98,13 +98,13 @@ public sealed class FoodService : IFoodService
                 FiberHigh = 50
             };
         }
-        
+
         var bodyFat = await _bodyService.GenerateBodyFats(user.Id);
         var currentBodyFat = bodyFat.LastOrDefault()?.BodyFat ?? 10;
         var isFat = user.Sex == Sex.Male ? currentBodyFat > 12 : currentBodyFat > 18;
-        
+
         var calories = isFat ? userWeight.Weight * 12 : userWeight.Weight * 15;
-        
+
         var error = calories * 0.05f;
 
         calories -= error;
@@ -113,7 +113,7 @@ public sealed class FoodService : IFoodService
 
         var protein = isFat ? userWeight.Weight * 1f : userWeight.Weight * 0.75f;
         var proteinHigh = isFat ? userWeight.Weight * 1.25f : userWeight.Weight * 1f;
-        
+
         var fat = userWeight.Weight * 0.35f;
         var fatHigh = fat + fat * 0.45f;
         var carbs = (calories - protein * 4 - fat * 9) / 4;
@@ -146,7 +146,7 @@ public sealed class FoodService : IFoodService
         return await _fatSecretApi.SearchFoods(query, page, oldToken);
     }
 
-    private static (Food, IEnumerable<FoodServings>) MapFatSecretFoodToFoodV2(FatSecretItem newFood)
+    private static Food MapFatSecretFoodToFoodV2(FatSecretItem newFood)
     {
         var foodV2 = new Food()
         {
@@ -158,10 +158,15 @@ public sealed class FoodService : IFoodService
             Name = newFood.FoodName
         };
 
+        return foodV2;
+    }
+
+    private static IEnumerable<FoodServings> MapFatSecretServingsToFoodV2(long foodId, FatSecretItem newFood)
+    {
         var servings = newFood.Servings.Serving.Select(s => new FoodServings()
         {
             ExternalId = long.Parse(s.ServingId ?? "0"),
-            FoodId = long.Parse(newFood.FoodId),
+            FoodId = foodId,
             Created = DateTime.UtcNow,
             Updated = DateTime.UtcNow,
             Calories = float.Parse(s.Calories ?? "0"),
@@ -190,34 +195,38 @@ public sealed class FoodService : IFoodService
             VitaminD = float.Parse(s.VitaminD ?? "0"),
         }).ToList();
 
-        return (foodV2, servings);
+        return servings;
     }
 
-    public async Task<Food?> GetFoodById(long foodId, string? oldToken)
+    public async Task<Food?> GetFoodById(long externalId, string? oldToken)
     {
-        var food = await _foodRepository.GetFoodV2ById(foodId);
+        var food = await _foodRepository.GetFoodV2ByExternalId(externalId);
+        var foodId = food?.Id;
 
         if (food != null && food.Servings.Any()) return food;
 
-        var newFood = await _fatSecretApi.GetFood(foodId, oldToken);
+        var newFood = await _fatSecretApi.GetFood(externalId, oldToken);
 
         if (newFood == null) return null;
 
-        var (foodV2, servings) = MapFatSecretFoodToFoodV2(newFood);
-        var foodV2ServingsEnumerable = servings as FoodServings[] ?? servings.ToArray();
+        // var (foodV2, servings) = MapFatSecretFoodToFoodV2(newFood);
+        // var foodV2ServingsEnumerable = servings as FoodServings[] ?? servings.ToArray();
+        
+        var foodV2 = MapFatSecretFoodToFoodV2(newFood);
 
-        if (food == null)
+        if (foodId == null)
         {
-            await _foodRepository.AddFoodV2(foodV2);
-            await _foodRepository.AddFoodV2Servings(foodV2ServingsEnumerable);
+            foodId = await _foodRepository.AddFoodV2(foodV2);
         }
+        
+        var servings = MapFatSecretServingsToFoodV2(foodId.Value, newFood).ToList();
 
         if (food != null && !food.Servings.Any())
         {
-            await _foodRepository.AddFoodV2Servings(foodV2ServingsEnumerable);
+            await _foodRepository.AddFoodV2Servings(servings);
         }
 
-        foodV2.Servings = foodV2ServingsEnumerable;
+        foodV2.Servings = servings;
         return foodV2;
     }
 
@@ -367,7 +376,7 @@ public sealed class FoodService : IFoodService
 
             if (updatedFood == null) continue;
 
-            var (foodV2, _) = MapFatSecretFoodToFoodV2(updatedFood);
+            var foodV2 = MapFatSecretFoodToFoodV2(updatedFood);
 
             if (foodV2.Servings.Count() == food.Servings.Count()) continue;
             logger.LogInformation("Updating food {FoodId} {FoodName}", food.ExternalId, food.Name);

@@ -2,5 +2,5 @@
 
 ## deploy
 ```
-func azure functionapp publish fitness-dev  
+func azure functionapp publish fitness-prod
 ```
