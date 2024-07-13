@@ -6,7 +6,6 @@ namespace FitnessServices.Services;
 public interface IUserService
 {
     Task<AuthResponse?> AuthByEmailPasswordV2(string email, string password);
-    Task<AuthResponse?> SsoAuth(string email, string token);
     Task UpdateLastLogin(Guid userId);
     Task CheckIfPaidUntilValid(Guid userId);
     Task UpdatePaid(Guid userId, bool paid, DateTime? paidUntil);

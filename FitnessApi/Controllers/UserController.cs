@@ -49,34 +49,6 @@ public sealed class UserController
         return new OkObjectResult(auth);
     }
 
-    [Function("SsoAuthV2")]
-    public async Task<IActionResult> SsoAuthV2(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]
-        HttpRequest req)
-    {
-        string requestBody;
-        using (var streamReader = new StreamReader(req.Body))
-        {
-            requestBody = await streamReader.ReadToEndAsync();
-        }
-
-        var data = JsonConvert.DeserializeObject<SsoAuth>(requestBody);
-
-        if (data == null)
-        {
-            return new BadRequestResult();
-        }
-
-        var auth = await _userService.SsoAuth(data.Email, data.Token);
-
-        if (auth == null)
-        {
-            return new UnauthorizedResult();
-        }
-
-        return new OkObjectResult(auth);
-    }
-
     [Function("ChangePassword")]
     public async Task<IActionResult> ChangePassword(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]

@@ -48,25 +48,6 @@ public sealed class UserService: IUserService
             Token = token
         };
     }
-    
-    public async Task<AuthResponse?> SsoAuth(string email, string token)
-    {
-        var user = await GetUserByEmail(email) ?? await CreateSsoUser(email);
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var jwtToken = tokenHandler.ReadJwtToken(token);
-        
-        if (!string.Equals(jwtToken.Claims.FirstOrDefault(e => e.Type == "email")?.Value, email, StringComparison.CurrentCultureIgnoreCase))
-        {
-            return null;
-        }
-        
-        return new AuthResponse()
-        {
-            UserId = user.Id,
-            Token = GenerateJwt(email, user.Id)
-        };
-    }
 
     private static string GenerateJwt(string email, Guid userId)
     {
