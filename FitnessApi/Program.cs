@@ -16,10 +16,10 @@ var host = new HostBuilder()
 
         services.AddHttpClient<IFatSecretApi, FatSecretApi>();
 
-        var serverVersion = new MySqlServerVersion(new Version(8, 0, 23));
-        var connectionString = Environment.GetEnvironmentVariable("DefaultConnection") ?? string.Empty;
+        // var connectionString = Environment.GetEnvironmentVariable("DefaultConnection") ?? string.Empty;
+        var connectionString = "Server=tcp:fitness-app.database.windows.net,1433;Initial Catalog=default;Persist Security Info=False;User ID=sam;Password=test111!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         // init db
-        services.AddDbContext<FitnessContext>(options => options.UseMySql(connectionString, serverVersion));
+        services.AddDbContext<FitnessContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("FitnessApi")));
 
         // add db calls
         services.AddScoped<IUserRepository, UserRepository>();

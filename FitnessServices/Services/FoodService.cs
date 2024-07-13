@@ -146,22 +146,22 @@ public sealed class FoodService : IFoodService
         return await _fatSecretApi.SearchFoods(query, page, oldToken);
     }
 
-    private static (FoodV2, IEnumerable<FoodV2Servings>) MapFatSecretFoodToFoodV2(FatSecretItem newFood)
+    private static (Food, IEnumerable<FoodServings>) MapFatSecretFoodToFoodV2(FatSecretItem newFood)
     {
-        var foodV2 = new FoodV2()
+        var foodV2 = new Food()
         {
             Brand = newFood.BrandName,
             Created = DateTime.UtcNow,
             Updated = DateTime.UtcNow,
             FoodType = newFood.FoodType,
-            Id = long.Parse(newFood.FoodId),
+            ExternalId = long.Parse(newFood.FoodId),
             Name = newFood.FoodName
         };
 
-        var servings = newFood.Servings.Serving.Select(s => new FoodV2Servings()
+        var servings = newFood.Servings.Serving.Select(s => new FoodServings()
         {
-            Id = long.Parse(s.ServingId ?? "0"),
-            FoodV2Id = long.Parse(newFood.FoodId),
+            ExternalId = long.Parse(s.ServingId ?? "0"),
+            FoodId = long.Parse(newFood.FoodId),
             Created = DateTime.UtcNow,
             Updated = DateTime.UtcNow,
             Calories = float.Parse(s.Calories ?? "0"),
@@ -193,7 +193,7 @@ public sealed class FoodService : IFoodService
         return (foodV2, servings);
     }
 
-    public async Task<FoodV2?> GetFoodById(long foodId, string? oldToken)
+    public async Task<Food?> GetFoodById(long foodId, string? oldToken)
     {
         var food = await _foodRepository.GetFoodV2ById(foodId);
 
@@ -204,7 +204,7 @@ public sealed class FoodService : IFoodService
         if (newFood == null) return null;
 
         var (foodV2, servings) = MapFatSecretFoodToFoodV2(newFood);
-        var foodV2ServingsEnumerable = servings as FoodV2Servings[] ?? servings.ToArray();
+        var foodV2ServingsEnumerable = servings as FoodServings[] ?? servings.ToArray();
 
         if (food == null)
         {
@@ -221,15 +221,15 @@ public sealed class FoodService : IFoodService
         return foodV2;
     }
 
-    public async Task<IEnumerable<UserFoodV2>> GetRecentUserFoods(Guid userId, DateTime date)
+    public async Task<IEnumerable<UserFood>> GetRecentUserFoods(Guid userId, DateTime date)
     {
         var allFoods = await _foodRepository.GetAllUserFoodsV2(userId);
         var seen = new Dictionary<long, bool>();
-        var recentFoods = new List<UserFoodV2>();
+        var recentFoods = new List<UserFood>();
 
         foreach (var allFood in allFoods)
         {
-            if (seen.ContainsKey(allFood.FoodV2Id))
+            if (seen.ContainsKey(allFood.FoodId))
             {
                 continue;
             }
@@ -240,18 +240,18 @@ public sealed class FoodService : IFoodService
             }
 
             recentFoods.Add(allFood);
-            seen.TryAdd(allFood.FoodV2Id, true);
+            seen.TryAdd(allFood.FoodId, true);
         }
 
         return recentFoods.Take(20);
     }
 
-    public async Task<UserFoodV2?> GetUserFoodV2(long userFoodId)
+    public async Task<UserFood?> GetUserFoodV2(long userFoodId)
     {
         return await _foodRepository.GetUserFoodV2(userFoodId);
     }
 
-    public async Task<IEnumerable<UserFoodV2>> GetAllUserFoodsV2ByDate(Guid userId, DateTime date)
+    public async Task<IEnumerable<UserFood>> GetAllUserFoodsV2ByDate(Guid userId, DateTime date)
     {
         return await _foodRepository.GetAllUserFoodsV2ByDate(userId, date);
     }
@@ -259,16 +259,16 @@ public sealed class FoodService : IFoodService
     public async Task<float> QuickAddUserFoodV2(Guid userId, long foodId, DateTime date, string? oldToken)
     {
         var food = await GetFoodById(foodId, oldToken);
-        var userFoodV2 = (await GetAllUserFoodsV2ByDate(userId, date)).FirstOrDefault(e => e.FoodV2Id == foodId);
+        var userFoodV2 = (await GetAllUserFoodsV2ByDate(userId, date)).FirstOrDefault(e => e.FoodId == foodId);
 
         if (userFoodV2 == null)
         {
-            var newFood = new UserFoodV2()
+            var newFood = new UserFood()
             {
                 UserId = userId,
-                FoodV2Id = foodId,
+                FoodId = foodId,
                 Created = date,
-                ServingId = food?.Servings.FirstOrDefault()?.Id ?? 0,
+                ServingId = food?.Servings.FirstOrDefault()?.ExternalId ?? 0,
                 Updated = date,
                 ServingAmount = 1
             };
@@ -288,16 +288,16 @@ public sealed class FoodService : IFoodService
     public async Task<float> QuickRemoveUserFoodV2(Guid userId, long foodId, DateTime date, string? oldToken)
     {
         var food = await GetFoodById(foodId, oldToken);
-        var userFoodV2 = (await GetAllUserFoodsV2ByDate(userId, date)).FirstOrDefault(e => e.FoodV2Id == foodId);
+        var userFoodV2 = (await GetAllUserFoodsV2ByDate(userId, date)).FirstOrDefault(e => e.FoodId == foodId);
 
         if (userFoodV2 == null)
         {
-            var newFood = new UserFoodV2()
+            var newFood = new UserFood()
             {
                 UserId = userId,
-                FoodV2Id = foodId,
+                FoodId = foodId,
                 Created = date,
-                ServingId = food?.Servings.FirstOrDefault()?.Id ?? 0,
+                ServingId = food?.Servings.FirstOrDefault()?.ExternalId ?? 0,
                 Updated = date,
                 ServingAmount = 0
             };
@@ -314,14 +314,14 @@ public sealed class FoodService : IFoodService
         return userFoodV2.ServingAmount;
     }
 
-    public async Task<long> AddUserFoodV2(UserFoodV2 userFoodV2, DateTime date)
+    public async Task<long> AddUserFoodV2(UserFood userFood, DateTime date)
     {
-        userFoodV2.Created = date;
-        userFoodV2.Updated = DateTime.UtcNow;
-        return await _foodRepository.AddUserFoodV2(userFoodV2);
+        userFood.Created = date;
+        userFood.Updated = DateTime.UtcNow;
+        return await _foodRepository.AddUserFoodV2(userFood);
     }
 
-    public async Task UpdateUserFoodV2(UserFoodV2 userFood)
+    public async Task UpdateUserFoodV2(UserFood userFood)
     {
         userFood.Updated = DateTime.UtcNow;
         await _foodRepository.UpdateUserFoodV2(userFood);
@@ -363,19 +363,19 @@ public sealed class FoodService : IFoodService
         var foods = await _foodRepository.RefreshAllFoodsV2();
         foreach (var food in foods)
         {
-            var updatedFood = await _fatSecretApi.GetFood(food.Id, null);
+            var updatedFood = await _fatSecretApi.GetFood(food.ExternalId, null);
 
             if (updatedFood == null) continue;
 
             var (foodV2, _) = MapFatSecretFoodToFoodV2(updatedFood);
 
             if (foodV2.Servings.Count() == food.Servings.Count()) continue;
-            logger.LogInformation("Updating food {FoodId} {FoodName}", food.Id, food.Name);
+            logger.LogInformation("Updating food {FoodId} {FoodName}", food.ExternalId, food.Name);
             await _foodRepository.UpdateFoodV2(foodV2);
         }
     }
 
-    public async Task<FoodV2?> GetFoodByBarcode(string barcode, string? oldToken)
+    public async Task<Food?> GetFoodByBarcode(string barcode, string? oldToken)
     {
         var id = await _fatSecretApi.GetIdFromBarcode(barcode, oldToken);
 

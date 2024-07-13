@@ -31,14 +31,14 @@ public sealed class FoodRepository : IFoodRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<FoodV2>> GetAllFoodsV2()
+    public async Task<IEnumerable<Food>> GetAllFoodsV2()
     {
         return await _context.FoodV2
             .Include(e => e.Servings)
             .ToListAsync();
     }
     
-    public async Task<IEnumerable<FoodV2>> RefreshAllFoodsV2()
+    public async Task<IEnumerable<Food>> RefreshAllFoodsV2()
     {
         var foods = await _context.FoodV2
             .Include(e => e.Servings)
@@ -59,81 +59,81 @@ public sealed class FoodRepository : IFoodRepository
         return foods.AsReadOnly();
     }
 
-    public async Task<FoodV2?> GetFoodV2ById(long id)
+    public async Task<Food?> GetFoodV2ById(long id)
     {
         return await _context.FoodV2
             .Include(e => e.Servings)
-            .FirstOrDefaultAsync(e => e.Id == id);
+            .FirstOrDefaultAsync(e => e.ExternalId == id);
     }
     
-    public async Task<long> AddFoodV2(FoodV2 food)
+    public async Task<long> AddFoodV2(Food food)
     {
         _context.FoodV2.Add(food);
         await _context.SaveChangesAsync();
-        return food.Id;
+        return food.ExternalId;
     }
     
-    public async Task<long> UpdateFoodV2(FoodV2 food)
+    public async Task<long> UpdateFoodV2(Food food)
     {
         _context.FoodV2.Update(food);
         await _context.SaveChangesAsync();
-        return food.Id;
+        return food.ExternalId;
     }
     
-    public async Task UpdateFoodsV2(IEnumerable<FoodV2> food)
+    public async Task UpdateFoodsV2(IEnumerable<Food> food)
     {
         _context.FoodV2.UpdateRange(food);
         await _context.SaveChangesAsync();
     }
     
-    public async Task AddFoodV2Servings(IEnumerable<FoodV2Servings> servings)
+    public async Task AddFoodV2Servings(IEnumerable<FoodServings> servings)
     {
         _context.FoodV2Servings.AddRange(servings);
         await _context.SaveChangesAsync();
     }
     
-    public async Task UpdateFoodV2Servings(IEnumerable<FoodV2Servings> servings)
+    public async Task UpdateFoodV2Servings(IEnumerable<FoodServings> servings)
     {
         _context.FoodV2Servings.UpdateRange(servings);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<UserFoodV2?> GetUserFoodV2(long userFoodId)
+    public async Task<UserFood?> GetUserFoodV2(long userFoodId)
     {
             return await _context.UserFoodV2
-            .Include(e => e.FoodV2)
+            .Include(e => e.Food)
             .Include(e => e.Serving)
             .FirstOrDefaultAsync(e => e.Id == userFoodId);
     }
 
-    public async Task<IEnumerable<UserFoodV2>> GetAllUserFoodsV2(Guid userId)
+    public async Task<IEnumerable<UserFood>> GetAllUserFoodsV2(Guid userId)
     {
         return await _context.UserFoodV2
-            .Include(e => e.FoodV2)
+            .Include(e => e.Food)
             .Include(e => e.Serving)
             .OrderByDescending(e => e.Created)
             .Where(e => e.UserId == userId)
             .ToListAsync();
     }
     
-    public async Task<IEnumerable<UserFoodV2>> GetAllUserFoodsV2ByDate(Guid userId, DateTime date)
+    public async Task<IEnumerable<UserFood>> GetAllUserFoodsV2ByDate(Guid userId, DateTime date)
     {
         return await _context.UserFoodV2
-            .Include(e => e.FoodV2)
+            .Include(e => e.Food)
             .Include(e => e.Serving)
             .Where(e => e.UserId == userId)
             .Where(e => e.Created.Date == date.Date)
             .ToListAsync();
     }
 
-    public async Task <long> AddUserFoodV2(UserFoodV2 userFood)
+    public async Task <long> AddUserFoodV2(UserFood userFood)
     {
         _context.UserFoodV2.Add(userFood);
         await _context.SaveChangesAsync();
         return userFood.Id;
     }
     
-    public async Task UpdateUserFoodV2(UserFoodV2 userFood)
+    public async Task UpdateUserFoodV2(UserFood userFood)
     {
         _context.UserFoodV2.Update(userFood);
         await _context.SaveChangesAsync();

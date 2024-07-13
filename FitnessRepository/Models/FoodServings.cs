@@ -1,11 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FitnessRepository.Models;
 
-public sealed class FoodV2Servings
+public sealed class FoodServings
 {
     public long Id { get; set; }
-    public long FoodV2Id { get; set; }
+    public long ExternalId { get; set; }
+    [ForeignKey("FoodId")]
+    public long FoodId { get; set; }
     public float? AddedSugar { get; set; }
     public float? Calcium { get; set; }
     public float? Calories { get; set; }
