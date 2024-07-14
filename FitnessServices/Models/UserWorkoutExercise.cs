@@ -12,5 +12,5 @@ public sealed class UserWorkoutExercise
     public int? Time { get; set; }
     public int Sets { get; set; }
     public int? RestTime { get; set; }
-    public IEnumerable<UserWorkoutActivityModel> UserWorkoutActivities { get; set; }
+    public IEnumerable<UserWorkoutActivityModel> UserWorkoutActivities { get; set; } = [];
 }

@@ -15,6 +15,4 @@ public sealed class Dashboard
     public bool SupplementsAdded { get; set; }
     public bool TrackSupplements { get; set; }
     public bool SupplementsTracked { get; set; }
-    public bool AddCheckIn { get; set; }
-    public bool CheckInAdded { get; set; }
 }
