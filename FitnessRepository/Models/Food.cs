@@ -1,12 +1,13 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace FitnessRepository.Models;
 
 public sealed class Food
 { 
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public long Id { get; set; }
-    public long ExternalId { get; set; }
     public string? Brand { get; set; }
     public string Name { get; set; }
     public string FoodType { get; set; }

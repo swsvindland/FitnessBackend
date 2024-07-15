@@ -5,8 +5,8 @@ namespace FitnessRepository.Models;
 
 public sealed class FoodServings
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public long Id { get; set; }
-    public long ExternalId { get; set; }
     [ForeignKey("FoodId")]
     public long FoodId { get; set; }
     public float? AddedSugar { get; set; }

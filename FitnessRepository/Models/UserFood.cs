@@ -14,6 +14,7 @@ public sealed class UserFood
     public Food? Food { get; set; }
     [ForeignKey("ServingId")]
     public long ServingId { get; set; }
+    [DeleteBehavior(DeleteBehavior.Restrict)]
     public FoodServings? Serving { get; set; }
     public float ServingAmount { get; set; }
     public DateTime Created { get; set; }
