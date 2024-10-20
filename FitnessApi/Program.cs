@@ -18,7 +18,7 @@ var host = new HostBuilder()
 
         var connectionString = Environment.GetEnvironmentVariable("DefaultConnection") ?? string.Empty;
         // init db
-        services.AddDbContext<FitnessContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("FitnessApi")));
+        services.AddDbContext<FitnessContext>(options => options.UseNpgsql(connectionString, b => b.MigrationsAssembly("FitnessApi")));
 
         // add db calls
         services.AddScoped<IUserRepository, UserRepository>();
