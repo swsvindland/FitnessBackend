@@ -29,23 +29,23 @@ public sealed class DashboardService: IDashboardService
         var goalMacros = await _foodService.GetUserMacros(userId);
         var userMacros = await _foodService.GetUserCurrentMacosV2(userId, date);
         var supplements = (await _supplementService.GetUserSupplements(userId)).ToArray();
-        var supplementActivity = (await _supplementService.GetUserSupplementActivitiesByDate(userId, date)).ToArray();
+        // var supplementActivity = (await _supplementService.GetUserSupplementActivitiesByDate(userId, date)).ToArray();
 
         return new Dashboard()
         {
             AddSex = user?.Sex == Sex.Unknown,
             AddHeight = !userHeights.Any(),
-            HeightAdded = userHeights.Any(e => e.Created.Date == date.Date),
-            AddWeight = userWeights.LastOrDefault()?.Created.Date != date.Date,
-            WeightAdded = userWeights.Any(e => e.Created.Date == date.Date),
-            DoWorkout = userWorkouts.LastOrDefault()?.Created.Date != date.Date,
-            WorkoutAdded = userWorkouts.Any(e => e.Created.Date == date.Date),
+            // HeightAdded = userHeights.Any(e => e.Created.Date == date.Date),
+            // AddWeight = userWeights.LastOrDefault()?.Created.Date != date.Date,
+            // WeightAdded = userWeights.Any(e => e.Created.Date == date.Date),
+            // DoWorkout = userWorkouts.LastOrDefault()?.Created.Date != date.Date,
+            // WorkoutAdded = userWorkouts.Any(e => e.Created.Date == date.Date),
             TrackMacros = true,
             MacrosAdded = (Math.Abs((goalMacros?.Calories ?? 0) - userMacros.Calories) / (goalMacros?.Calories ?? 1)) < 0.1,
             AddSupplements = supplements.Length == 0,
-            SupplementsAdded = supplements.Any(e => e.Created.Date == date.Date),
+            // SupplementsAdded = supplements.Any(e => e.Created.Date == date.Date),
             TrackSupplements = supplements.Any(),
-            SupplementsTracked = supplements.Length <= supplementActivity.Length,
+            // SupplementsTracked = supplements.Length <= supplementActivity.Length,
         };
     }
 }

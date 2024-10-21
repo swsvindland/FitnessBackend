@@ -122,7 +122,7 @@ public sealed class FoodRepository : IFoodRepository
             .Include(e => e.Food)
             .Include(e => e.Serving)
             .Where(e => e.UserId == userId)
-            .Where(e => e.Created.Date == date.Date)
+            // .Where(e => e.Created.Date == date.Date)
             .ToListAsync();
     }
 
